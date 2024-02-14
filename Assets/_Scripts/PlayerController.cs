@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+
         playerMovement = new Movement(GetComponent<Rigidbody2D>());
     }
 

@@ -13,7 +13,7 @@ public class Movement
 
     public void MoveTankForwardAndBackward(float verticalInput)
     {
-        Vector2 moveForce = playerRigidBody.transform.up * verticalInput * moveSpeed;
+        Vector2 moveForce = playerRigidBody.transform.right * verticalInput * moveSpeed;
         playerRigidBody.AddForce(moveForce);
     }
 
