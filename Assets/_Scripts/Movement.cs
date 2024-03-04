@@ -3,8 +3,10 @@ using UnityEngine;
 public class Movement
 {
     private Rigidbody2D playerRigidBody;
-    private float moveSpeed = 20f;
-    private float rotationSpeed = 180f;
+    public float moveSpeed = 100;
+    public float rotationSpeed = 180f;
+    public float lateralDrag = 50;
+
 
     public Movement(Rigidbody2D rb)
     {
@@ -13,9 +15,15 @@ public class Movement
 
     public void MoveTankForwardAndBackward(float verticalInput)
     {
+        // Calculate the force for forward and backward movement
         Vector2 moveForce = playerRigidBody.transform.right * verticalInput * moveSpeed;
+
+
+        // Apply the force
         playerRigidBody.AddForce(moveForce);
     }
+
+
 
     public void RotateTank(float horizontalInput)
     {

@@ -1,22 +1,31 @@
 using UnityEngine;
 
-public class GunRotation : MonoBehaviour
+public class GunRotation
 {
-    public float maxRotationAngle = 30f;
-    public float rotationSpeed = 5f;
+    private float maxRotationAngle = 30f;
+    private float rotationSpeed = 5f;
 
     private float localInitialAngle;
 
-    void Start()
+    private Transform guntransform;
+
+    public GunRotation(Gun gun)
+    { 
+        this.guntransform = gun.transform;
+        maxRotationAngle = gun.gunData.maxRotationAngle;
+        rotationSpeed = gun.gunData.rotationSpeed;
+    }
+    public void Start()
     {
+
         // Calculate the local initial angle relative to the turret's rotation
-        localInitialAngle = transform.localEulerAngles.z;
+        localInitialAngle = guntransform.localEulerAngles.z;
     }
 
     float GetTankAngle()
     {
         // Get the tank rotation in the [0, 360) range
-        float tankRotation = transform.parent.eulerAngles.z % 360f;
+        float tankRotation = guntransform.parent.eulerAngles.z % 360f;
 
         return tankRotation;
     }
@@ -31,10 +40,10 @@ public class GunRotation : MonoBehaviour
         GunLookAt(mousePosition);
     }
 
-    void GunLookAt(Vector3 positionToLookAt)
+    public void GunLookAt(Vector3 positionToLookAt)
     {
         // Calculate the direction to the mouse
-        Vector3 direction = positionToLookAt - transform.position;
+        Vector3 direction = positionToLookAt - guntransform.position;
 
         // Calculate the angle between the current turret rotation and the direction to the mouse
         float angleToMouse = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
@@ -51,7 +60,7 @@ public class GunRotation : MonoBehaviour
         // Smoothly rotate the turret towards the calculated angle using rotationSpeed
         float targetAngle = adjustedInitialAngle + angleDifference;
         Quaternion desiredRotation = Quaternion.Euler(0f, 0f, targetAngle);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);
+        guntransform.rotation = Quaternion.RotateTowards(guntransform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);
     }
 
     void OnDrawGizmos()
@@ -62,6 +71,6 @@ public class GunRotation : MonoBehaviour
         // Calculate the length of the line based on the distance to the mouse position
         float lineLength = 10f; // Adjust the line length as needed
 
-        Gizmos.DrawLine(transform.position, transform.position + transform.right * lineLength);
+        Gizmos.DrawLine(guntransform.position, guntransform.position + guntransform.right * lineLength);
     }
 }
