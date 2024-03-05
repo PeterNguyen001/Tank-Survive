@@ -3,27 +3,20 @@ using UnityEngine;
 
 public class GunController : MonoBehaviour
 {
-    private LinkedList<GunRotation> gunRotations = new LinkedList<GunRotation>();
+
     private LinkedList<Gun> guns = new LinkedList<Gun>();
 
     // Start is called before the first frame update
     void Start()
     {
-        // Iterate through all child objects
         foreach (Transform child in transform)
         {
-            // Check if the child has a GameObject and a GunRotation script
             Gun gun = child.gameObject.GetComponent<Gun>();
-            GunRotation gunRotation = new GunRotation(gun);
 
-            // If both are present, add them to the lists
-            if (gun != null && gunRotation != null)
+            if (gun != null)
             {
                 guns.AddLast(gun);
-                gunRotations.AddLast(gunRotation);
 
-                // Initialize the GunRotation
-                gunRotation.Start();
             }
         }
     }
@@ -34,9 +27,9 @@ public class GunController : MonoBehaviour
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePosition.z = 0f;
         // Update each GunRotation
-        foreach (var gunRotation in gunRotations)
+        foreach (var gun in guns)
         {
-            gunRotation.GunLookAt(mousePosition);
+            gun.AimGunAtMouse(mousePosition);
         }
     }
 
@@ -44,9 +37,6 @@ public class GunController : MonoBehaviour
     void OnDrawGizmos()
     {
         // Draw Gizmos for each GunRotation
-        foreach (var gunRotation in gunRotations)
-        {
-            //gunRotation.OnDrawGizmos();
-        }
+
     }
 }

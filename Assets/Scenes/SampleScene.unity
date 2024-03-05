@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 49528408}
   - component: {fileID: 49528409}
   m_Layer: 8
-  m_Name: GunEnd
+  m_Name: Gun End
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -433,8 +433,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c26abe7a2c1a69f41b2f611441e5a91e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftTrack: {fileID: 759300289}
-  rightTrack: {fileID: 1926416114}
 --- !u!1 &515283485
 GameObject:
   m_ObjectHideFlags: 0
@@ -477,22 +475,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_ActionEvents:
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 3ff7fe55-227f-46a6-9ab7-ddc04fd528bc
-    m_ActionName: PlayerController/Move Backward[/Keyboard/w]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: a2fdbec9-4bfa-48cd-a25e-9e8517806f17
-    m_ActionName: PlayerController/New action
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 980b5f99-4208-41dd-8f29-d4ddffe4340b
-    m_ActionName: PlayerController/New action1
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: f773861c-ca11-4bc7-a2b5-0551ae7002a3
-    m_ActionName: PlayerController/Move Forward[/Keyboard/a,/Keyboard/d,/Keyboard/w]
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 357020820}

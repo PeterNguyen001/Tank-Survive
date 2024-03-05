@@ -14,12 +14,12 @@ public class GunRotation
         this.guntransform = gun.transform;
         maxRotationAngle = gun.gunData.maxRotationAngle;
         rotationSpeed = gun.gunData.rotationSpeed;
+        // Calculate the local initial angle relative to the turret's rotation
+        localInitialAngle = guntransform.localEulerAngles.z;
     }
     public void Start()
     {
 
-        // Calculate the local initial angle relative to the turret's rotation
-        localInitialAngle = guntransform.localEulerAngles.z;
     }
 
     float GetTankAngle()

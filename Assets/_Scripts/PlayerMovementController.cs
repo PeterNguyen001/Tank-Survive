@@ -1,12 +1,13 @@
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerMovementController : MonoBehaviour
 {
     private Movement PlayerMovement;
-    [SerializeField]
+
     private Rigidbody2D leftTrack;
-    [SerializeField]
+
     private Rigidbody2D rightTrack;
 
     private float forwardDirection;
@@ -14,6 +15,7 @@ public class PlayerMovementController : MonoBehaviour
     private Vector2 moveDirection;
     void Start()
     {
+        Initializetracks();
         PlayerMovement = new Movement(leftTrack, rightTrack);
     }
 
@@ -30,7 +32,11 @@ public class PlayerMovementController : MonoBehaviour
         Debug.Log(moveDirection);
     }
 
-
+    private void Initializetracks()
+    {
+        leftTrack = transform.Find("Tracks/Left Track").GetComponent<Rigidbody2D>();
+        rightTrack = transform.Find("Tracks/Right Track").GetComponent<Rigidbody2D>();
+    }
 
 }
 
