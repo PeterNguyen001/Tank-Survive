@@ -9,8 +9,9 @@ public class PlayerMovementController : MonoBehaviour
     [SerializeField]
     private Rigidbody2D rightTrack;
 
-    private int forwardDirection;
-    private int backwardDirection;
+    private float forwardDirection;
+    private float backwardDirection;
+    private Vector2 moveDirection;
     void Start()
     {
         PlayerMovement = new Movement(leftTrack, rightTrack);
@@ -18,19 +19,18 @@ public class PlayerMovementController : MonoBehaviour
 
     void FixedUpdate()
     {
-        //float verticalInput = Input.GetAxis("Vertical");
-        //float horizontalInput = Input.GetAxis("Horizontal");
 
-        //PlayerMovement.MoveTankForwardAndBackward(verticalInput);
-        //PlayerMovement.RotateTank(horizontalInput);
+        PlayerMovement.MovePlayerTank(moveDirection);
     }
 
-    public void MoveForward(InputAction.CallbackContext context)
+    public void MovePlayer(InputAction.CallbackContext context)
     {
-        float moveDirection = context.ReadValue<float>();
+        moveDirection = context.ReadValue<Vector2>();
 
         Debug.Log(moveDirection);
     }
+
+
 
 }
 

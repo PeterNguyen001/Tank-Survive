@@ -6,53 +6,70 @@
             "id": "b57c2458-491d-46f2-a14c-6367e50be30d",
             "actions": [
                 {
-                    "name": "Move Forward",
-                    "type": "Button",
-                    "id": "f773861c-ca11-4bc7-a2b5-0551ae7002a3",
-                    "expectedControlType": "Button",
+                    "name": "MovePlayer",
+                    "type": "Value",
+                    "id": "1779823e-59a6-41ce-ae81-58b572287760",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Move Backward",
-                    "type": "Button",
-                    "id": "3ff7fe55-227f-46a6-9ab7-ddc04fd528bc",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Rotate Left",
-                    "type": "Button",
-                    "id": "a2fdbec9-4bfa-48cd-a25e-9e8517806f17",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Rotate Right",
-                    "type": "Button",
-                    "id": "980b5f99-4208-41dd-8f29-d4ddffe4340b",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
                 {
-                    "name": "",
-                    "id": "131f2388-5821-4732-b928-0fbc6b96e495",
+                    "name": "2D Vector",
+                    "id": "183c88ec-c456-464f-9874-56329ae0dced",
+                    "path": "2DVector(mode=1)",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MovePlayer",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "63a7b18d-a7f1-4971-84fa-24a2e0a23f21",
                     "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move Forward",
+                    "action": "MovePlayer",
                     "isComposite": false,
-                    "isPartOfComposite": false
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "69778ee2-bc0c-476c-897f-b78cc3d39e62",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MovePlayer",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "0298e372-87b3-42ed-ac33-91802e0564d9",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MovePlayer",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "8b038d97-990c-46a7-aec2-497041255d47",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MovePlayer",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }

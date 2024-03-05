@@ -28,53 +28,70 @@ public partial class @PlayerControllerScript: IInputActionCollection2, IDisposab
             ""id"": ""b57c2458-491d-46f2-a14c-6367e50be30d"",
             ""actions"": [
                 {
-                    ""name"": ""Move Forward"",
-                    ""type"": ""Button"",
-                    ""id"": ""f773861c-ca11-4bc7-a2b5-0551ae7002a3"",
-                    ""expectedControlType"": ""Button"",
+                    ""name"": ""MovePlayer"",
+                    ""type"": ""Value"",
+                    ""id"": ""1779823e-59a6-41ce-ae81-58b572287760"",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Move Backward"",
-                    ""type"": ""Button"",
-                    ""id"": ""3ff7fe55-227f-46a6-9ab7-ddc04fd528bc"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Rotate Left"",
-                    ""type"": ""Button"",
-                    ""id"": ""a2fdbec9-4bfa-48cd-a25e-9e8517806f17"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Rotate Right"",
-                    ""type"": ""Button"",
-                    ""id"": ""980b5f99-4208-41dd-8f29-d4ddffe4340b"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
                 {
-                    ""name"": """",
-                    ""id"": ""131f2388-5821-4732-b928-0fbc6b96e495"",
+                    ""name"": ""2D Vector"",
+                    ""id"": ""183c88ec-c456-464f-9874-56329ae0dced"",
+                    ""path"": ""2DVector(mode=1)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MovePlayer"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""63a7b18d-a7f1-4971-84fa-24a2e0a23f21"",
                     ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move Forward"",
+                    ""action"": ""MovePlayer"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": false
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""69778ee2-bc0c-476c-897f-b78cc3d39e62"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MovePlayer"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""0298e372-87b3-42ed-ac33-91802e0564d9"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MovePlayer"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""8b038d97-990c-46a7-aec2-497041255d47"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MovePlayer"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -83,10 +100,7 @@ public partial class @PlayerControllerScript: IInputActionCollection2, IDisposab
 }");
         // PlayerController
         m_PlayerController = asset.FindActionMap("PlayerController", throwIfNotFound: true);
-        m_PlayerController_MoveForward = m_PlayerController.FindAction("Move Forward", throwIfNotFound: true);
-        m_PlayerController_MoveBackward = m_PlayerController.FindAction("Move Backward", throwIfNotFound: true);
-        m_PlayerController_RotateLeft = m_PlayerController.FindAction("Rotate Left", throwIfNotFound: true);
-        m_PlayerController_RotateRight = m_PlayerController.FindAction("Rotate Right", throwIfNotFound: true);
+        m_PlayerController_MovePlayer = m_PlayerController.FindAction("MovePlayer", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -148,18 +162,12 @@ public partial class @PlayerControllerScript: IInputActionCollection2, IDisposab
     // PlayerController
     private readonly InputActionMap m_PlayerController;
     private List<IPlayerControllerActions> m_PlayerControllerActionsCallbackInterfaces = new List<IPlayerControllerActions>();
-    private readonly InputAction m_PlayerController_MoveForward;
-    private readonly InputAction m_PlayerController_MoveBackward;
-    private readonly InputAction m_PlayerController_RotateLeft;
-    private readonly InputAction m_PlayerController_RotateRight;
+    private readonly InputAction m_PlayerController_MovePlayer;
     public struct PlayerControllerActions
     {
         private @PlayerControllerScript m_Wrapper;
         public PlayerControllerActions(@PlayerControllerScript wrapper) { m_Wrapper = wrapper; }
-        public InputAction @MoveForward => m_Wrapper.m_PlayerController_MoveForward;
-        public InputAction @MoveBackward => m_Wrapper.m_PlayerController_MoveBackward;
-        public InputAction @RotateLeft => m_Wrapper.m_PlayerController_RotateLeft;
-        public InputAction @RotateRight => m_Wrapper.m_PlayerController_RotateRight;
+        public InputAction @MovePlayer => m_Wrapper.m_PlayerController_MovePlayer;
         public InputActionMap Get() { return m_Wrapper.m_PlayerController; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -169,34 +177,16 @@ public partial class @PlayerControllerScript: IInputActionCollection2, IDisposab
         {
             if (instance == null || m_Wrapper.m_PlayerControllerActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_PlayerControllerActionsCallbackInterfaces.Add(instance);
-            @MoveForward.started += instance.OnMoveForward;
-            @MoveForward.performed += instance.OnMoveForward;
-            @MoveForward.canceled += instance.OnMoveForward;
-            @MoveBackward.started += instance.OnMoveBackward;
-            @MoveBackward.performed += instance.OnMoveBackward;
-            @MoveBackward.canceled += instance.OnMoveBackward;
-            @RotateLeft.started += instance.OnRotateLeft;
-            @RotateLeft.performed += instance.OnRotateLeft;
-            @RotateLeft.canceled += instance.OnRotateLeft;
-            @RotateRight.started += instance.OnRotateRight;
-            @RotateRight.performed += instance.OnRotateRight;
-            @RotateRight.canceled += instance.OnRotateRight;
+            @MovePlayer.started += instance.OnMovePlayer;
+            @MovePlayer.performed += instance.OnMovePlayer;
+            @MovePlayer.canceled += instance.OnMovePlayer;
         }
 
         private void UnregisterCallbacks(IPlayerControllerActions instance)
         {
-            @MoveForward.started -= instance.OnMoveForward;
-            @MoveForward.performed -= instance.OnMoveForward;
-            @MoveForward.canceled -= instance.OnMoveForward;
-            @MoveBackward.started -= instance.OnMoveBackward;
-            @MoveBackward.performed -= instance.OnMoveBackward;
-            @MoveBackward.canceled -= instance.OnMoveBackward;
-            @RotateLeft.started -= instance.OnRotateLeft;
-            @RotateLeft.performed -= instance.OnRotateLeft;
-            @RotateLeft.canceled -= instance.OnRotateLeft;
-            @RotateRight.started -= instance.OnRotateRight;
-            @RotateRight.performed -= instance.OnRotateRight;
-            @RotateRight.canceled -= instance.OnRotateRight;
+            @MovePlayer.started -= instance.OnMovePlayer;
+            @MovePlayer.performed -= instance.OnMovePlayer;
+            @MovePlayer.canceled -= instance.OnMovePlayer;
         }
 
         public void RemoveCallbacks(IPlayerControllerActions instance)
@@ -216,9 +206,6 @@ public partial class @PlayerControllerScript: IInputActionCollection2, IDisposab
     public PlayerControllerActions @PlayerController => new PlayerControllerActions(this);
     public interface IPlayerControllerActions
     {
-        void OnMoveForward(InputAction.CallbackContext context);
-        void OnMoveBackward(InputAction.CallbackContext context);
-        void OnRotateLeft(InputAction.CallbackContext context);
-        void OnRotateRight(InputAction.CallbackContext context);
+        void OnMovePlayer(InputAction.CallbackContext context);
     }
 }
