@@ -1,0 +1,61 @@
+{
+    "name": "PlayerController",
+    "maps": [
+        {
+            "name": "PlayerController",
+            "id": "b57c2458-491d-46f2-a14c-6367e50be30d",
+            "actions": [
+                {
+                    "name": "Move Forward",
+                    "type": "Button",
+                    "id": "f773861c-ca11-4bc7-a2b5-0551ae7002a3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Move Backward",
+                    "type": "Button",
+                    "id": "3ff7fe55-227f-46a6-9ab7-ddc04fd528bc",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Rotate Left",
+                    "type": "Button",
+                    "id": "a2fdbec9-4bfa-48cd-a25e-9e8517806f17",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Rotate Right",
+                    "type": "Button",
+                    "id": "980b5f99-4208-41dd-8f29-d4ddffe4340b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "131f2388-5821-4732-b928-0fbc6b96e495",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move Forward",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
