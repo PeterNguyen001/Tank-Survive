@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GunController : MonoBehaviour
 {
 
     private LinkedList<Gun> guns = new LinkedList<Gun>();
+    Vector3 mousePosition;
 
     // Start is called before the first frame update
     void Start()
@@ -22,10 +24,10 @@ public class GunController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mousePosition.z = 0f;
+        //mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //mousePosition.z = 0f;
         // Update each GunRotation
         foreach (var gun in guns)
         {
@@ -33,10 +35,17 @@ public class GunController : MonoBehaviour
         }
     }
 
-    // OnDrawGizmos is called in the editor to visualize the gun directions
-    void OnDrawGizmos()
+    public void FireGun(InputAction.CallbackContext context)
     {
-        // Draw Gizmos for each GunRotation
+        foreach (var gun in guns)
+        {
+            gun.FireGun();
+        }
+    }
 
+    public void MoveMouse(InputAction.CallbackContext context)
+    {
+        mousePosition = Camera.main.ScreenToWorldPoint(context.ReadValue<Vector2>());
+        mousePosition.z = 0f;
     }
 }

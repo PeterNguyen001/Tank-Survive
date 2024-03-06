@@ -35,6 +35,24 @@ public partial class @PlayerControllerScript: IInputActionCollection2, IDisposab
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Fire Gun"",
+                    ""type"": ""Button"",
+                    ""id"": ""9a6d7719-731a-411e-9cf3-910da17882a8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Move Mouse"",
+                    ""type"": ""Value"",
+                    ""id"": ""8b5770e5-47f5-43d4-b869-346ba26afb73"",
+                    ""expectedControlType"": ""Vector3"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -92,6 +110,28 @@ public partial class @PlayerControllerScript: IInputActionCollection2, IDisposab
                     ""action"": ""MovePlayer"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fdbe725d-8dcf-4243-8144-04c210240038"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Fire Gun"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4ff59991-04ea-46b0-9524-a12a1edb2dce"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move Mouse"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -101,6 +141,8 @@ public partial class @PlayerControllerScript: IInputActionCollection2, IDisposab
         // PlayerController
         m_PlayerController = asset.FindActionMap("PlayerController", throwIfNotFound: true);
         m_PlayerController_MovePlayer = m_PlayerController.FindAction("MovePlayer", throwIfNotFound: true);
+        m_PlayerController_FireGun = m_PlayerController.FindAction("Fire Gun", throwIfNotFound: true);
+        m_PlayerController_MoveMouse = m_PlayerController.FindAction("Move Mouse", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -163,11 +205,15 @@ public partial class @PlayerControllerScript: IInputActionCollection2, IDisposab
     private readonly InputActionMap m_PlayerController;
     private List<IPlayerControllerActions> m_PlayerControllerActionsCallbackInterfaces = new List<IPlayerControllerActions>();
     private readonly InputAction m_PlayerController_MovePlayer;
+    private readonly InputAction m_PlayerController_FireGun;
+    private readonly InputAction m_PlayerController_MoveMouse;
     public struct PlayerControllerActions
     {
         private @PlayerControllerScript m_Wrapper;
         public PlayerControllerActions(@PlayerControllerScript wrapper) { m_Wrapper = wrapper; }
         public InputAction @MovePlayer => m_Wrapper.m_PlayerController_MovePlayer;
+        public InputAction @FireGun => m_Wrapper.m_PlayerController_FireGun;
+        public InputAction @MoveMouse => m_Wrapper.m_PlayerController_MoveMouse;
         public InputActionMap Get() { return m_Wrapper.m_PlayerController; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -180,6 +226,12 @@ public partial class @PlayerControllerScript: IInputActionCollection2, IDisposab
             @MovePlayer.started += instance.OnMovePlayer;
             @MovePlayer.performed += instance.OnMovePlayer;
             @MovePlayer.canceled += instance.OnMovePlayer;
+            @FireGun.started += instance.OnFireGun;
+            @FireGun.performed += instance.OnFireGun;
+            @FireGun.canceled += instance.OnFireGun;
+            @MoveMouse.started += instance.OnMoveMouse;
+            @MoveMouse.performed += instance.OnMoveMouse;
+            @MoveMouse.canceled += instance.OnMoveMouse;
         }
 
         private void UnregisterCallbacks(IPlayerControllerActions instance)
@@ -187,6 +239,12 @@ public partial class @PlayerControllerScript: IInputActionCollection2, IDisposab
             @MovePlayer.started -= instance.OnMovePlayer;
             @MovePlayer.performed -= instance.OnMovePlayer;
             @MovePlayer.canceled -= instance.OnMovePlayer;
+            @FireGun.started -= instance.OnFireGun;
+            @FireGun.performed -= instance.OnFireGun;
+            @FireGun.canceled -= instance.OnFireGun;
+            @MoveMouse.started -= instance.OnMoveMouse;
+            @MoveMouse.performed -= instance.OnMoveMouse;
+            @MoveMouse.canceled -= instance.OnMoveMouse;
         }
 
         public void RemoveCallbacks(IPlayerControllerActions instance)
@@ -207,5 +265,7 @@ public partial class @PlayerControllerScript: IInputActionCollection2, IDisposab
     public interface IPlayerControllerActions
     {
         void OnMovePlayer(InputAction.CallbackContext context);
+        void OnFireGun(InputAction.CallbackContext context);
+        void OnMoveMouse(InputAction.CallbackContext context);
     }
 }

@@ -11,10 +11,13 @@ public class Gun : MonoBehaviour
 
     private GameObject gunEnd;
 
+    public BulletAndShellBehavior bullet;
+
     private void Start()
     {
         gunRotation = new GunRotation(this);
         FindGunlEnd();
+
     }
 
     public void AimGunAtMouse(Vector3 posToLookTo)
@@ -24,5 +27,11 @@ public class Gun : MonoBehaviour
     public void FindGunlEnd()
     {
         gunEnd = transform.Find("Gun End").gameObject;
+    }
+    public void FireGun()
+    {
+        bullet.transform.position = gunEnd.transform.position;
+        bullet.transform.rotation = gunEnd.transform.rotation;
+        bullet.Fire();
     }
 }
