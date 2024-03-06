@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AmmoManager : MonoBehaviour
+public class AmmoLoader : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -15,4 +15,10 @@ public class AmmoManager : MonoBehaviour
     {
         
     }
+}
+
+public class AmmoContainer
+{
+    // Start is called before the first frame update
+   
 }

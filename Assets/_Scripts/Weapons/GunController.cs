@@ -6,7 +6,8 @@ public class GunController : MonoBehaviour
 {
 
     private LinkedList<Gun> guns = new LinkedList<Gun>();
-    Vector3 mousePosition;
+    private Vector3 mousePosition;
+    private bool isFiring;
 
     // Start is called before the first frame update
     void Start()
@@ -32,15 +33,16 @@ public class GunController : MonoBehaviour
         foreach (var gun in guns)
         {
             gun.AimGunAtMouse(mousePosition);
+            gun.FireGun(isFiring);
         }
     }
 
     public void FireGun(InputAction.CallbackContext context)
     {
-        foreach (var gun in guns)
-        {
-            gun.FireGun();
-        }
+        if (context.phase == InputActionPhase.Performed)
+            isFiring = true;
+        else
+            isFiring = false;
     }
 
     public void MoveMouse(InputAction.CallbackContext context)
