@@ -20,21 +20,21 @@ public class Gun : MonoBehaviour
         loader = FindObjectOfType<AmmoLoader>();
         gunRotation = new GunRotation(this);
         FindGunlEnd();
-
-        // Initialize the bullet pool
-        bulletPrefab = loader.FindCorrectAmmunitionType(gunData.ammunitionData);
-        InitializeBulletPool();
     }
 
-    private void InitializeBulletPool()
+    public void InitializeBulletPool()
     {
+        bulletPrefab = loader.FindCorrectAmmunitionType(gunData.ammunitionData).GetbulletPrefab();
         if (bulletPrefab != null)
+        {
             for (int i = 0; i < gunData.shotPerMinute + 1; i++)
             {
                 GameObject bullet = Instantiate(bulletPrefab);
                 bullet.SetActive(false);
                 bulletPool.Add(bullet);
             }
+            loader.ReloadGun(this);
+        }
         else
             Debug.Log("Out of Ammo");
     }
@@ -72,12 +72,13 @@ public class Gun : MonoBehaviour
 
                     currentAmmoCount--;
 
-                    if (currentAmmoCount == 0)
-                    {
-                        canFire = false;
-                        StartCoroutine(Reload());
-                    }
+                    
                 }
+            }
+            if (currentAmmoCount == 0)
+            {
+                canFire = false;
+                loader.ReloadGun(this);
             }
         }
     }
@@ -96,7 +97,7 @@ public class Gun : MonoBehaviour
         return null; // If all bullets are currently in use, return null
     }
 
-    public void FireSemiAuto(GameObject bullet)
+    private void FireSemiAuto(GameObject bullet)
     {
         if (canFire)
         {
@@ -116,7 +117,7 @@ public class Gun : MonoBehaviour
         }
     }
 
-    private IEnumerator Reload()
+    public IEnumerator Reload()
     {
         yield return new WaitForSeconds(gunData.reloadTime);
         currentAmmoCount = gunData.ammoCapacity;
