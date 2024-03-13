@@ -3,6 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewGun", menuName = "Gun", order = 1)]
 public class GunData : ScriptableObject
 {
+    public AmmunitionData ammunitionData;
     public new string name; // You can use the 'name' field from ScriptableObject
     public bool isFullAuto;
     public int ammoCapacity = 1;

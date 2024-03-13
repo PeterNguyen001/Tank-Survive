@@ -45,4 +45,6 @@ public class BulletAndShellBehavior : MonoBehaviour
         gameObject.SetActive(false);
         timer = 0f;
     }
+    public AmmunitionData GetAmmunitionData()
+    { return ammo; }
 }

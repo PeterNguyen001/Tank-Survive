@@ -27,8 +27,6 @@ public class GunController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        //mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        //mousePosition.z = 0f;
         // Update each GunRotation
         foreach (var gun in guns)
         {

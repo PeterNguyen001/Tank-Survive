@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2f5e9383a34e664d99f4ba7081457d6, type: 3}
-  m_Name: 7.62
+  m_Name: 7.62mm
   m_EditorClassIdentifier: 
-  name: 7.62
+  name: 7.62mm
   damage: 10
   velocity: 250
   ammoSprite: {fileID: 0}
