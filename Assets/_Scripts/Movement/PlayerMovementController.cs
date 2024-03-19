@@ -34,8 +34,8 @@ public class PlayerMovementController : MonoBehaviour
 
     private void Initializetracks()
     {
-        leftTrack = transform.Find("Tracks/Left Track").GetComponent<Rigidbody2D>();
-        rightTrack = transform.Find("Tracks/Right Track").GetComponent<Rigidbody2D>();
+        leftTrack = transform.Find("Left Track").GetComponent<Rigidbody2D>();
+        rightTrack = transform.Find("Right Track").GetComponent<Rigidbody2D>();
     }
 
 }

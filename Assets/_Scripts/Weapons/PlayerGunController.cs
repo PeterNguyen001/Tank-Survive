@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class GunController : MonoBehaviour
+public class PlayerGunController : MonoBehaviour
 {
 
     private LinkedList<Gun> guns = new LinkedList<Gun>();
