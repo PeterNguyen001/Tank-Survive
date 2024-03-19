@@ -18,6 +18,6 @@ MonoBehaviour:
   ammoCapacity: 100
   reloadTime: 3
   shotPerMinute: 120
-  maxRotationAngle: 45
+  maxRotationAngle: 60
   rotationSpeed: 45
   gunSprite: {fileID: 0}

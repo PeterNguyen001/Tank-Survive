@@ -7,7 +7,7 @@ public class PlayerGunController : MonoBehaviour
 
     private LinkedList<Gun> guns = new LinkedList<Gun>();
     private Vector3 mousePosition;
-    private bool isFiring;
+    private bool isPullingTheTrigger;
 
     // Start is called before the first frame update
     void Start()
@@ -19,7 +19,6 @@ public class PlayerGunController : MonoBehaviour
             if (gun != null)
             {
                 guns.AddLast(gun);
-
             }
         }
     }
@@ -31,16 +30,20 @@ public class PlayerGunController : MonoBehaviour
         foreach (var gun in guns)
         {
             gun.AimGunAtMouse(mousePosition);
-            gun.FireGun(isFiring);
+            gun.FireGun(isPullingTheTrigger);
         }
     }
 
     public void FireGun(InputAction.CallbackContext context)
     {
         if (context.phase == InputActionPhase.Performed)
-            isFiring = true;
-        else
-            isFiring = false;
+        {
+            isPullingTheTrigger = true;
+        }
+        else if (context.phase == InputActionPhase.Canceled)
+        {
+            isPullingTheTrigger = false;
+        }
     }
 
     public void MoveMouse(InputAction.CallbackContext context)

@@ -5,7 +5,7 @@ public class BulletAndShellBehavior : MonoBehaviour
 {
     public AmmunitionData ammo;
     public float lifespan = 2.0f; // Adjust the lifespan as needed
-    private float timer;
+    public float timer;
     private Rigidbody2D bulletRb;
 
     // Start is called before the first frame update
@@ -35,15 +35,15 @@ public class BulletAndShellBehavior : MonoBehaviour
 
     public void Fire()
     {
+        Debug.Log("Fire");
         gameObject.SetActive(true);
-        timer = 0f; // Reset the timer when firing
     }
 
     // Deactivate the bullet and reset the timer
     private void DeactivateBullet()
     {
         gameObject.SetActive(false);
-        timer = 0f;
+        timer = 0f; // Reset the timer when firing
     }
     public AmmunitionData GetAmmunitionData()
     { return ammo; }

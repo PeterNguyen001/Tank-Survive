@@ -40,9 +40,6 @@ public class CameraController : MonoBehaviour
 
     private void MoveTowardsMouse(Vector2 mousePosition)
     {
-        // Get mouse position in screen coordinates
-
-        Debug.Log("Cam:" + mousePosition);
 
         // Get screen dimensions
         float screenWidth = Screen.width;

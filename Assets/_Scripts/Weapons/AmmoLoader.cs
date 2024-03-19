@@ -12,7 +12,7 @@ public class AmmoLoader : MonoBehaviour
     void Start()
     {
         m_AmmoContainers.Add(new AmmoContainer(bulletPrefab1, 5));
-        m_AmmoContainers.Add(new AmmoContainer(bulletPrefab2, 2));
+        m_AmmoContainers.Add(new AmmoContainer(bulletPrefab2, 6));
         InitializeGun();
     }
 
@@ -31,7 +31,6 @@ public class AmmoLoader : MonoBehaviour
             {
                 containerToTakeFrom.RemoveOneAmmunitionCount();
                 StartCoroutine(gun.Reload());
-                Debug.Log(containerToTakeFrom.GetAmmunitionCount());
             }
             else if (containerToTakeFrom.IsEmpty())
             {
@@ -61,7 +60,7 @@ public class AmmoLoader : MonoBehaviour
     }
 }
 
-public class AmmoContainer
+public class AmmoContainer 
 {
     // Start is called before the first frame update
     GameObject bulletPrefab;
@@ -75,7 +74,9 @@ public class AmmoContainer
     { return bulletPrefab.GetComponent<BulletAndShellBehavior>().GetAmmunitionData(); }
 
     public GameObject GetbulletPrefab()
-    { return bulletPrefab; }
+    {
+        return bulletPrefab; 
+    }
     public int GetAmmunitionCount()
     { return ammunitionCount; }
     public void RemoveOneAmmunitionCount()

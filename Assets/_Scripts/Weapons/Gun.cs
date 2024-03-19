@@ -11,19 +11,22 @@ public class Gun : MonoBehaviour
     private AmmoLoader loader;
     private GameObject bulletPrefab; // Prefab for the bullet
     private List<GameObject> bulletPool = new List<GameObject>();
-    private int currentAmmoCount;
+    public int currentAmmoCount;
 
-    private bool canFire = true;
+    public bool hasAmmo = false;
+    bool isDelaying = false;
+    private bool isReloading = false;
 
     private void Start()
     {
-        loader = FindObjectOfType<AmmoLoader>();
+
         gunRotation = new GunRotation(this);
         FindGunlEnd();
     }
 
     public void InitializeBulletPool()
     {
+        loader = FindObjectOfType<AmmoLoader>();
         bulletPrefab = loader.FindCorrectAmmunitionType(gunData.ammunitionData).GetbulletPrefab();
         if (bulletPrefab != null)
         {
@@ -49,11 +52,12 @@ public class Gun : MonoBehaviour
         gunEnd = transform.Find("Gun End").gameObject;
     }
 
-    public void FireGun(bool isFiring)
+    public void FireGun(bool isPullingTheTrigger)
     {
-        if (isFiring)
+        if (isPullingTheTrigger)
         {
-            if (canFire)
+            Debug.Log("gun");
+            if (hasAmmo)
             {
                 GameObject bullet = GetBulletFromPool();
                 if (bullet != null)
@@ -67,17 +71,16 @@ public class Gun : MonoBehaviour
                     }
                     else
                     {
-                        StartCoroutine(FireFullAuto(bullet));
+                        if(!isDelaying) 
+                            StartCoroutine(FireFullAuto(bullet));
                     }
-
-                    currentAmmoCount--;
 
                     
                 }
             }
-            if (currentAmmoCount == 0)
+            if (currentAmmoCount == 0 && !isReloading)
             {
-                canFire = false;
+                hasAmmo = false;
                 loader.ReloadGun(this);
             }
         }
@@ -89,7 +92,6 @@ public class Gun : MonoBehaviour
         {
             if (!bullet.activeInHierarchy)
             {
-                bullet.SetActive(true);
                 return bullet;
             }
         }
@@ -99,28 +101,49 @@ public class Gun : MonoBehaviour
 
     private void FireSemiAuto(GameObject bullet)
     {
-        if (canFire)
+        if (hasAmmo)
         {
             bullet.GetComponent<BulletAndShellBehavior>().Fire();
+            currentAmmoCount--;
         }
     }
 
     private IEnumerator FireFullAuto(GameObject bullet)
     {
-        while (canFire)
-        {
-            bullet.GetComponent<BulletAndShellBehavior>().Fire();
+        // Fire a bullet
+        if (isDelaying)
+        { yield break; }
 
-            // Calculate the delay between shots based on shotPerMinute
-            float delayBetweenShots = 60f / gunData.shotPerMinute;
-            yield return new WaitForSeconds(delayBetweenShots);
-        }
+        bullet.GetComponent<BulletAndShellBehavior>().Fire();
+        currentAmmoCount--;
+        isDelaying = true;
+        // Calculate the delay between shots based on shotPerMinute
+        float delayBetweenShots = 60f / gunData.shotPerMinute;
+        yield return new WaitForSeconds(delayBetweenShots);
+        isDelaying = false;
+
     }
+
 
     public IEnumerator Reload()
     {
+        // Check if the gun is already reloading
+        if (isReloading)
+        {
+            yield break; // Exit the coroutine if already reloading
+        }
+
+        // Set reloading flag to true
+        isReloading = true;
+
+        // Perform the reload process
         yield return new WaitForSeconds(gunData.reloadTime);
+
+        // Reset ammo count and set hasAmmo flag to true
         currentAmmoCount = gunData.ammoCapacity;
-        canFire = true;
+        hasAmmo = true;
+
+        // Reset the reloading flag
+        isReloading = false;
     }
 }
