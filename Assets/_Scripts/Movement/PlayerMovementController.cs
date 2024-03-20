@@ -6,17 +6,18 @@ public class PlayerMovementController : MonoBehaviour
 {
     private Movement PlayerMovement;
 
-    private Rigidbody2D leftTrack;
+    public float horsepower = 50;
 
+    private Rigidbody2D leftTrack;
     private Rigidbody2D rightTrack;
 
-    private float forwardDirection;
-    private float backwardDirection;
     private Vector2 moveDirection;
+
+
     void Start()
     {
         Initializetracks();
-        PlayerMovement = new Movement(leftTrack, rightTrack);
+        PlayerMovement = new Movement(leftTrack, rightTrack, horsepower);
     }
 
     void FixedUpdate()
@@ -28,8 +29,6 @@ public class PlayerMovementController : MonoBehaviour
     public void MovePlayer(InputAction.CallbackContext context)
     {
         moveDirection = context.ReadValue<Vector2>();
-
-        Debug.Log(moveDirection);
     }
 
     private void Initializetracks()
@@ -37,6 +36,17 @@ public class PlayerMovementController : MonoBehaviour
         leftTrack = transform.Find("Left Track").GetComponent<Rigidbody2D>();
         rightTrack = transform.Find("Right Track").GetComponent<Rigidbody2D>();
     }
+
+    //public float GetSpeedKMH()
+    //{
+    //    // Calculate the speed in meters per second (m/s)
+    //    float speedMS = ;
+
+    //    // Convert speed from meters per second (m/s) to kilometers per hour (km/h)
+    //    float speedKMH = speedMS * 3.6f; // 1 m/s = 3.6 km/h
+
+    //    return speedKMH;
+    //}
 
 }
 

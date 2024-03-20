@@ -11,7 +11,7 @@ public class CameraController : MonoBehaviour
     private Vector2 mousePosition = Vector2.zero;
     private void Start()
     {
-        playerTank = FindObjectOfType<PlayerStatus>().gameObject;
+        playerTank = GameObject.Find("Player Tank");
         if (playerTank == null)
         {
             Debug.LogError("Player tank reference is not set in the CameraController script.");

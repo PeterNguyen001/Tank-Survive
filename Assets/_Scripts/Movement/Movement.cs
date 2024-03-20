@@ -3,18 +3,23 @@ using UnityEngine;
 public class Movement
 {
     private Rigidbody2D playerRigidBody;
-    private float forwardSpeed = 30;
-    private float backwardSpeed = 15;
-    private float rotationSpeed = 10;
+    private float forwardSpeed;
+    private float backwardSpeed;
+    private float rotationSpeed;
 
 
     private Rigidbody2D leftTrackRB;
     private Rigidbody2D rightTrackRB;
-    public Movement(Rigidbody2D lTrack, Rigidbody2D rTrack)
+    public Movement(Rigidbody2D lTrack, Rigidbody2D rTrack, float horsepower)
     {
         //playerRigidBody = rb;
         leftTrackRB = lTrack;
         rightTrackRB = rTrack;
+
+        forwardSpeed = horsepower;
+        backwardSpeed = horsepower/2;
+        rotationSpeed = horsepower/3;
+
     }
 
     public void MoveTankForward()
@@ -121,6 +126,8 @@ public class Movement
         MoveLeftTrackBackWard(backwardSpeed);
         MoveRightTrackBackWard(rotationSpeed);
     }
+
+
 }
 
 public class MoveType
