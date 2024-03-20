@@ -35,7 +35,6 @@ public class BulletAndShellBehavior : MonoBehaviour
 
     public void Fire()
     {
-        Debug.Log("Fire");
         gameObject.SetActive(true);
     }
 

@@ -69,7 +69,7 @@ public class AIFootMovementController : MonoBehaviour
         Gizmos.color = Color.yellow;
 
         // Calculate the start and end angles of the detection cone
-        float startAngle = -detectionAngle * 0.5f;
+        float startAngle = -detectionAngle * 0.5f ;
         float endAngle = detectionAngle * 0.5f;
 
         // Calculate the direction of the detection cone

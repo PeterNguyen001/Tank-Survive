@@ -2,17 +2,17 @@ using UnityEngine;
 
 public class Movement
 {
-    private Rigidbody2D playerRigidBody;
+    
     private float forwardSpeed;
     private float backwardSpeed;
     private float rotationSpeed;
 
-
+    private Rigidbody2D chassisRB;
     private Rigidbody2D leftTrackRB;
     private Rigidbody2D rightTrackRB;
-    public Movement(Rigidbody2D lTrack, Rigidbody2D rTrack, float horsepower)
+    public Movement(Rigidbody2D chassis, Rigidbody2D lTrack, Rigidbody2D rTrack, float horsepower)
     {
-        //playerRigidBody = rb;
+        chassisRB = chassis;
         leftTrackRB = lTrack;
         rightTrackRB = rTrack;
 
@@ -44,6 +44,8 @@ public class Movement
         else if (moveDirection == MoveType.MoveForwardRight)  { MoveTankForwardRight(); }
         else if (moveDirection == MoveType.MoveBackwardLeft)  { MoveTankBackwardLeft(); }
         else if (moveDirection == MoveType.MoveBackwardRight) { MoveTankBackwardRight(); }
+
+        else if (moveDirection == MoveType.Brake ) { BrakeTank(); }
     }
 
     public void SetMoveSpeed(float speed)
@@ -60,8 +62,8 @@ public class Movement
     {
         if (move)
         {
-            playerRigidBody.velocity = Vector2.zero;
-            playerRigidBody.angularVelocity = 0f;
+            chassisRB.velocity = Vector2.zero;
+            chassisRB.angularVelocity = 0f;
         }
     }
 
@@ -111,7 +113,6 @@ public class Movement
 
     public void MoveTankForwardRight() 
     {
-        Debug.Log("fr");
         MoveLeftTrackForward(forwardSpeed);
         MoveRightTrackForward(rotationSpeed);
     }
@@ -127,7 +128,20 @@ public class Movement
         MoveRightTrackBackWard(rotationSpeed);
     }
 
+    public void BrakeTank()
+    {
 
+        if (chassisRB.velocity.magnitude > 0.2f)
+        {
+            // Calculate the opposite force based on the current velocity of the tracks
+            Vector2 oppositeForceLeft = -leftTrackRB.velocity.normalized * backwardSpeed * 2f;
+            Vector2 oppositeForceRight = -rightTrackRB.velocity.normalized * backwardSpeed * 2f;
+
+            // Apply the opposite force to slow down the tank
+            leftTrackRB.AddForce(oppositeForceLeft, ForceMode2D.Force);
+            rightTrackRB.AddForce(oppositeForceRight, ForceMode2D.Force);
+        }
+    }
 }
 
 public class MoveType
@@ -141,6 +155,8 @@ public class MoveType
     public static Vector2 MoveForwardLeft  = new Vector2(-1, 1);
     public static Vector2 MoveForwardRight = new Vector2(1 , 1);
 
-    public static Vector2 MoveBackwardLeft = new  Vector2(-1, -1);
-    public static Vector2 MoveBackwardRight = new Vector2(1 , -1);
+    public static Vector2 MoveBackwardLeft  = new  Vector2(-1, -1);
+    public static Vector2 MoveBackwardRight = new  Vector2(1 , -1);
+
+    public static Vector2 Brake = new Vector2(0,0);
 }

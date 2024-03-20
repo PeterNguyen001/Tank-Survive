@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class GunRotation
 {
-    private float maxRotationAngle = 30f;
-    private float rotationSpeed = 5f;
+    public float maxRotationAngle = 30f;
+    public float rotationSpeed = 5f;
 
-    private float localInitialAngle;
+    public float localInitialAngle;
 
-    private Transform guntransform;
+    public Transform guntransform;
 
     public GunRotation(Gun gun)
     { 
@@ -17,10 +17,6 @@ public class GunRotation
         // Calculate the local initial angle relative to the turret's rotation
         localInitialAngle = guntransform.localEulerAngles.z;
     }
-    public void Start()
-    {
-
-    }
 
     float GetTankAngle()
     {
@@ -28,16 +24,6 @@ public class GunRotation
         float tankRotation = guntransform.parent.eulerAngles.z % 360f;
 
         return tankRotation;
-    }
-
-    void Update()
-    {
-        // Get the mouse position in world coordinates
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mousePosition.z = 0f;
-
-        // Calculate the direction from the turret to the mouse
-        GunLookAt(mousePosition);
     }
 
     public void GunLookAt(Vector3 positionToLookAt)
@@ -61,16 +47,5 @@ public class GunRotation
         float targetAngle = adjustedInitialAngle + angleDifference;
         Quaternion desiredRotation = Quaternion.Euler(0f, 0f, targetAngle);
         guntransform.rotation = Quaternion.RotateTowards(guntransform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);
-    }
-
-    void OnDrawGizmos()
-    {
-        // Draw a line in the Scene view to visualize the direction the turret is looking at
-        Gizmos.color = Color.red;
-
-        // Calculate the length of the line based on the distance to the mouse position
-        float lineLength = 10f; // Adjust the line length as needed
-
-        Gizmos.DrawLine(guntransform.position, guntransform.position + guntransform.right * lineLength);
     }
 }

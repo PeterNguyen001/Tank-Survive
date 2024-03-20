@@ -11,11 +11,13 @@ public class Gun : MonoBehaviour
     private AmmoLoader loader;
     private GameObject bulletPrefab; // Prefab for the bullet
     private List<GameObject> bulletPool = new List<GameObject>();
-    public int currentAmmoCount;
+    private int currentAmmoCount;
 
-    public bool hasAmmo = false;
-    bool isDelaying = false;
+    private bool hasAmmo = false;
+    private bool isDelaying = false;
     private bool isReloading = false;
+
+    public bool isAIControlled = false;
 
     private void Start()
     {
@@ -56,7 +58,6 @@ public class Gun : MonoBehaviour
     {
         if (isPullingTheTrigger)
         {
-            Debug.Log("gun");
             if (hasAmmo)
             {
                 GameObject bullet = GetBulletFromPool();
@@ -124,7 +125,6 @@ public class Gun : MonoBehaviour
 
     }
 
-
     public IEnumerator Reload()
     {
         // Check if the gun is already reloading
@@ -146,4 +146,7 @@ public class Gun : MonoBehaviour
         // Reset the reloading flag
         isReloading = false;
     }
+
+    public float GetLocalInitialAngle()
+    { return gunRotation.localInitialAngle; }
 }

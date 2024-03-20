@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
 {
-    private GameObject playerTank;
+    public GameObject playerTank;
     public float followSpeed = 5f;
     public float edgeMoveSpeed = 5f;
     public float edgeMoveThreshold = 50f;
@@ -11,7 +11,7 @@ public class CameraController : MonoBehaviour
     private Vector2 mousePosition = Vector2.zero;
     private void Start()
     {
-        playerTank = GameObject.Find("Player Tank");
+        playerTank = GameObject.Find("Player Tank Chasis");
         if (playerTank == null)
         {
             Debug.LogError("Player tank reference is not set in the CameraController script.");

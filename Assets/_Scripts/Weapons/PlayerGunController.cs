@@ -9,6 +9,8 @@ public class PlayerGunController : MonoBehaviour
     private Vector3 mousePosition;
     private bool isPullingTheTrigger;
 
+    public float detectionRange = 10f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,8 +31,11 @@ public class PlayerGunController : MonoBehaviour
         // Update each GunRotation
         foreach (var gun in guns)
         {
-            gun.AimGunAtMouse(mousePosition);
-            gun.FireGun(isPullingTheTrigger);
+            if (!gun.isAIControlled)
+            {
+                gun.AimGunAtMouse(mousePosition);
+                gun.FireGun(isPullingTheTrigger);
+            }
         }
     }
 
@@ -50,5 +55,23 @@ public class PlayerGunController : MonoBehaviour
     {
         mousePosition = Camera.main.ScreenToWorldPoint(context.ReadValue<Vector2>());
         mousePosition.z = 0f;
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        foreach (var gun in guns)
+        {
+            if (gun.gunData != null)
+            {
+                // Calculate the cone direction based on the maximum rotation angle
+                Vector3 coneDirection = Quaternion.Euler(0, 0, gun.GetLocalInitialAngle() +transform.eulerAngles.z % 360f) * Vector3.right;
+
+                // Draw the detection cone
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawRay(gun.transform.position, coneDirection * detectionRange);
+                Gizmos.DrawRay(gun.transform.position, Quaternion.Euler(0, 0, gun.gunData.maxRotationAngle) * coneDirection * detectionRange);
+                Gizmos.DrawRay(gun.transform.position, Quaternion.Euler(0, 0, -gun.gunData.maxRotationAngle) * coneDirection * detectionRange);
+            }
+        }
     }
 }
