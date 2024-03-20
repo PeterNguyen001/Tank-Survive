@@ -44,7 +44,7 @@ public class Gun : MonoBehaviour
             Debug.Log("Out of Ammo");
     }
 
-    public void AimGunAtMouse(Vector3 posToLookTo)
+    public void AimGunAt(Vector3 posToLookTo)
     {
         gunRotation.GunLookAt(posToLookTo);
     }

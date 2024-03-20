@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -29,12 +30,19 @@ public class PlayerGunController : MonoBehaviour
     void FixedUpdate()
     {
         // Update each GunRotation
-        foreach (var gun in guns)
+        foreach (Gun gun in guns)
         {
             if (!gun.isAIControlled)
             {
-                gun.AimGunAtMouse(mousePosition);
+                gun.AimGunAt(mousePosition);
                 gun.FireGun(isPullingTheTrigger);
+            }
+            else
+            {
+                if(DetectEnemy(gun) != null)
+                {
+                    gun.AimGunAt(DetectEnemy(gun).transform.position);
+                }
             }
         }
     }
@@ -55,6 +63,49 @@ public class PlayerGunController : MonoBehaviour
     {
         mousePosition = Camera.main.ScreenToWorldPoint(context.ReadValue<Vector2>());
         mousePosition.z = 0f;
+    }
+
+    public GameObject DetectEnemy(Gun gun)
+    {
+        Vector3 gunPosition = gun.transform.position;
+        float coneAngle = gun.gunData.maxRotationAngle * 2f; // Double the angle for the cone
+
+        // Calculate the cone direction based on the gun's rotation
+        Vector3 coneDirection = Quaternion.Euler(0, 0, gun.GetLocalInitialAngle() + transform.eulerAngles.z % 360f) * Vector3.right;
+
+        // Calculate the cone vertices
+        List<Vector2> coneVertices = new List<Vector2>();
+        coneVertices.Add(gunPosition);
+        for (int i = -1; i <= 1; i += 2)
+        {
+            float angle = coneAngle * 0.5f * i;
+            Vector3 vertexDirection = Quaternion.Euler(0, 0, angle) * coneDirection;
+            Vector2 vertex = gunPosition + vertexDirection * detectionRange;
+            coneVertices.Add(vertex);
+        }
+
+        // Check for enemy objects within the cone area
+        foreach (Vector2 vertex in coneVertices)
+        {
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(vertex, detectionRange);
+
+            foreach (Collider2D collider in colliders)
+            {
+                if (collider.CompareTag("Enemy"))
+                {
+                    // Check if the enemy is within the cone angle
+                    Vector2 toEnemy = collider.transform.position - gunPosition;
+                    float angleToEnemy = Vector2.Angle(coneDirection, toEnemy);
+                    if (Mathf.Abs(angleToEnemy) <= gun.gunData.maxRotationAngle)
+                    {
+                        Debug.Log("Enemy spotted");
+                        return collider.gameObject;
+                    }
+                }
+            }
+        }
+
+        return null; // Return null if no enemy is detected within the cone
     }
 
     private void OnDrawGizmosSelected()

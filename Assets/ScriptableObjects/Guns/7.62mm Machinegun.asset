@@ -15,9 +15,9 @@ MonoBehaviour:
   ammunitionData: {fileID: 11400000, guid: 7e874bc572b8f2e4098aaf23ead26c8c, type: 2}
   name: 7.62mm Machinegun
   isFullAuto: 1
-  ammoCapacity: 100
+  ammoCapacity: 200
   reloadTime: 3
-  shotPerMinute: 120
+  shotPerMinute: 400
   maxRotationAngle: 60
   rotationSpeed: 45
   gunSprite: {fileID: 0}
