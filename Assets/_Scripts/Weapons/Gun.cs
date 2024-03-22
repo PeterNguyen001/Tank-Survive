@@ -10,7 +10,7 @@ public class Gun : MonoBehaviour
 
     private AmmoLoader loader;
     private GameObject bulletPrefab; // Prefab for the bullet
-    private List<GameObject> bulletPool = new List<GameObject>();
+    private LinkedList<GameObject> bulletPool = new LinkedList<GameObject>();
     private int currentAmmoCount;
 
     private bool hasAmmo = false;
@@ -21,24 +21,21 @@ public class Gun : MonoBehaviour
 
     private void Start()
     {
-
+        loader = FindObjectOfType<AmmoLoader>();
         gunRotation = new GunRotation(this);
         FindGunlEnd();
     }
 
-    public void InitializeBulletPool()
+    public void InitializeBulletPool(GameObject prefab)
     {
-        loader = FindObjectOfType<AmmoLoader>();
-        bulletPrefab = loader.FindCorrectAmmunitionType(gunData.ammunitionData).GetbulletPrefab();
-        if (bulletPrefab != null)
+        if (prefab != null)
         {
             for (int i = 0; i < gunData.shotPerMinute + 1; i++)
             {
-                GameObject bullet = Instantiate(bulletPrefab);
+                GameObject bullet = Instantiate(prefab);
                 bullet.SetActive(false);
-                bulletPool.Add(bullet);
+                bulletPool.AddLast(bullet);
             }
-            loader.ReloadGun(this);
         }
         else
             Debug.Log("Out of Ammo");
@@ -49,9 +46,10 @@ public class Gun : MonoBehaviour
         gunRotation.GunLookAt(posToLookTo);
     }
 
-    public void FindGunlEnd()
+    public GameObject FindGunlEnd()
     {
         gunEnd = transform.Find("Gun End").gameObject;
+        return gunEnd;
     }
 
     public void FireGun(bool isPullingTheTrigger)
@@ -147,6 +145,7 @@ public class Gun : MonoBehaviour
         isReloading = false;
     }
 
-    public float GetLocalInitialAngle()
+    public float GetGunLocalInitialAngle()
     { return gunRotation.localInitialAngle; }
+
 }

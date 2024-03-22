@@ -39,10 +39,13 @@ public class PlayerGunController : MonoBehaviour
             }
             else
             {
-                if(DetectEnemy(gun) != null)
+                if(DetectNearestEnemyFromGun(gun) != null)
                 {
-                    gun.AimGunAt(DetectEnemy(gun).transform.position);
+                    Vector3 enemyPosition = DetectNearestEnemyFromGun(gun).transform.position;
+                    gun.AimGunAt(enemyPosition);
+                    gun.FireGun(IsEnemyOnGunSight(gun));
                 }
+                    
             }
         }
     }
@@ -65,15 +68,51 @@ public class PlayerGunController : MonoBehaviour
         mousePosition.z = 0f;
     }
 
-    public GameObject DetectEnemy(Gun gun)
+    public GameObject DetectNearestEnemyFromGun(Gun gun)
     {
+        GameObject nearestEnemy = null;
+        float nearestDistance = float.MaxValue;
+
         Vector3 gunPosition = gun.transform.position;
         float coneAngle = gun.gunData.maxRotationAngle * 2f; // Double the angle for the cone
 
         // Calculate the cone direction based on the gun's rotation
-        Vector3 coneDirection = Quaternion.Euler(0, 0, gun.GetLocalInitialAngle() + transform.eulerAngles.z % 360f) * Vector3.right;
+        Vector3 coneDirection = Quaternion.Euler(0, 0, gun.GetGunLocalInitialAngle() + transform.eulerAngles.z % 360f) * Vector3.right;
 
-        // Calculate the cone vertices
+        // Check for enemy objects within the cone area
+        foreach (Vector2 vertex in BuildDetectionCone(gunPosition, coneDirection, coneAngle))
+        {
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(vertex, detectionRange);
+
+            foreach (Collider2D collider in colliders)
+            {
+                if (collider.CompareTag("Enemy"))
+                {
+                    GameObject enemy = collider.gameObject;
+                    // Check if the enemy is within the cone angle
+                    Vector2 toEnemy = enemy.transform.position - gunPosition;
+                    float angleToEnemy = Vector2.Angle(coneDirection, toEnemy);
+                    if (Mathf.Abs(angleToEnemy) <= gun.gunData.maxRotationAngle)
+                    {
+                        // Calculate the distance to the enemy
+                        float distanceToEnemy = Vector2.Distance(gunPosition, enemy.transform.position);
+
+                        // Update nearest enemy if this enemy is closer
+                        if (distanceToEnemy < nearestDistance)
+                        {
+                            nearestEnemy = enemy;
+                            nearestDistance = distanceToEnemy;
+                        }
+                    }
+                }
+            }
+        }
+
+        return nearestEnemy;
+    }
+
+    private List<Vector2> BuildDetectionCone(Vector3 gunPosition, Vector3 coneDirection, float coneAngle)
+    {
         List<Vector2> coneVertices = new List<Vector2>();
         coneVertices.Add(gunPosition);
         for (int i = -1; i <= 1; i += 2)
@@ -83,29 +122,28 @@ public class PlayerGunController : MonoBehaviour
             Vector2 vertex = gunPosition + vertexDirection * detectionRange;
             coneVertices.Add(vertex);
         }
+        return coneVertices;
+    }
 
-        // Check for enemy objects within the cone area
-        foreach (Vector2 vertex in coneVertices)
+    private bool IsEnemyOnGunSight(Gun gun)
+    {
+        // Get the position and rotation of the gunEnd
+        Vector3 gunEndPosition = gun.FindGunlEnd().transform.position;
+        Quaternion gunRotation = gun.transform.rotation;
+
+        // Calculate the direction from the right side of the gunEnd
+        Vector3 rayDirection = gunRotation * Vector3.right;
+
+        // Cast a ray in the direction of the gun's rotation with the detection range
+        RaycastHit2D hit = Physics2D.Raycast(gunEndPosition, rayDirection, detectionRange);
+
+        // Check if the ray hits an enemy object
+        if (hit.collider != null && hit.collider.CompareTag("Enemy"))
         {
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(vertex, detectionRange);
-
-            foreach (Collider2D collider in colliders)
-            {
-                if (collider.CompareTag("Enemy"))
-                {
-                    // Check if the enemy is within the cone angle
-                    Vector2 toEnemy = collider.transform.position - gunPosition;
-                    float angleToEnemy = Vector2.Angle(coneDirection, toEnemy);
-                    if (Mathf.Abs(angleToEnemy) <= gun.gunData.maxRotationAngle)
-                    {
-                        Debug.Log("Enemy spotted");
-                        return collider.gameObject;
-                    }
-                }
-            }
+            return true;
         }
 
-        return null; // Return null if no enemy is detected within the cone
+        return false;
     }
 
     private void OnDrawGizmosSelected()
@@ -115,13 +153,23 @@ public class PlayerGunController : MonoBehaviour
             if (gun.gunData != null)
             {
                 // Calculate the cone direction based on the maximum rotation angle
-                Vector3 coneDirection = Quaternion.Euler(0, 0, gun.GetLocalInitialAngle() +transform.eulerAngles.z % 360f) * Vector3.right;
+                Vector3 coneDirection = Quaternion.Euler(0, 0, gun.GetGunLocalInitialAngle() +transform.eulerAngles.z % 360f) * Vector3.right;
 
                 // Draw the detection cone
                 Gizmos.color = Color.yellow;
                 Gizmos.DrawRay(gun.transform.position, coneDirection * detectionRange);
                 Gizmos.DrawRay(gun.transform.position, Quaternion.Euler(0, 0, gun.gunData.maxRotationAngle) * coneDirection * detectionRange);
                 Gizmos.DrawRay(gun.transform.position, Quaternion.Euler(0, 0, -gun.gunData.maxRotationAngle) * coneDirection * detectionRange);
+
+                Vector3 gunEndPosition = gun.FindGunlEnd().transform.position;
+                Quaternion gunRotation = gun.transform.rotation;
+
+                // Calculate the direction from the right side of the gunEnd
+                Vector3 lineDirection = gunRotation * Vector3.right;
+
+                // Draw the line from the gunEnd
+                Gizmos.color = Color.green;
+                Gizmos.DrawRay(gunEndPosition, lineDirection * detectionRange);
             }
         }
     }

@@ -51,11 +51,12 @@ public class AmmoLoader : MonoBehaviour
 
    public void InitializeGun()
     {
-        foreach (Transform gun in transform.GetComponentInChildren<Transform>())
+        foreach (Transform gunTrans in transform.GetComponentInChildren<Transform>())
         {
-
+            Gun gun = gunTrans.GetComponent<Gun>();
             m_Guns.Add(gun.GetComponent<Gun>());
-            gun.GetComponent<Gun>().InitializeBulletPool();
+            gun.GetComponent<Gun>().InitializeBulletPool(FindCorrectAmmunitionType(gun.gunData.ammunitionData).GetbulletPrefab());
+            ReloadGun(gun);
         }
     }
 }

@@ -17,7 +17,7 @@ MonoBehaviour:
   isFullAuto: 1
   ammoCapacity: 200
   reloadTime: 3
-  shotPerMinute: 400
+  shotPerMinute: 600
   maxRotationAngle: 60
   rotationSpeed: 45
   gunSprite: {fileID: 0}
