@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        UIStateMachine.Instance.TransitionToState("Main Menu");
+        UIStateMachine.Instance.TransitionToStateUsingName("Main Menu");
     }
 
     // Update is called once per frame

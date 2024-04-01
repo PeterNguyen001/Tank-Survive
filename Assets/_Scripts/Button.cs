@@ -21,6 +21,6 @@ public class Button : MonoBehaviour
 
     public void OnPress()
     {
-        UIStateMachine.Instance.TransitionToState(stateToTransitTo);
+        UIStateMachine.Instance.TransitionToStateUsingName(stateToTransitTo);
     }
 }

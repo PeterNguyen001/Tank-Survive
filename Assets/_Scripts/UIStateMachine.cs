@@ -6,7 +6,9 @@ public class UIStateMachine : MonoBehaviour
     private static UIStateMachine _instance;
     public static UIStateMachine Instance { get { return _instance; } }
     [SerializeField] private UIStateNode currentState;
-    private Stack<UIStateNode> stateStack;
+
+    private UIStateNode currentSubNode;
+    private Stack<UIStateNode> subNodeStack;
     private Dictionary<string, UIStateNode> stateMap;
 
     private void Awake()
@@ -24,37 +26,30 @@ public class UIStateMachine : MonoBehaviour
     private void InitializeStateMachine()
     {
         stateMap = new Dictionary<string, UIStateNode>();
-        stateStack = new Stack<UIStateNode>();
+        subNodeStack = new Stack<UIStateNode>();
 
         UIStateNode[] uiStateNodes = FindObjectsOfType<UIStateNode>();
 
         foreach (UIStateNode stateNode in uiStateNodes)
         {
             stateMap[stateNode.name] = stateNode;
-            stateNode.gameObject.SetActive(false); // Deactivate all UI state objects initially
+            stateNode.Deactivate(); // Deactivate all UI state objects initially
         }
 
         // Set initial state (the first UIStateNode found)
         if (uiStateNodes.Length > 0)
         {
             currentState = uiStateNodes[0];
-            currentState.gameObject.SetActive(true); // Activate the initial UI state object
+            currentState.Activate(); // Activate the initial UI state object
         }
     }
 
-    public void TransitionToState(string newStateName)
+    public void TransitionToStateUsingName(string newStateName)
     {
         if (stateMap.ContainsKey(newStateName))
         {
             UIStateNode nextState = stateMap[newStateName];
-            if (currentState != null)
-            {
-                // Deactivate the current UI state object
-                currentState.gameObject.SetActive(false);
-            }
-            currentState = nextState;
-            // Activate the new UI state object
-            currentState.gameObject.SetActive(true);
+            TransitionToStateUsingObject(nextState);
         }
         else
         {
@@ -62,34 +57,60 @@ public class UIStateMachine : MonoBehaviour
         }
     }
 
-    public void PushSubstate(string substateName)
+    public void TransitionToStateUsingObject(UIStateNode nextState)
     {
         if (currentState != null)
         {
-            foreach (UIStateNode subNode in currentState.subStates)
+            // Deactivate the current UI state object
+            currentState.Deactivate();
+        }
+
+        currentState = nextState;
+       
+
+        // Activate the new UI state object
+        currentState.gameObject.SetActive(true);
+        if (currentState.subStates != null && currentState.subStates.Count > 0)
+        {
+            subNodeStack.Clear();
+            // Automatically push the first substate if available
+            PushSubstate();
+        }
+    }
+
+    public void PushSubstate()
+    {
+        if (currentState != null && currentState.subStates != null && currentState.subStates.Count > 0)
+        {
+            int currentSubNodeIndex = subNodeStack.Count;
+            if (currentSubNodeIndex < currentState.subStates.Count)
             {
-                if (subNode.name == substateName)
+                if (currentSubNode != null)
                 {
-                    stateStack.Push(currentState);
-                    currentState = subNode;
-                    // Activate the new substate object
-                    currentState.gameObject.SetActive(true);
-                    return;
+                    currentSubNode.Deactivate();
                 }
+
+
+               
+                currentSubNode = currentState.subStates[currentSubNodeIndex++];
+                subNodeStack.Push(currentSubNode);
+                currentSubNode = subNodeStack.Peek();
+                currentSubNode.Activate();
             }
         }
     }
 
     public void PopSubstate()
     {
-        if (stateStack.Count > 0)
+        if (subNodeStack.Count > 1 )
         {
-            UIStateNode prevState = stateStack.Pop();
+            subNodeStack.Pop();
             // Deactivate the current substate object
-            currentState.uiState.SetActive(false);
-            currentState = prevState;
+            currentSubNode.Deactivate();
+            currentSubNode = subNodeStack.Peek();
             // Activate the previous state object
-            currentState.uiState.SetActive(true);
+            currentSubNode.Activate();
         }
     }
+
 }
