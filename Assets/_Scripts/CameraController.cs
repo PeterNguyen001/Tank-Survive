@@ -14,7 +14,7 @@ public class CameraController : MonoBehaviour
         playerTank = GameObject.Find("Player Tank Chasis");
         if (playerTank == null)
         {
-            Debug.LogError("Player tank reference is not set in the CameraController script.");
+            //Debug.LogError("Player tank reference is not set in the CameraController script.");
             enabled = false;
         }
     }
