@@ -6,5 +6,6 @@ public enum InventoryType
 {
     Crafting,
     Chest,
-    Personal
+    Personal,
+    Equiping
 }

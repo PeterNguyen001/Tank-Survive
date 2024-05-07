@@ -9,7 +9,8 @@ using UnityEngine.UI;
 // Manages individual item slots in the inventory, including interactions and UI updates
 public class ItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public Item item = null; // The item in the slot
+    [SerializeField]
+    private Item item = null; // The item in the slot
     [SerializeField]
     private TextMeshProUGUI descriptionText; // Text field for the item's description
     [SerializeField]
@@ -66,7 +67,7 @@ public class ItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         }
     }
 
-    // Uses the item in the slot or processes the item click
+    //Uses the item in the slot or processes the item click
     public void UseItemInSlot()
     {
         if (Input.GetKey(KeyCode.LeftShift))
@@ -139,5 +140,10 @@ public class ItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         {
             // Add right-click functionality here if needed
         }
+    }
+
+public Item GetItem()
+    {
+            return item;
     }
 }

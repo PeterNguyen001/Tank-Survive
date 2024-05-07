@@ -12,7 +12,6 @@ public class FollowMouse : MonoBehaviour
         mousePosition.x += xSpacing;
         mousePosition.y += ySpacing;    
 
-        // Convert the screen position to a world position
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(mousePosition);
 
         // Set the object's position to the mouse's world position
