@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public class ItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField]
-    private Item item = null; // The item in the slot
+    public Item item = null; // The item in the slot
     [SerializeField]
     private TextMeshProUGUI descriptionText; // Text field for the item's description
     [SerializeField]
