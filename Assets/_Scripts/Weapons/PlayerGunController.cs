@@ -15,9 +15,9 @@ public class PlayerGunController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        foreach (Transform child in transform)
+        foreach (Transform turretAndGunPort in transform)
         {
-            Gun gun = child.gameObject.GetComponent<Gun>();
+            Gun gun = turretAndGunPort.GetComponentInChildren<Gun>();
 
             if (gun != null)
             {

@@ -5,6 +5,7 @@ using UnityEngine;
 public class Gun : MonoBehaviour
 {
     public GunData gunData;
+    public TurretAndGunPortData turretAndPortData;
     private GunRotation gunRotation;
     private GameObject gunEnd;
 

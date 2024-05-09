@@ -11,7 +11,7 @@ public class AmmoLoader : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        m_AmmoContainers.Add(new AmmoContainer(bulletPrefab1, 5));
+        m_AmmoContainers.Add(new AmmoContainer(bulletPrefab1, 20));
         m_AmmoContainers.Add(new AmmoContainer(bulletPrefab2, 6));
         InitializeGun();
     }
@@ -51,10 +51,10 @@ public class AmmoLoader : MonoBehaviour
 
    public void InitializeGun()
     {
-        foreach (Transform gunTrans in transform.GetComponentInChildren<Transform>())
+        foreach (Transform turretAndGunPort in transform)
         {
-            Gun gun = gunTrans.GetComponent<Gun>();
-            m_Guns.Add(gun.GetComponent<Gun>());
+            Gun gun = turretAndGunPort.GetComponentInChildren<Gun>();
+            m_Guns.Add(gun.GetComponentInChildren<Gun>());
             gun.GetComponent<Gun>().InitializeBulletPool(FindCorrectAmmunitionType(gun.gunData.ammunitionData).GetbulletPrefab());
             ReloadGun(gun);
         }

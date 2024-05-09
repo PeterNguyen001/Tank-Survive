@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 287fa976ed3ac3c43b081c3cb819b6d6, type: 3}
-  m_Name: 57mm cannon
+  m_Name: 75mm cannon
   m_EditorClassIdentifier: 
-  ammunitionData: {fileID: 11400000, guid: d6acfdb29aad4314e96dea8679e46f37, type: 2}
+  ammunitionData: {fileID: 11400000, guid: 883b8527c6de3b6468f5ce899dd73473, type: 2}
   name: 57mm cannon
   isFullAuto: 0
   ammoCapacity: 1
-  reloadTime: 3
+  reloadTime: 5
   shotPerMinute: 0
   maxRotationAngle: 45
   rotationSpeed: 10

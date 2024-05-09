@@ -10,10 +10,10 @@ public class GunRotation
     public Transform guntransform;
 
     public GunRotation(Gun gun)
-    { 
-        this.guntransform = gun.transform;
-        maxRotationAngle = gun.gunData.maxRotationAngle;
-        rotationSpeed = gun.gunData.rotationSpeed;
+    {
+        this.guntransform = gun.transform.parent;
+        maxRotationAngle = gun.turretAndPortData.maxRotationAngle;
+        rotationSpeed = gun.turretAndPortData.rotationSpeed;
         // Calculate the local initial angle relative to the turret's rotation
         localInitialAngle = guntransform.localEulerAngles.z;
     }

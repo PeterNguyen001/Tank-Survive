@@ -5,7 +5,6 @@ public class GunData : ScriptableObject
 {
     public AmmunitionData ammunitionData;
     public new string name; // You can use the 'name' field from ScriptableObject
-    public bool hasTurret;
     public bool isFullAuto;
     public int ammoCapacity = 1;
     public float reloadTime = 2;
