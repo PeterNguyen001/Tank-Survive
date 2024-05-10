@@ -5,7 +5,7 @@ using UnityEngine;
 public class AmmoLoader : MonoBehaviour
 {
     public List<AmmoContainer> m_AmmoContainers = new List<AmmoContainer>();
-    public List<Gun> m_Guns = new List<Gun>();
+    public LinkedList<Gun> m_Guns = new LinkedList<Gun>();
     public GameObject bulletPrefab1;
     public GameObject bulletPrefab2;
     // Start is called before the first frame update
@@ -53,10 +53,13 @@ public class AmmoLoader : MonoBehaviour
     {
         foreach (Transform turretAndGunPort in transform)
         {
-            Gun gun = turretAndGunPort.GetComponentInChildren<Gun>();
-            m_Guns.Add(gun.GetComponentInChildren<Gun>());
-            gun.GetComponent<Gun>().InitializeBulletPool(FindCorrectAmmunitionType(gun.gunData.ammunitionData).GetbulletPrefab());
-            ReloadGun(gun);
+            foreach (Transform gunTransfrom in turretAndGunPort)
+            {
+                Gun gun = gunTransfrom.GetComponent<Gun>();
+                m_Guns.AddLast(gun);
+                gun.InitializeBulletPool(FindCorrectAmmunitionType(gun.gunData.ammunitionData).GetbulletPrefab());
+                ReloadGun(gun);
+            }
         }
     }
 }

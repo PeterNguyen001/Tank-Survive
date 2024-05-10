@@ -17,10 +17,9 @@ public class PlayerGunController : MonoBehaviour
     {
         foreach (Transform turretAndGunPort in transform)
         {
-            Gun gun = turretAndGunPort.GetComponentInChildren<Gun>();
-
-            if (gun != null)
+            foreach (Transform gunTransfrom in turretAndGunPort)
             {
+                Gun gun = gunTransfrom.GetComponent<Gun>();
                 guns.AddLast(gun);
             }
         }
