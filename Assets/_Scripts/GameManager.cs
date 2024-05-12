@@ -15,4 +15,14 @@ public class GameManager : MonoBehaviour
     {
         
     }
+
+    public void BuildTank()
+    {
+        //RectTransform EquipmentSlots = gameObject.get
+        //Debug.Log(EquipmentSlots.name);
+        //foreach (ItemSlot slot in EquipmentSlots) 
+        //{
+        //    Debug.Log(slot.name);
+        //}
+    }
 }

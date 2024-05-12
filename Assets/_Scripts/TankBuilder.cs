@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TankBuilder : MonoBehaviour
+public class TankBuilder
 {
 
 
@@ -16,5 +16,10 @@ public class TankBuilder : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void BuildTankPart(Item tankPart)
+    {
+        Debug.Log(tankPart.name);
     }
 }

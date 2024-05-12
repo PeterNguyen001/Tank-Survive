@@ -15,6 +15,7 @@ public class PlayerGunController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        guns.Clear();
         foreach (Transform turretAndGunPort in transform)
         {
             foreach (Transform gunTransfrom in turretAndGunPort)

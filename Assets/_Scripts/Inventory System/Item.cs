@@ -16,16 +16,11 @@ public class Item : ScriptableObject //Extending SO allows us to have an object 
     public string ID = " ";// use for crafting
     public List<Item> recipe;
     public int recipeMutiplier= 1;// a mutiplier apply to the ammount of this item you get from crafting
-    public ScriptableObject tankPart;
 
     public void Use()
     {
         Debug.Log("This is the Use() function of item: " + name + " - " + description);
     }
 
-    public void Init()
-    {
-        icon = tankPart.GetComponent<Sprite>();
-    }
 
 }

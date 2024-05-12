@@ -56,7 +56,6 @@ public class AmmoLoader : MonoBehaviour
             foreach (Transform gunTransfrom in turretAndGunPort)
             {
                 Gun gun = gunTransfrom.GetComponent<Gun>();
-                m_Guns.AddLast(gun);
                 gun.InitializeBulletPool(FindCorrectAmmunitionType(gun.gunData.ammunitionData).GetbulletPrefab());
                 ReloadGun(gun);
             }
