@@ -26,7 +26,7 @@ public class InventoryManager : MonoBehaviour
     public void TransferItemToInventory(ItemSlot sourceSlot, ItemSlot targetSlot, ClickType clickType)
     {
         // Set the current source and target inventories based on the slots
-        SetInventory(sourceSlot, targetSlot);
+        //SetInventory(sourceSlot, targetSlot);
 
         // Check if the source slot has an item to transfer
         if (sourceSlot.item != null)
@@ -62,19 +62,18 @@ public class InventoryManager : MonoBehaviour
                 // Assign the item from the source to the target slot
                 targetSlot.item = sourceSlot.item;
 
-                // Special handling for a result slot in crafting
-                if (sourceSlot.transform.name == "ResultSlot")
-                {
+                //// Special handling for a result slot in crafting
+                //if (sourceSlot.transform.name == "ResultSlot")
+                //{
 
-                    targetSlot.Count += sourceSlot.Count;
-                    sourceSlot.Count = 0;                    
-                }
-                else
-                {
+                    //    targetSlot.Count += sourceSlot.Count;
+                    //    sourceSlot.Count = 0;                    
+                    //}
+                    //
                     // Adjust the item counts for both slots
                     targetSlot.Count += transferAmount;
                     sourceSlot.Count -= transferAmount;
-                }
+                
             }
             // Transfer logic when the target slot has the same item type
             else if (sourceSlot.item == targetSlot.item)
@@ -83,6 +82,7 @@ public class InventoryManager : MonoBehaviour
                 targetSlot.Count += transferAmount;
                 sourceSlot.Count -= transferAmount;
             }
+
         }
 
     }

@@ -1,23 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TankBuilder
 {
-    LinkedList<GameObject> partsToBuildList = new LinkedList<GameObject>();
+    List<GameObject> partsToBuildList = new List<GameObject>();
 
     // Start is called before the first frame update
     public void Init()
     {
-        GameObject chassis = GameObject.Find("Player Tank Chassis");
-        partsToBuildList.AddLast(GameObject.Find("Player Tank Chassis"));
+        partsToBuildList = GameObject.FindGameObjectsWithTag("Player Tank Part").ToList<GameObject>();
 
-        GameObject turretsAndGuns = GameObject.Find("Turrets and Guns");
-        foreach ( Transform turretsAndGunsToBuild in turretsAndGuns.transform)
+        foreach (GameObject part in partsToBuildList) 
         {
-            partsToBuildList.AddLast(turretsAndGunsToBuild.GetComponent<GameObject>());
-            Debug.Log(turretsAndGunsToBuild.name);
+            Debug.Log(part.name);
         }
+
+
     }
 
     // Update is called once per frame

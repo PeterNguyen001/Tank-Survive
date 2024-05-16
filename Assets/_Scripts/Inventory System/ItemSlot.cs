@@ -147,3 +147,11 @@ public Item GetItem()
             return item;
     }
 }
+
+public enum SlotType
+{ 
+   Inventory,
+   Shop,
+   EquipmentSlot
+}
+
