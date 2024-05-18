@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerGunController : MonoBehaviour
 {
 
-    private LinkedList<Gun> guns = new LinkedList<Gun>();
+    private LinkedList<Gun> gunList = new LinkedList<Gun>();
     private Vector3 mousePosition;
     private bool isPullingTheTrigger;
 
@@ -15,22 +15,18 @@ public class PlayerGunController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        guns.Clear();
-        foreach (Transform turretAndGunPort in transform)
-        {
-            foreach (Transform gunTransfrom in turretAndGunPort)
-            {
-                Gun gun = gunTransfrom.GetComponent<Gun>();
-                guns.AddLast(gun);
-            }
-        }
+        SetupGuns();
     }
 
+    public void SetupGuns()
+    {
+        gunList = TankStatus.Instance.GetListOfGun();
+    }
     // Update is called once per frame
     void FixedUpdate()
     {
         // Update each GunRotation
-        foreach (Gun gun in guns)
+        foreach (Gun gun in gunList)
         {
             if (!gun.isAIControlled)
             {
@@ -148,7 +144,7 @@ public class PlayerGunController : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        foreach (var gun in guns)
+        foreach (var gun in gunList)
         {
             if (gun.gunData != null)
             {

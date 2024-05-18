@@ -1316,6 +1316,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &214558655
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 214558656}
+  m_Layer: 10
+  m_Name: Turret 1 Slot
+  m_TagString: Player Tank Part Slot
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &214558656
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 214558655}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 362559370}
+  m_Father: {fileID: 1583010574}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &228527734
 GameObject:
   m_ObjectHideFlags: 0
@@ -1512,8 +1544,8 @@ GameObject:
   - component: {fileID: 362559370}
   - component: {fileID: 362559371}
   m_Layer: 10
-  m_Name: Turret 1 Slot
-  m_TagString: Player Tank Part
+  m_Name: Default Turret
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1526,14 +1558,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 362559369}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1846826179}
   - {fileID: 1901399501}
-  m_Father: {fileID: 1583010574}
+  m_Father: {fileID: 214558656}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &362559371
 SpriteRenderer:
@@ -5631,8 +5663,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1493684779}
   m_Layer: 10
-  m_Name: Mahcinegun Port
-  m_TagString: Player Tank Part
+  m_Name: Mahcinegun Port Slot
+  m_TagString: Player Tank Part Slot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5964,7 +5996,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 362559370}
+  - {fileID: 214558656}
   - {fileID: 1493684779}
   m_Father: {fileID: 106392446}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

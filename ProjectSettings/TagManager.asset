@@ -7,7 +7,7 @@ TagManager:
   - Gun
   - Enemy
   - Player Tank Part
-  - Equipment Slots
+  - Player Tank Part Slot
   layers:
   - Default
   - TransparentFX

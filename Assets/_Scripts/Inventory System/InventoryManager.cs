@@ -52,10 +52,10 @@ public class InventoryManager : MonoBehaviour
             }
 
             // Prevent transferring items into the ResultSlot
-            if (targetSlot.transform.name == "ResultSlot")
-            {
-                return; // Exit the method without performing any transfer
-            }
+            //if (targetSlot.transform.name == "ResultSlot")
+            //{
+            //    return; // Exit the method without performing any transfer
+            //}
 
             // Transfer logic when the target slot is empty
             if (targetSlot.item == null)

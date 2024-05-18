@@ -5,7 +5,7 @@ using UnityEngine;
 public class AmmoLoader : MonoBehaviour
 {
     public List<AmmoContainer> m_AmmoContainers = new List<AmmoContainer>();
-    public LinkedList<Gun> m_Guns = new LinkedList<Gun>();
+    public LinkedList<Gun> gunList = new LinkedList<Gun>();
     public GameObject bulletPrefab1;
     public GameObject bulletPrefab2;
     // Start is called before the first frame update
@@ -13,7 +13,7 @@ public class AmmoLoader : MonoBehaviour
     {
         m_AmmoContainers.Add(new AmmoContainer(bulletPrefab1, 20));
         m_AmmoContainers.Add(new AmmoContainer(bulletPrefab2, 6));
-        InitializeGun();
+        SetupGuns();
     }
 
     // Update is called once per frame
@@ -49,17 +49,9 @@ public class AmmoLoader : MonoBehaviour
         return null;
     }
 
-   public void InitializeGun()
+   public void SetupGuns()
     {
-        foreach (Transform turretAndGunPort in transform)
-        {
-            foreach (Transform gunTransfrom in turretAndGunPort)
-            {
-                Gun gun = gunTransfrom.GetComponent<Gun>();
-                gun.InitializeBulletPool(FindCorrectAmmunitionType(gun.gunData.ammunitionData).GetbulletPrefab());
-                ReloadGun(gun);
-            }
-        }
+        gunList = TankStatus.Instance.GetListOfGun();
     }
 }
 
