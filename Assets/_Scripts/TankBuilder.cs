@@ -29,14 +29,16 @@ public class TankBuilder
 
     public void BuildTankPart(ItemSlot slot)
     {
-        foreach (GameObject part in partsToBuildList)
+        // Create a copy of the partsToBuildList to iterate over
+        List<GameObject> partsToBuildListCopy = new List<GameObject>(partsToBuildList);
+
+        foreach (GameObject part in partsToBuildListCopy)
         {
             if (part.name == slot.name)
             {
                 GameObject newTankPart = GameObject.Find(slot.item.name);
-                if (newTankPart != null) 
+                if (newTankPart != null)
                 {
-
                     Vector3 position = part.transform.position;
                     Quaternion rotation = part.transform.rotation;
                     Transform parent = part.transform.parent;
@@ -44,13 +46,12 @@ public class TankBuilder
 
                     newTankPart.transform.parent = parent;
 
+                    // Modify the original list
                     partsToBuildList.Remove(part);
                     partsToBuildList.Add(newTankPart);
                     Object.Destroy(part);
-
                 }
             }
         }
-        //BUG create a new list for the for each
     }
 }
