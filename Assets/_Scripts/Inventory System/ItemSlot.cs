@@ -17,6 +17,8 @@ public class ItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     private TextMeshProUGUI nameText; // Text field for the item's name
     private ClickType clickType; // Type of click interaction (e.g., normal, shift-click, ctrl-click)
 
+    public SlotType slotType;
+
     [SerializeField]
     private int count = 0; // The number of items in the slot
     public int Count

@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
         tankBuilder = new TankBuilder();
         tankBuilder.Init();
         UIStateMachine.Instance.TransitionToStateUsingName("Main Menu");
+        DisablePlayerController();
     }
 
     // Update is called once per frame
@@ -38,7 +39,7 @@ public class GameManager : MonoBehaviour
 
     public void BuildTank()
     {
-        GameObject EquipmentSlots = GameObject.Find("Equipment Slots");
+        GameObject EquipmentSlots = GameObject.FindGameObjectWithTag("Equipment Slots");
 
         foreach (Transform slotTransform in EquipmentSlots.transform)
         {
@@ -49,6 +50,9 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
+    public TankBuilder GetTankBuilder()
+    { return tankBuilder; }
 
     public void EnablePlayerController()
     {

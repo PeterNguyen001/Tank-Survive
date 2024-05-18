@@ -149,13 +149,13 @@ Transform:
   m_GameObject: {fileID: 18023852}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.01, y: -1.799, z: 0}
+  m_LocalPosition: {x: -960.01, y: -546.9, z: 0}
   m_LocalScale: {x: 1.2682, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 228527735}
   - {fileID: 582650023}
-  m_Father: {fileID: 2130047250}
+  m_Father: {fileID: 1030735759}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &18023854
 SpriteRenderer:
@@ -1513,7 +1513,7 @@ GameObject:
   - component: {fileID: 362559371}
   m_Layer: 10
   m_Name: Turret 1 Slot
-  m_TagString: Untagged
+  m_TagString: Player Tank Part
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3215,6 +3215,8 @@ RectTransform:
   - {fileID: 1622727155}
   - {fileID: 1010460516}
   - {fileID: 1744402267}
+  - {fileID: 1138338715}
+  - {fileID: 18023853}
   m_Father: {fileID: 798821974}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -3564,13 +3566,13 @@ Transform:
   m_GameObject: {fileID: 1138338714}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.038, y: -1.083, z: 0}
+  m_LocalPosition: {x: -960.038, y: -546.9, z: 0}
   m_LocalScale: {x: 1.2682, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1727200023}
   - {fileID: 181206181}
-  m_Father: {fileID: 2130047250}
+  m_Father: {fileID: 1030735759}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1138338716
 SpriteRenderer:
@@ -5630,7 +5632,7 @@ GameObject:
   - component: {fileID: 1493684779}
   m_Layer: 10
   m_Name: Mahcinegun Port
-  m_TagString: Untagged
+  m_TagString: Player Tank Part
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5667,7 +5669,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1503617361
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5689,7 +5691,7 @@ Transform:
   m_GameObject: {fileID: 1503617360}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -960, y: -540, z: 0}
+  m_LocalPosition: {x: -960, y: -541.02, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5944,7 +5946,7 @@ GameObject:
   - component: {fileID: 1583010575}
   m_Layer: 10
   m_Name: Turrets and Guns
-  m_TagString: Player Tank Part
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6668,6 +6670,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1744402266}
   m_CullTransparentMesh: 1
+--- !u!114 &1752428873 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8747622792264730910, guid: 38a198d404e974547bc9c3cb9de695bf, type: 3}
+  m_PrefabInstance: {fileID: 1321618590}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1756873152 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1176985441586670621, guid: 38a198d404e974547bc9c3cb9de695bf, type: 3}
+  m_PrefabInstance: {fileID: 1321618590}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1760143898
 GameObject:
   m_ObjectHideFlags: 0
@@ -7436,8 +7460,6 @@ Transform:
   - {fileID: 1371580219}
   - {fileID: 1409580442}
   - {fileID: 619394802}
-  - {fileID: 1138338715}
-  - {fileID: 18023853}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2130047251
@@ -7546,6 +7568,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1030735759}
     m_Modifications:
+    - target: {fileID: 182907597124123685, guid: f52a68a624d6bc74d8298e4fdf94e35a, type: 3}
+      propertyPath: nameText
+      value: 
+      objectReference: {fileID: 1756873152}
+    - target: {fileID: 182907597124123685, guid: f52a68a624d6bc74d8298e4fdf94e35a, type: 3}
+      propertyPath: slotType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 182907597124123685, guid: f52a68a624d6bc74d8298e4fdf94e35a, type: 3}
+      propertyPath: descriptionText
+      value: 
+      objectReference: {fileID: 1752428873}
     - target: {fileID: 1874027464876899472, guid: f52a68a624d6bc74d8298e4fdf94e35a, type: 3}
       propertyPath: m_Name
       value: Equipment
@@ -7634,6 +7668,38 @@ PrefabInstance:
       propertyPath: m_Name
       value: Turret 1 Slot
       objectReference: {fileID: 0}
+    - target: {fileID: 4097742654741322851, guid: f52a68a624d6bc74d8298e4fdf94e35a, type: 3}
+      propertyPath: nameText
+      value: 
+      objectReference: {fileID: 1756873152}
+    - target: {fileID: 4097742654741322851, guid: f52a68a624d6bc74d8298e4fdf94e35a, type: 3}
+      propertyPath: descriptionText
+      value: 
+      objectReference: {fileID: 1752428873}
+    - target: {fileID: 7380128916598110364, guid: f52a68a624d6bc74d8298e4fdf94e35a, type: 3}
+      propertyPath: nameText
+      value: 
+      objectReference: {fileID: 1756873152}
+    - target: {fileID: 7380128916598110364, guid: f52a68a624d6bc74d8298e4fdf94e35a, type: 3}
+      propertyPath: descriptionText
+      value: 
+      objectReference: {fileID: 1752428873}
+    - target: {fileID: 8412975880741860819, guid: f52a68a624d6bc74d8298e4fdf94e35a, type: 3}
+      propertyPath: nameText
+      value: 
+      objectReference: {fileID: 1756873152}
+    - target: {fileID: 8412975880741860819, guid: f52a68a624d6bc74d8298e4fdf94e35a, type: 3}
+      propertyPath: descriptionText
+      value: 
+      objectReference: {fileID: 1752428873}
+    - target: {fileID: 8728986391862043069, guid: f52a68a624d6bc74d8298e4fdf94e35a, type: 3}
+      propertyPath: nameText
+      value: 
+      objectReference: {fileID: 1756873152}
+    - target: {fileID: 8728986391862043069, guid: f52a68a624d6bc74d8298e4fdf94e35a, type: 3}
+      propertyPath: descriptionText
+      value: 
+      objectReference: {fileID: 1752428873}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

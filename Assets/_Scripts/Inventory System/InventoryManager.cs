@@ -18,6 +18,7 @@ public class InventoryManager : MonoBehaviour
 
     Transform sourceParent;
     Transform sourceGrandParent;
+
     private void Start()
     {
         itemSlotTemp = GetComponent<ItemSlot>();
@@ -71,8 +72,13 @@ public class InventoryManager : MonoBehaviour
                     //}
                     //
                     // Adjust the item counts for both slots
-                    targetSlot.Count += transferAmount;
-                    sourceSlot.Count -= transferAmount;
+
+                if(targetSlot.slotType == SlotType.EquipmentSlot)
+                {
+                    GameManager.Instance.GetTankBuilder().BuildTankPart(targetSlot);
+                }
+                targetSlot.Count += transferAmount;
+                sourceSlot.Count -= transferAmount;
                 
             }
             // Transfer logic when the target slot has the same item type
