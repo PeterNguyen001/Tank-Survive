@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerGunController : MonoBehaviour
 {
 
-    private LinkedList<Gun> gunList = new LinkedList<Gun>();
+    private LinkedList<GunBehaviour> gunList = new LinkedList<GunBehaviour>();
     private Vector3 mousePosition;
     private bool isPullingTheTrigger;
 
@@ -26,7 +26,7 @@ public class PlayerGunController : MonoBehaviour
     void FixedUpdate()
     {
         // Update each GunRotation
-        foreach (Gun gun in gunList)
+        foreach (GunBehaviour gun in gunList)
         {
             if (!gun.isAIControlled)
             {
@@ -64,7 +64,7 @@ public class PlayerGunController : MonoBehaviour
         mousePosition.z = 0f;
     }
 
-    public GameObject DetectNearestEnemyFromGun(Gun gun)
+    public GameObject DetectNearestEnemyFromGun(GunBehaviour gun)
     {
         GameObject nearestEnemy = null;
         float nearestDistance = float.MaxValue;
@@ -121,7 +121,7 @@ public class PlayerGunController : MonoBehaviour
         return coneVertices;
     }
 
-    private bool IsEnemyOnGunSight(Gun gun)
+    private bool IsEnemyOnGunSight(GunBehaviour gun)
     {
         // Get the position and rotation of the gunEnd
         Vector3 gunEndPosition = gun.FindGunlEnd().transform.position;

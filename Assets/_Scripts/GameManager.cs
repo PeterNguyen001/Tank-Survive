@@ -26,7 +26,6 @@ public class GameManager : MonoBehaviour
         playerMovementController = GameObject.FindObjectOfType<PlayerMovementController>();
         playerGunController = GameObject.FindObjectOfType<PlayerGunController>();
         tankBuilder = new TankBuilder();
-        tankBuilder.Init();
         UIStateMachine.Instance.TransitionToStateUsingName("Main Menu");
         DisablePlayerController();
     }

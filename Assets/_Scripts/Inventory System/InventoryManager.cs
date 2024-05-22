@@ -63,17 +63,7 @@ public class InventoryManager : MonoBehaviour
                 // Assign the item from the source to the target slot
                 targetSlot.item = sourceSlot.item;
 
-                //// Special handling for a result slot in crafting
-                //if (sourceSlot.transform.name == "ResultSlot")
-                //{
-
-                    //    targetSlot.Count += sourceSlot.Count;
-                    //    sourceSlot.Count = 0;                    
-                    //}
-                    //
-                    // Adjust the item counts for both slots
-
-                if(targetSlot.slotType == SlotType.EquipmentSlot)
+                if(targetSlot.slotType == SlotType.EquipmentSlot || sourceSlot.slotType == SlotType.EquipmentSlot)
                 {
                     GameManager.Instance.GetTankBuilder().BuildTankPart(targetSlot);
                 }

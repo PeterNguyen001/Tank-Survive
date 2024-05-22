@@ -10,14 +10,9 @@ public class TankBuilder
     List<GameObject> slotToBuildInList = new List<GameObject>();
 
     // Start is called before the first frame update
-    public void Init()
+    public void FindAllSlot()
     {
         slotToBuildInList = GameObject.FindGameObjectsWithTag("Player Tank Part Slot").ToList<GameObject>();
-
-        foreach (GameObject part in slotToBuildInList) 
-        {
-            Debug.Log(part.name);
-        }
     }
 
     // Update is called once per frame
@@ -26,25 +21,36 @@ public class TankBuilder
         
     }
 
-    public void BuildTankPart(ItemSlot ItemSlot)
+    public void BuildTankPart(ItemSlot itemSlot)
     {
-
+        FindAllSlot();
 
         foreach (GameObject slot in slotToBuildInList)
         {
-            if (slot.name == ItemSlot.name)
+            if (slot.name == itemSlot.name)
             {
-                GameObject oldTankPart = slot.transform.GetChild(0).GameObject();
-                GameObject newTankPart = GameObject.Find(ItemSlot.item.name);
-                if (newTankPart != null)
+                // Collect all children to remove
+                List<Transform> childrenToRemove = new List<Transform>();
+                foreach (Transform child in slot.transform)
                 {
+                    Object.Destroy(child.gameObject);
+                }
 
-                    Vector3 position = oldTankPart.transform.position;
-                    Quaternion rotation = oldTankPart.transform.rotation;
-     
-                    newTankPart = Object.Instantiate(newTankPart, position, rotation);
-                    Object.Destroy(oldTankPart);
-                    newTankPart.transform.parent = slot.transform;
+
+                // Instantiate the new tank part and set it as a child of the slot
+                if (itemSlot.item != null)
+                {
+                    GameObject newTankPart = GameObject.Find(itemSlot.item.name);
+                    if (newTankPart != null)
+                    {
+                        Vector3 position = slot.transform.position;
+                        Quaternion rotation = slot.transform.rotation;
+
+                        newTankPart = Object.Instantiate(newTankPart, position, rotation);
+                        newTankPart.transform.SetParent(slot.transform);
+
+                        // Update the slotToBuildInList
+                    }
                 }
             }
         }

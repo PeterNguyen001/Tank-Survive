@@ -9,7 +9,7 @@ public class GunRotation
 
     public Transform guntransform;
 
-    public GunRotation(Gun gun)
+    public GunRotation(GunBehaviour gun)
     {
         this.guntransform = gun.transform.parent;
         maxRotationAngle = gun.turretAndPortData.maxRotationAngle;

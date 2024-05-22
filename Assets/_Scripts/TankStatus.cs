@@ -7,7 +7,7 @@ public class TankStatus : MonoBehaviour
     // Start is called before the first frame update
     private static TankStatus _instance;
     public static TankStatus Instance { get { return _instance; } }
-    private LinkedList<Gun> gunList = new LinkedList<Gun>();
+    private LinkedList<GunBehaviour> gunList = new LinkedList<GunBehaviour>();
 
     private void Awake()
     {
@@ -29,7 +29,7 @@ public class TankStatus : MonoBehaviour
         
     }
 
-    public LinkedList<Gun> GetListOfGun()
+    public LinkedList<GunBehaviour> GetListOfGun()
     {
         gunList.Clear();
         FindGunsRecursively(transform);
@@ -39,7 +39,7 @@ public class TankStatus : MonoBehaviour
     {
         foreach (Transform child in parent)
         {
-            Gun gun = child.GetComponent<Gun>();
+            GunBehaviour gun = child.GetComponent<GunBehaviour>();
             if (gun != null)
             {
                 gunList.AddLast(gun);

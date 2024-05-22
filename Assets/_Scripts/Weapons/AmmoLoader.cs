@@ -5,7 +5,7 @@ using UnityEngine;
 public class AmmoLoader : MonoBehaviour
 {
     public List<AmmoContainer> m_AmmoContainers = new List<AmmoContainer>();
-    public LinkedList<Gun> gunList = new LinkedList<Gun>();
+    public LinkedList<GunBehaviour> gunList = new LinkedList<GunBehaviour>();
     public GameObject bulletPrefab1;
     public GameObject bulletPrefab2;
     // Start is called before the first frame update
@@ -22,7 +22,7 @@ public class AmmoLoader : MonoBehaviour
         
     }
 
-    public void  ReloadGun(Gun gun)
+    public void  ReloadGun(GunBehaviour gun)
     {
         AmmoContainer containerToTakeFrom = FindCorrectAmmunitionType(gun.gunData.ammunitionData);
         if (containerToTakeFrom != null) 
@@ -52,6 +52,10 @@ public class AmmoLoader : MonoBehaviour
    public void SetupGuns()
     {
         gunList = TankStatus.Instance.GetListOfGun();
+        foreach (GunBehaviour gun in gunList)
+        {
+            gun.Reload();
+        }
     }
 }
 
