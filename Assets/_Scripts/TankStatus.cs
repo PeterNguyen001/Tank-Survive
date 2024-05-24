@@ -7,7 +7,10 @@ public class TankStatus : MonoBehaviour
     // Start is called before the first frame update
     private static TankStatus _instance;
     public static TankStatus Instance { get { return _instance; } }
+
+
     private LinkedList<GunBehaviour> gunList = new LinkedList<GunBehaviour>();
+    private LinkedList<TurretAndPortBehaviour> turretAndGunPortList = new LinkedList<TurretAndPortBehaviour>();
 
     private void Awake()
     {
@@ -32,22 +35,14 @@ public class TankStatus : MonoBehaviour
     public LinkedList<GunBehaviour> GetListOfGun()
     {
         gunList.Clear();
-        FindGunsRecursively(transform);
+        Tools.FindComponentsRecursively(transform, gunList);
         return gunList;
     }
-    private void FindGunsRecursively(Transform parent)
+    public LinkedList<TurretAndPortBehaviour> GetListOfTurretAndPort()
     {
-        foreach (Transform child in parent)
-        {
-            GunBehaviour gun = child.GetComponent<GunBehaviour>();
-            if (gun != null)
-            {
-                gunList.AddLast(gun);
-            }
-
-            // Recursively search in the children of the current child
-            FindGunsRecursively(child);
-        }
+        turretAndGunPortList.Clear();
+        Tools.FindComponentsRecursively(transform, turretAndGunPortList);
+        return turretAndGunPortList;
     }
     //public float GetSpeedKMH()
     //{

@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
         playerGunController = GameObject.FindObjectOfType<PlayerGunController>();
         tankBuilder = new TankBuilder();
         UIStateMachine.Instance.TransitionToStateUsingName("Main Menu");
-        DisablePlayerController();
+        //DisablePlayerController();
     }
 
     // Update is called once per frame

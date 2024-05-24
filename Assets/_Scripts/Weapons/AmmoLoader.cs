@@ -54,7 +54,9 @@ public class AmmoLoader : MonoBehaviour
         gunList = TankStatus.Instance.GetListOfGun();
         foreach (GunBehaviour gun in gunList)
         {
+            gun.InitializeBulletPool(FindCorrectAmmunitionType(gun.gunData.ammunitionData).GetbulletPrefab());
             gun.Reload();
+            Debug.Log("relad " + gun.gameObject.name);
         }
     }
 }

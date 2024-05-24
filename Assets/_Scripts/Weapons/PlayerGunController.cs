@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,6 +6,8 @@ public class PlayerGunController : MonoBehaviour
 {
 
     private LinkedList<GunBehaviour> gunList = new LinkedList<GunBehaviour>();
+    private LinkedList<TurretAndPortBehaviour> turretAndGunPortList = new LinkedList<TurretAndPortBehaviour>();
+    public List<TurretAndPortBehaviour>  tList = new List<TurretAndPortBehaviour>();
     private Vector3 mousePosition;
     private bool isPullingTheTrigger;
 
@@ -15,35 +16,59 @@ public class PlayerGunController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SetupGuns();
+        Init();
     }
 
-    public void SetupGuns()
+    public void Init()
     {
+        gunList.Clear();
         gunList = TankStatus.Instance.GetListOfGun();
+        turretAndGunPortList.Clear();
+        turretAndGunPortList = TankStatus.Instance.GetListOfTurretAndPort();
     }
     // Update is called once per frame
     void FixedUpdate()
     {
         // Update each GunRotation
-        foreach (GunBehaviour gun in gunList)
+        //foreach (GunBehaviour turret in gunList)
+        //{
+        //    if (!turret.isAIControlled)
+        //    {
+        //        turret.AimGunAt(mousePosition);
+        //        turret.FireGun(isPullingTheTrigger);
+        //    }
+        //    else
+        //    {
+        //        if(DetectNearestEnemyFromGun(turret) != null)
+        //        {
+        //            Vector3 enemyPosition = DetectNearestEnemyFromGun(turret).transform.position;
+        //            turret.AimGunAt(enemyPosition);
+        //            turret.FireGun(IsEnemyOnGunSight(turret));
+        //        }
+                    
+        //    }
+        //}
+        foreach(TurretAndPortBehaviour turret in turretAndGunPortList) 
         {
-            if (!gun.isAIControlled)
+            if (!turret.isAIControl)
             {
-                gun.AimGunAt(mousePosition);
-                gun.FireGun(isPullingTheTrigger);
+                turret.AimGunAt(mousePosition);
+                foreach (GunBehaviour gun in turret.GetGunUnderTurretControl())
+                {
+                    gun.FireGun(isPullingTheTrigger);
+                }
             }
             else
             {
-                if(DetectNearestEnemyFromGun(gun) != null)
+                if (DetectNearestEnemyFromGun(turret) != null)
                 {
-                    Vector3 enemyPosition = DetectNearestEnemyFromGun(gun).transform.position;
-                    gun.AimGunAt(enemyPosition);
-                    gun.FireGun(IsEnemyOnGunSight(gun));
+                    Vector3 enemyPosition = DetectNearestEnemyFromGun(turret).transform.position;
+                    turret.AimGunAt(enemyPosition);
                 }
-                    
+
             }
         }
+
     }
 
     public void FireGun(InputAction.CallbackContext context)
@@ -64,16 +89,16 @@ public class PlayerGunController : MonoBehaviour
         mousePosition.z = 0f;
     }
 
-    public GameObject DetectNearestEnemyFromGun(GunBehaviour gun)
+    public GameObject DetectNearestEnemyFromGun(TurretAndPortBehaviour turret)
     {
         GameObject nearestEnemy = null;
         float nearestDistance = float.MaxValue;
 
-        Vector3 gunPosition = gun.transform.position;
-        float coneAngle = gun.gunData.maxRotationAngle * 2f; // Double the angle for the cone
+        Vector3 gunPosition = turret.transform.position;
+        float coneAngle = turret.turretAndGunPortData.maxRotationAngle * 2f; // Double the angle for the cone
 
-        // Calculate the cone direction based on the gun's rotation
-        Vector3 coneDirection = Quaternion.Euler(0, 0, gun.GetGunLocalInitialAngle() + transform.eulerAngles.z % 360f) * Vector3.right;
+        // Calculate the cone direction based on the turret's rotation
+        Vector3 coneDirection = Quaternion.Euler(0, 0, turret.GetTurretLocalInitialAngle() + transform.eulerAngles.z % 360f) * Vector3.right;
 
         // Check for enemy objects within the cone area
         foreach (Vector2 vertex in BuildDetectionCone(gunPosition, coneDirection, coneAngle))
@@ -88,7 +113,7 @@ public class PlayerGunController : MonoBehaviour
                     // Check if the enemy is within the cone angle
                     Vector2 toEnemy = enemy.transform.position - gunPosition;
                     float angleToEnemy = Vector2.Angle(coneDirection, toEnemy);
-                    if (Mathf.Abs(angleToEnemy) <= gun.gunData.maxRotationAngle)
+                    if (Mathf.Abs(angleToEnemy) <= turret.turretAndGunPortData.maxRotationAngle)
                     {
                         // Calculate the distance to the enemy
                         float distanceToEnemy = Vector2.Distance(gunPosition, enemy.transform.position);
@@ -130,7 +155,7 @@ public class PlayerGunController : MonoBehaviour
         // Calculate the direction from the right side of the gunEnd
         Vector3 rayDirection = gunRotation * Vector3.right;
 
-        // Cast a ray in the direction of the gun's rotation with the detection range
+        // Cast a ray in the direction of the turret's rotation with the detection range
         RaycastHit2D hit = Physics2D.Raycast(gunEndPosition, rayDirection, detectionRange);
 
         // Check if the ray hits an enemy object
@@ -142,31 +167,31 @@ public class PlayerGunController : MonoBehaviour
         return false;
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        foreach (var gun in gunList)
-        {
-            if (gun.gunData != null)
-            {
-                // Calculate the cone direction based on the maximum rotation angle
-                Vector3 coneDirection = Quaternion.Euler(0, 0, gun.GetGunLocalInitialAngle() +transform.eulerAngles.z % 360f) * Vector3.right;
+    //private void OnDrawGizmosSelected()
+    //{
+    //    foreach (var gun in gunList)
+    //    {
+    //        if (gun.gunData != null)
+    //        {
+    //            // Calculate the cone direction based on the maximum rotation angle
+    //            Vector3 coneDirection = Quaternion.Euler(0, 0, gun.GetGunLocalInitialAngle() +transform.eulerAngles.z % 360f) * Vector3.right;
 
-                // Draw the detection cone
-                Gizmos.color = Color.yellow;
-                Gizmos.DrawRay(gun.transform.position, coneDirection * detectionRange);
-                Gizmos.DrawRay(gun.transform.position, Quaternion.Euler(0, 0, gun.gunData.maxRotationAngle) * coneDirection * detectionRange);
-                Gizmos.DrawRay(gun.transform.position, Quaternion.Euler(0, 0, -gun.gunData.maxRotationAngle) * coneDirection * detectionRange);
+    //            // Draw the detection cone
+    //            Gizmos.color = Color.yellow;
+    //            Gizmos.DrawRay(gun.transform.position, coneDirection * detectionRange);
+    //            Gizmos.DrawRay(gun.transform.position, Quaternion.Euler(0, 0, gun.gunData.maxRotationAngle) * coneDirection * detectionRange);
+    //            Gizmos.DrawRay(gun.transform.position, Quaternion.Euler(0, 0, -gun.gunData.maxRotationAngle) * coneDirection * detectionRange);
 
-                Vector3 gunEndPosition = gun.FindGunlEnd().transform.position;
-                Quaternion gunRotation = gun.transform.rotation;
+    //            Vector3 gunEndPosition = gun.FindGunlEnd().transform.position;
+    //            Quaternion gunRotation = gun.transform.rotation;
 
-                // Calculate the direction from the right side of the gunEnd
-                Vector3 lineDirection = gunRotation * Vector3.right;
+    //            // Calculate the direction from the right side of the gunEnd
+    //            Vector3 lineDirection = gunRotation * Vector3.right;
 
-                // Draw the line from the gunEnd
-                Gizmos.color = Color.green;
-                Gizmos.DrawRay(gunEndPosition, lineDirection * detectionRange);
-            }
-        }
-    }
+    //            // Draw the line from the gunEnd
+    //            Gizmos.color = Color.green;
+    //            Gizmos.DrawRay(gunEndPosition, lineDirection * detectionRange);
+    //        }
+    //    }
+    //}
 }

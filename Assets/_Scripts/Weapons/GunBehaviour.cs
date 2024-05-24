@@ -5,12 +5,9 @@ using UnityEngine;
 public class GunBehaviour : MonoBehaviour
 {
     public GunData gunData;
-    public TurretAndGunPortData turretAndPortData;
-    private GunRotation gunRotation;
     private GameObject gunEnd;
 
     private AmmoLoader loader;
-    private GameObject bulletPrefab; // Prefab for the bullet
     private LinkedList<GameObject> bulletPool = new LinkedList<GameObject>();
     private int currentAmmoCount;
 
@@ -22,8 +19,12 @@ public class GunBehaviour : MonoBehaviour
 
     private void Start()
     {
+        Init();
+    }
+
+    private void Init()
+    {
         loader = FindObjectOfType<AmmoLoader>();
-        gunRotation = new GunRotation(this);
         FindGunlEnd();
     }
 
@@ -42,10 +43,6 @@ public class GunBehaviour : MonoBehaviour
             Debug.Log("Out of Ammo");
     }
 
-    public void AimGunAt(Vector3 posToLookTo)
-    {
-        gunRotation.GunLookAt(posToLookTo);
-    }
 
     public GameObject FindGunlEnd()
     {
@@ -145,8 +142,5 @@ public class GunBehaviour : MonoBehaviour
         // Reset the reloading flag
         isReloading = false;
     }
-
-    public float GetGunLocalInitialAngle()
-    { return gunRotation.localInitialAngle; }
 
 }
