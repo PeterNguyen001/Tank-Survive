@@ -16,6 +16,9 @@ public class Movement
         leftTrackRB = lTrack;
         rightTrackRB = rTrack;
 
+        leftTrackRB.GetComponent<FixedJoint2D>().connectedBody = chassisRB;
+        rightTrackRB.GetComponent<FixedJoint2D>().connectedBody= chassisRB;
+
         forwardSpeed = horsepower;
         backwardSpeed = horsepower/2;
         rotationSpeed = horsepower/3;

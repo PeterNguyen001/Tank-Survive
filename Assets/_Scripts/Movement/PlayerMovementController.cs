@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -11,6 +12,8 @@ public class PlayerMovementController : MonoBehaviour
     private Rigidbody2D chassis;
     private Rigidbody2D leftTrack;
     private Rigidbody2D rightTrack;
+
+    LinkedList<Tracks> trackList = new LinkedList<Tracks>();    
 
     private Vector2 moveDirection;
 
@@ -35,8 +38,17 @@ public class PlayerMovementController : MonoBehaviour
     private void InitializeRigidBody()
     {
         chassis = GetComponent<Rigidbody2D>();
-        leftTrack = transform.Find("Tracks/Left Track").GetComponent<Rigidbody2D>();
-        rightTrack = transform.Find("Tracks/Right Track").GetComponent<Rigidbody2D>();
+
+        Tools.FindComponentsRecursively(transform, trackList);
+        
+        foreach (Tracks track in trackList) 
+        {
+            if (track.name == "Left Track")
+                leftTrack = track.gameObject.GetComponent<Rigidbody2D>();
+            else if(track.name == "Right Track")
+                rightTrack = track.gameObject.GetComponent<Rigidbody2D>();
+        }
+
     }
 
  
