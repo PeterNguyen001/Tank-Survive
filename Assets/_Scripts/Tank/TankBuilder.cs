@@ -5,26 +5,20 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class TankBuilder
+public static class TankBuilder
 {
-    List<GameObject> slotToBuildInList = new List<GameObject>();
+    static List<GameObject> slotToBuildInList = new List<GameObject>();
 
     // Start is called before the first frame update
-    public void FindAllSlot()
+    public static void FindAllSlot()
     {
         slotToBuildInList = GameObject.FindGameObjectsWithTag("Player Tank Part Slot").ToList<GameObject>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
-    public void BuildTankPart(ItemSlot itemSlot)
+    public static void BuildTankPart(ItemSlot itemSlot)
     {
         FindAllSlot();
-
         foreach (GameObject slot in slotToBuildInList)
         {
             if (slot.name == itemSlot.name)
@@ -49,7 +43,6 @@ public class TankBuilder
                         newTankPart = Object.Instantiate(newTankPart, position, rotation);
                         newTankPart.transform.SetParent(slot.transform);
 
-                        // Update the slotToBuildInList
                     }
                 }
             }

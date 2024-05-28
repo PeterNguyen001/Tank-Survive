@@ -7,7 +7,6 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     private static GameManager _instance;
     public static GameManager Instance { get { return _instance; } }
-    TankBuilder tankBuilder;
     PlayerMovementController playerMovementController;
     PlayerGunController playerGunController;
     private void Awake()
@@ -25,7 +24,6 @@ public class GameManager : MonoBehaviour
     {
         playerMovementController = GameObject.FindObjectOfType<PlayerMovementController>();
         playerGunController = GameObject.FindObjectOfType<PlayerGunController>();
-        tankBuilder = new TankBuilder();
         UIStateMachine.Instance.TransitionToStateUsingName("Main Menu");
         DisablePlayerController();
     }
@@ -36,22 +34,6 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public void BuildTank()
-    {
-        GameObject EquipmentSlots = GameObject.FindGameObjectWithTag("Equipment Slots");
-
-        foreach (Transform slotTransform in EquipmentSlots.transform)
-        {
-            ItemSlot slot = slotTransform.GetComponent<ItemSlot>();
-            if (slot != null)
-            {
-                tankBuilder.BuildTankPart(slot);
-            }
-        }
-    }
-
-    public TankBuilder GetTankBuilder()
-    { return tankBuilder; }
 
     public void EnablePlayerController()
     {

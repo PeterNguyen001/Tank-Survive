@@ -21,7 +21,7 @@ public class ItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     [SerializeField]
     private int count = 0; // The number of items in the slot
-    public int Count
+    public virtual int Count
     {
         get { return count; }
         set

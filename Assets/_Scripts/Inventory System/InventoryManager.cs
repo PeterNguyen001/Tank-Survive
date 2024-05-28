@@ -57,19 +57,25 @@ public class InventoryManager : MonoBehaviour
             //    return; // Exit the method without performing any transfer
             //}
 
+           
             // Transfer logic when the target slot is empty
             if (targetSlot.item == null)
             {
                 // Assign the item from the source to the target slot
                 targetSlot.item = sourceSlot.item;
 
-                if(targetSlot.slotType == SlotType.EquipmentSlot || sourceSlot.slotType == SlotType.EquipmentSlot)
-                {
-                    GameManager.Instance.GetTankBuilder().BuildTankPart(targetSlot);
-                }
+               
                 targetSlot.Count += transferAmount;
                 sourceSlot.Count -= transferAmount;
-                
+                if (targetSlot.slotType == SlotType.EquipmentSlot)
+                {
+                    TankBuilder.BuildTankPart(targetSlot);
+                }
+                else if (sourceSlot.slotType == SlotType.EquipmentSlot)
+                {
+                    TankBuilder.BuildTankPart(sourceSlot);
+                }
+
             }
             // Transfer logic when the target slot has the same item type
             else if (sourceSlot.item == targetSlot.item)
@@ -118,26 +124,26 @@ public class InventoryManager : MonoBehaviour
     }
 
     // Sets the source and target inventories based on the item slots
-    public void SetInventory(ItemSlot sourceSlot, ItemSlot targetSlot)
-    {
-        // Get the parent and grandparent of the target slot
-        targetParent = targetSlot.transform.parent;
-        targetGrandParent = targetParent.transform.parent;
-        // If the grandparent of the target slot exists, get its Inventory component
-        if (targetGrandParent != null)
-        {
-            targetInventory = targetGrandParent.GetComponent<Inventory>();
-        }
+    //public void SetInventory(ItemSlot sourceSlot, ItemSlot targetSlot)
+    //{
+    //    // Get the parent and grandparent of the target slot
+    //    targetParent = targetSlot.transform.parent;
+    //    targetGrandParent = targetParent.transform.parent;
+    //    // If the grandparent of the target slot exists, get its Inventory component
+    //    if (targetGrandParent != null)
+    //    {
+    //        targetInventory = targetGrandParent.GetComponent<Inventory>();
+    //    }
 
-        // Get the parent and grandparent of the source slot
-        sourceParent = sourceSlot.transform.parent;
-        sourceGrandParent = sourceParent.transform.parent;
-        // If the grandparent of the source slot exists, get its Inventory component
-        if (sourceGrandParent != null)
-        {
-            sourceInventory = sourceGrandParent.GetComponent<Inventory>();
-        }
-    }
+    //    // Get the parent and grandparent of the source slot
+    //    sourceParent = sourceSlot.transform.parent;
+    //    sourceGrandParent = sourceParent.transform.parent;
+    //    // If the grandparent of the source slot exists, get its Inventory component
+    //    if (sourceGrandParent != null)
+    //    {
+    //        sourceInventory = sourceGrandParent.GetComponent<Inventory>();
+    //    }
+    //}
 
 
 }
