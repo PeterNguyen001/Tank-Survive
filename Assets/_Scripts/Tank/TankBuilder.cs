@@ -15,6 +15,11 @@ public static class TankBuilder
         slotToBuildInList = GameObject.FindGameObjectsWithTag("Player Tank Part Slot").ToList<GameObject>();
     }
 
+    public static List<GameObject> GetSlotToBuildInList()
+    {
+        return slotToBuildInList;
+    }
+
 
     public static void BuildTankPart(ItemSlot itemSlot)
     {
