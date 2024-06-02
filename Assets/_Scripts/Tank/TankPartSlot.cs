@@ -4,20 +4,30 @@ using UnityEngine;
 
 public class TankPartSlot : MonoBehaviour
 {
+    public TankPartType tankPartType;
+    private Item tankPart;
     // Start is called before the first frame update
-    void Start()
+
+    public void PutPartInSlot(GameObject newTankPart, Item part )
     {
-        
+        tankPart = part;
+        Vector3 position = transform.position;
+        Quaternion rotation = transform.rotation;
+
+        newTankPart = Object.Instantiate(newTankPart, position, rotation);
+        newTankPart.transform.SetParent(transform);
+    }
+    public void RemovePartFromSlot()
+    {
+        tankPart = null;
+        foreach (Transform child in transform)
+        {
+            Object.Destroy(child.gameObject);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public Item GetPartInSlot() 
     {
-        
-    }
-
-    public void PutPartInSlot()
-    {
-
+        return tankPart;
     }
 }

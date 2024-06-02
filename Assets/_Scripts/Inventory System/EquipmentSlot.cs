@@ -6,11 +6,13 @@ using UnityEngine;
 public class EquipmentSlot : ItemSlot
 {
     private TextMeshProUGUI slotNameText;
+    private TankPartType tankPartType;
 
     // Constructor to initialize the slot name and create the TextMeshPro box
-    public EquipmentSlot(string slotName)
+    public EquipmentSlot(TankPartSlot tankPartSlot)
     {
-        name = slotName;
+        name = tankPartSlot.name;
+        tankPartType = tankPartSlot.tankPartType;
         CreateSlotNameText();
         UpdateSlotNameText();
     }

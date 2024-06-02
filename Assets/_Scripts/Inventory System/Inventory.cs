@@ -34,4 +34,19 @@ public class Inventory : MonoBehaviour
         }
         return items;
     }
+
+    public void BuildEquipementSlot()
+    {
+        itemSlots.Clear();
+        foreach (TankPartSlot slot in TankBuilder.GetSlotToBuildInList())
+        {
+            EquipmentSlot equipmentSlot = new EquipmentSlot(slot);
+            if(slot.GetPartInSlot() != null) 
+            {
+                equipmentSlot.item = slot.GetPartInSlot();
+                equipmentSlot.Count = 1;
+            }
+            equipmentSlot.transform.SetParent(inventoryPanel.transform, false);
+        }
+    }
 }
