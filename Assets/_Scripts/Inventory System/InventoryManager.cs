@@ -99,6 +99,7 @@ public class InventoryManager : MonoBehaviour
     // Processes an item slot based on the click type
     public void ProcessItemSlot(ItemSlot itemSlot, ClickType clickType)
     {
+        Debug.Log(clickType.ToString());
         // If the temporary slot is empty, set the source and target to the clicked slot and temporary slot
         if (IsTempEmpty())
         {

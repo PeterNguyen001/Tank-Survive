@@ -8,15 +8,7 @@ public class EquipmentSlot : ItemSlot
     private TextMeshProUGUI slotNameText;
     private TankPartType tankPartType;
 
-    // Constructor to initialize the slot name and create the TextMeshPro box
-    public EquipmentSlot(TankPartSlot tankPartSlot)
-    {
-        name = tankPartSlot.name;
-        tankPartType = tankPartSlot.tankPartType;
-        CreateSlotNameText();
-        UpdateSlotNameText();
-    }
-
+    // Override Count property to update tank part when it changes
     public override int Count
     {
         get { return base.Count; }
@@ -25,11 +17,6 @@ public class EquipmentSlot : ItemSlot
             base.Count = value;
             UpdateTankPart(); // Call UpdateTankPart whenever the count changes
         }
-    }
-
-    public void UpdateTankPart()
-    {
-        TankBuilder.BuildTankPart(this);
     }
 
     // Method to create the TextMeshPro box
@@ -43,8 +30,11 @@ public class EquipmentSlot : ItemSlot
         slotNameText = textObject.AddComponent<TextMeshProUGUI>();
 
         // Set the position and other properties of the TextMeshPro element
-        slotNameText.rectTransform.anchoredPosition = new Vector2(0, 0);
-        slotNameText.fontSize = 24;
+        slotNameText.rectTransform.anchorMin = new Vector2(0.5f, 0); // Anchor to bottom center
+        slotNameText.rectTransform.anchorMax = new Vector2(0.5f, 0); // Anchor to bottom center
+        slotNameText.rectTransform.pivot = new Vector2(0.5f, 1);     // Pivot at the top center
+        slotNameText.rectTransform.anchoredPosition = new Vector2(0, -2); // 20 units below the slot
+        slotNameText.fontSize = 10;
         slotNameText.alignment = TextAlignmentOptions.Center;
 
         // Optional: Set other TextMeshPro properties as needed
@@ -59,10 +49,19 @@ public class EquipmentSlot : ItemSlot
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    // Method to set up the equipment slot
+    public void SetUpEquipmentSlot(TankPartSlot tankPartSlot)
     {
-        // Ensure the slot name text is always updated (if needed)
+        name = tankPartSlot.name;
+        tankPartType = tankPartSlot.tankPartType;
+        item = tankPartSlot.GetPartInSlot();
+        CreateSlotNameText();
         UpdateSlotNameText();
+    }
+
+    // Method to update the tank part
+    public void UpdateTankPart()
+    {
+        TankBuilder.BuildTankPart(this);
     }
 }

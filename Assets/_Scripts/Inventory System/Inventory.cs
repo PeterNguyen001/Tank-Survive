@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
@@ -7,12 +8,18 @@ public class Inventory : MonoBehaviour
     private List<ItemSlot> itemSlots = new List<ItemSlot>();
     private List<Item> items = new List<Item>();
     public InventoryType inventoryType;
+
+    GameObject equipmentSlotPrefab ;
     [SerializeField]
     GameObject inventoryPanel;
 
     void Start()
     {
-
+        if (inventoryType == InventoryType.Equiping)
+        {
+            equipmentSlotPrefab = GameObject.Find("EquipmentSlotPrefab");
+            BuildEquipementSlot();
+        }
         //Read all itemSlots as children of inventory panel
         itemSlots = new List<ItemSlot>(
             inventoryPanel.transform.GetComponentsInChildren<ItemSlot>()
@@ -37,16 +44,32 @@ public class Inventory : MonoBehaviour
 
     public void BuildEquipementSlot()
     {
+        // Clear existing item slots
         itemSlots.Clear();
+
+        // Iterate through each TankPartSlot
         foreach (TankPartSlot slot in TankBuilder.GetSlotToBuildInList())
         {
-            EquipmentSlot equipmentSlot = new EquipmentSlot(slot);
-            if(slot.GetPartInSlot() != null) 
+            Debug.Log(slot.name);
+            // Instantiate the equipment slot prefab
+            GameObject newEquipmentSlot = Object.Instantiate(equipmentSlotPrefab);
+
+            // Add the EquipmentSlot component to the new equipment slot
+            EquipmentSlot equipmentSlotScript = newEquipmentSlot.GetComponent<EquipmentSlot>();
+
+            // Set up the slot name
+            equipmentSlotScript.SetUpEquipmentSlot(slot);
+
+            // If there is a part in the slot, set the item and count
+            if (slot.GetPartInSlot() != null)
             {
-                equipmentSlot.item = slot.GetPartInSlot();
-                equipmentSlot.Count = 1;
+                equipmentSlotScript.item = slot.GetPartInSlot();
+                equipmentSlotScript.Count = 1;
             }
-            equipmentSlot.transform.SetParent(inventoryPanel.transform, false);
+            newEquipmentSlot.transform.SetParent(inventoryPanel.transform, false);
+
+
         }
     }
+
 }
