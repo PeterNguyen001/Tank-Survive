@@ -21,9 +21,6 @@ public class Inventory : MonoBehaviour
             BuildEquipementSlot();
         }
         //Read all itemSlots as children of inventory panel
-        itemSlots = new List<ItemSlot>(
-            inventoryPanel.transform.GetComponentsInChildren<ItemSlot>()
-            );
         
     }
 
@@ -50,7 +47,6 @@ public class Inventory : MonoBehaviour
         // Iterate through each TankPartSlot
         foreach (TankPartSlot slot in TankBuilder.GetSlotToBuildInList())
         {
-            Debug.Log(slot.name);
             // Instantiate the equipment slot prefab
             GameObject newEquipmentSlot = Object.Instantiate(equipmentSlotPrefab);
 
@@ -61,13 +57,9 @@ public class Inventory : MonoBehaviour
             equipmentSlotScript.SetUpEquipmentSlot(slot);
 
             // If there is a part in the slot, set the item and count
-            if (slot.GetPartInSlot() != null)
-            {
-                equipmentSlotScript.item = slot.GetPartInSlot();
-                equipmentSlotScript.Count = 1;
-            }
-            newEquipmentSlot.transform.SetParent(inventoryPanel.transform, false);
 
+            newEquipmentSlot.transform.SetParent(inventoryPanel.transform, false);
+            itemSlots.Add(equipmentSlotScript);
 
         }
     }

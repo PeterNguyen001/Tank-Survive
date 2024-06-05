@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TurretAndPortBehaviour : MonoBehaviour
+public class TurretAndPortBehaviour : TankPart
 {
     public TurretAndGunPortData turretAndGunPortData;
     private GunRotation gunRotation;
@@ -23,7 +23,7 @@ public class TurretAndPortBehaviour : MonoBehaviour
     public void Init()
     {
         gunRotation = new GunRotation(this);
-        
+        tankPart = turretAndGunPortData;
     }
 
     public LinkedList<GunBehaviour> GetGunUnderTurretControl() 

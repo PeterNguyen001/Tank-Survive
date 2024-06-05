@@ -23,23 +23,22 @@ public static class TankBuilder
     }
 
 
-    public static void BuildTankPart(ItemSlot itemSlot)
+    public static void BuildTankPart(ItemSlot itemSlot, TankPartSlot partSlot)
     {
-        FindAllSlot();
-        foreach (TankPartSlot tankPartSlot in tankSlotToBuildIn) 
+        if (partSlot.name == itemSlot.name)
         {
-            if (tankPartSlot.name == itemSlot.name)
+            if (itemSlot.item == partSlot.GetPartInSlot())
+            { return; }
+            partSlot.RemovePartFromSlot();
+            if (itemSlot.item != null)
             {
-                tankPartSlot.RemovePartFromSlot();
-                if (itemSlot.item != null)
+                GameObject newTankPart = GameObject.Find(itemSlot.item.name);
+                if (newTankPart != null)
                 {
-                    GameObject newTankPart = GameObject.Find(itemSlot.item.name);
-                    if (newTankPart != null)
-                    {
-                        tankPartSlot.PutPartInSlot(newTankPart, itemSlot.item);
-                    }
+                    partSlot.PutPartInSlot(newTankPart, itemSlot.item);
                 }
             }
         }
+
     }
 }

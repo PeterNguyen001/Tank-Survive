@@ -67,14 +67,7 @@ public class InventoryManager : MonoBehaviour
                
                 targetSlot.Count += transferAmount;
                 sourceSlot.Count -= transferAmount;
-                if (targetSlot.slotType == SlotType.EquipmentSlot)
-                {
-                    TankBuilder.BuildTankPart(targetSlot);
-                }
-                else if (sourceSlot.slotType == SlotType.EquipmentSlot)
-                {
-                    TankBuilder.BuildTankPart(sourceSlot);
-                }
+
 
             }
             // Transfer logic when the target slot has the same item type

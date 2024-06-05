@@ -7,6 +7,7 @@ public class EquipmentSlot : ItemSlot
 {
     private TextMeshProUGUI slotNameText;
     private TankPartType tankPartType;
+    private TankPartSlot partSlot;
 
     // Override Count property to update tank part when it changes
     public override int Count
@@ -54,14 +55,20 @@ public class EquipmentSlot : ItemSlot
     {
         name = tankPartSlot.name;
         tankPartType = tankPartSlot.tankPartType;
-        item = tankPartSlot.GetPartInSlot();
+        partSlot = tankPartSlot;
+        if (partSlot.GetPartInSlot() != null)
+        {
+            item = partSlot.GetPartInSlot();
+            Count = 1;
+        }
         CreateSlotNameText();
         UpdateSlotNameText();
+        UpdateGraphic();
     }
 
     // Method to update the tank part
     public void UpdateTankPart()
     {
-        TankBuilder.BuildTankPart(this);
+        TankBuilder.BuildTankPart(this, partSlot);
     }
 }

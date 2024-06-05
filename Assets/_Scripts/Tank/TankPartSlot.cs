@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class TankPartSlot : MonoBehaviour
@@ -26,8 +27,20 @@ public class TankPartSlot : MonoBehaviour
         }
     }
 
-    public Item GetPartInSlot() 
+    public Item GetPartInSlot()
     {
+        foreach (Transform child in transform)
+        {
+            TankPart tankPartComponent = child.GetComponent<TankPart>();
+            if (tankPartComponent != null)
+            {
+                Item part = tankPartComponent.GetTankPart();
+                if (part != null)
+                {
+                    tankPart = part;
+                }
+            }
+        }
         return tankPart;
     }
 }

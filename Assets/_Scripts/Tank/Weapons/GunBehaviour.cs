@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GunBehaviour : MonoBehaviour
+public class GunBehaviour : TankPart
 {
     public GunData gunData;
     private GameObject gunEnd;
@@ -24,6 +24,7 @@ public class GunBehaviour : MonoBehaviour
 
     private void Init()
     {
+        tankPart = gunData;
         loader = FindObjectOfType<AmmoLoader>();
         FindGunlEnd();
     }

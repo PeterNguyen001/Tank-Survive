@@ -47,7 +47,7 @@ public class ItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     }
 
     // Updates the item slot's icon and count visibility
-    void UpdateGraphic()
+    public void UpdateGraphic()
     {
         itemIcon.gameObject.SetActive(true);
         if (count < 1)
