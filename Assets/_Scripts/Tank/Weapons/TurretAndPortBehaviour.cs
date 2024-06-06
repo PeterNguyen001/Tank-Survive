@@ -16,11 +16,8 @@ public class TurretAndPortBehaviour : TankPart
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    public void Init()
+
+    public override void Init()
     {
         gunRotation = new GunRotation(this);
         tankPart = turretAndGunPortData;

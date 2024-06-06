@@ -5,11 +5,16 @@ public class UIStateMachine : MonoBehaviour
 {
     private static UIStateMachine _instance;
     public static UIStateMachine Instance { get { return _instance; } }
+
+    public PlayerEquipmentInventory PlayerEquipmentInventory { get => playerEquipmentInventory; set => playerEquipmentInventory = value; }
+
     [SerializeField] private UIStateNode currentState;
 
     private UIStateNode currentSubNode;
     private Stack<UIStateNode> subNodeStack;
     private Dictionary<string, UIStateNode> stateMap;
+
+    private PlayerEquipmentInventory playerEquipmentInventory;
 
     private void Awake()
     {
@@ -30,6 +35,8 @@ public class UIStateMachine : MonoBehaviour
 
         UIStateNode[] uiStateNodes = FindObjectsOfType<UIStateNode>();
 
+        playerEquipmentInventory = GameObject.FindObjectOfType<PlayerEquipmentInventory>();
+
         foreach (UIStateNode stateNode in uiStateNodes)
         {
             stateMap[stateNode.name] = stateNode;
@@ -42,6 +49,8 @@ public class UIStateMachine : MonoBehaviour
             currentState = uiStateNodes[0];
             currentState.Activate(); // Activate the initial UI state object
         }
+
+        
     }
 
     public void TransitionToStateUsingName(string newStateName)

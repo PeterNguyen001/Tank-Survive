@@ -22,7 +22,7 @@ public class GunBehaviour : TankPart
         Init();
     }
 
-    private void Init()
+    public override void Init()
     {
         tankPart = gunData;
         loader = FindObjectOfType<AmmoLoader>();

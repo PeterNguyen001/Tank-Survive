@@ -8,7 +8,7 @@ public class TankStatus : MonoBehaviour
     private static TankStatus _instance;
     public static TankStatus Instance { get { return _instance; } }
 
-
+    private LinkedList<TankPart> tankPartList = new LinkedList<TankPart>();
     private LinkedList<GunBehaviour> gunList = new LinkedList<GunBehaviour>();
     private LinkedList<TurretAndPortBehaviour> turretAndGunPortList = new LinkedList<TurretAndPortBehaviour>();
 
@@ -21,6 +21,21 @@ public class TankStatus : MonoBehaviour
         }
         _instance = this;
         DontDestroyOnLoad(gameObject);
+        InitializeAllTankParts();
+    }
+
+    private void InitializeAllTankParts()
+    {
+        Tools.FindComponentsRecursively(transform, tankPartList);
+        foreach (TankPart tankPart in tankPartList)
+        {
+
+            if (tankPart != null)
+            {
+                // Call Init on TankPart components if needed
+                tankPart.SendMessage("Init", SendMessageOptions.DontRequireReceiver);
+            }
+        }
     }
     void Start()
     {
