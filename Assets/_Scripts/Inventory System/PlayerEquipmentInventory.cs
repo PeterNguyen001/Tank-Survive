@@ -10,20 +10,19 @@ public class PlayerEquipmentInventory : Inventory
     {
 
             equipmentSlotPrefab = GameObject.Find("EquipmentSlotPrefab");
-            BuildEquipementSlot();
+            AddNewEquipmentSlots(TankBuilder.GetSlotToBuildInList());
         
     }
 
 
 
 
-    public void BuildEquipementSlot()
+    public void AddNewEquipmentSlots(LinkedList<TankPartSlot> slotsToAdd)
     {
         // Clear existing item slots
-        itemSlots.Clear();
 
         // Iterate through each TankPartSlot
-        foreach (TankPartSlot slot in TankBuilder.GetSlotToBuildInList())
+        foreach (TankPartSlot slot in slotsToAdd)
         {
             // Instantiate the equipment slot prefab
             GameObject newEquipmentSlot = Object.Instantiate(equipmentSlotPrefab);
@@ -39,6 +38,33 @@ public class PlayerEquipmentInventory : Inventory
             newEquipmentSlot.transform.SetParent(inventoryPanel.transform, false);
             itemSlots.Add(equipmentSlotScript);
 
+        }
+    }
+
+    public void RemoveEquipmentSlots(LinkedList<TankPartSlot> slotsToRemove)
+    {
+        // Create a list to store the slots that need to be removed
+        List<EquipmentSlot> slotsToBeRemoved = new List<EquipmentSlot>();
+
+        // Iterate through each TankPartSlot
+        foreach (TankPartSlot slot in slotsToRemove)
+        {
+            // Find the corresponding equipment slot in itemSlots
+            foreach (EquipmentSlot equipmentSlot in itemSlots)
+            {
+                if (equipmentSlot.name == slot.name)
+                {
+                    // Add the equipment slot to the list of slots to be removed
+                    slotsToBeRemoved.Add(equipmentSlot);
+                }
+            }
+        }
+
+        // Remove and destroy the slots
+        foreach (EquipmentSlot slot in slotsToBeRemoved)
+        {
+            itemSlots.Remove(slot);
+            Destroy(slot.gameObject);
         }
     }
 }

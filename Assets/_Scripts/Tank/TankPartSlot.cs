@@ -11,20 +11,28 @@ public class TankPartSlot : MonoBehaviour
 
     public void PutPartInSlot(GameObject newTankPart, Item part )
     {
+        LinkedList<TankPartSlot> slotsToAdd = new LinkedList<TankPartSlot>();
+        Tools.FindComponentsRecursively(newTankPart.transform, slotsToAdd);
+
         tankPart = part;
         Vector3 position = transform.position;
         Quaternion rotation = transform.rotation;
 
         newTankPart = Object.Instantiate(newTankPart, position, rotation);
         newTankPart.transform.SetParent(transform);
+
+        UIStateMachine.Instance.PlayerEquipmentInventory.AddNewEquipmentSlots(slotsToAdd);
     }
     public void RemovePartFromSlot()
     {
+        LinkedList<TankPartSlot> slotsToRemove = new LinkedList<TankPartSlot>();
+        Tools.FindComponentsRecursively(transform, slotsToRemove);
         tankPart = null;
         foreach (Transform child in transform)
         {
             Object.Destroy(child.gameObject);
         }
+        UIStateMachine.Instance.PlayerEquipmentInventory.RemoveEquipmentSlots(slotsToRemove);
     }
 
     public Item GetPartInSlot()

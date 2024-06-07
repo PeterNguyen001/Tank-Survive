@@ -26,10 +26,12 @@ public static class TankBuilder
 
     public static void BuildTankPart(ItemSlot itemSlot, TankPartSlot partSlot)
     {
+        
         if (partSlot.name == itemSlot.name)
         {
             if (itemSlot.item == partSlot.GetPartInSlot())
             { return; }
+            
             partSlot.RemovePartFromSlot();
             if (itemSlot.item != null)
             {
