@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewAmmunition", menuName = "Ammunition", order = 1)]
-public class AmmunitionData : ScriptableObject
+public class AmmunitionData : Item
 {
     public new string name; // You can use the 'name' field from ScriptableObject
     public int damage = 10;

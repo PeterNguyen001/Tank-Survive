@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewTurretAndGunPort", menuName = "TurretAndGunPort", order = 1)]
-public class TurretAndGunPortData : Item
+[CreateAssetMenu(fileName = "NewTurretAndGunPort", menuName = "Tank Parts/TurretAndGunPort", order = 1)]
+public class TurretAndGunPortData : TankPartData
 {
     public bool isTurret = true;
     public float maxRotationAngle = 30f;

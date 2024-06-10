@@ -12,13 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 287fa976ed3ac3c43b081c3cb819b6d6, type: 3}
   m_Name: 57mm cannon
   m_EditorClassIdentifier: 
-  ammunitionData: {fileID: 11400000, guid: d6acfdb29aad4314e96dea8679e46f37, type: 2}
+  icon: {fileID: 0}
+  description: 
+  recipeGridSize: 9
+  isConsumable: 0
+  isCraftable: 0
+  ID: ' '
+  recipe: []
+  recipeMutiplier: 1
   name: 57mm cannon
+  tankPartType: 2
+  ammunitionData: {fileID: 11400000, guid: d6acfdb29aad4314e96dea8679e46f37, type: 2}
   isFullAuto: 0
   ammoCapacity: 1
   reloadTime: 3
   shotPerMinute: 0
-  maxRotationAngle: 45
-  rotationSpeed: 10
   gunSprite: {fileID: 0}
   turretSprite: {fileID: 0}

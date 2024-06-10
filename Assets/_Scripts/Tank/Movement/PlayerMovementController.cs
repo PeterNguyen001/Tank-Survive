@@ -21,7 +21,7 @@ public class PlayerMovementController : MonoBehaviour
     void Start()
     {
         InitializeRigidBody();
-        PlayerMovement = new Movement(chassis, leftTrack, rightTrack, horsepower);
+        
     }
 
     void FixedUpdate()
@@ -48,7 +48,7 @@ public class PlayerMovementController : MonoBehaviour
             else if(track.name == "Right Track")
                 rightTrack = track.gameObject.GetComponent<Rigidbody2D>();
         }
-
+        PlayerMovement = new Movement(chassis, leftTrack, rightTrack, horsepower);
     }
 
  

@@ -12,12 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 287fa976ed3ac3c43b081c3cb819b6d6, type: 3}
   m_Name: 7.62mm Machinegun
   m_EditorClassIdentifier: 
-  ammunitionData: {fileID: 11400000, guid: 7e874bc572b8f2e4098aaf23ead26c8c, type: 2}
+  icon: {fileID: 0}
+  description: 
+  recipeGridSize: 9
+  isConsumable: 0
+  isCraftable: 0
+  ID: ' '
+  recipe: []
+  recipeMutiplier: 1
   name: 7.62mm Machinegun
+  tankPartType: 3
+  ammunitionData: {fileID: 11400000, guid: 7e874bc572b8f2e4098aaf23ead26c8c, type: 2}
   isFullAuto: 1
   ammoCapacity: 200
   reloadTime: 3
   shotPerMinute: 600
-  maxRotationAngle: 60
-  rotationSpeed: 45
   gunSprite: {fileID: 0}
+  turretSprite: {fileID: 0}

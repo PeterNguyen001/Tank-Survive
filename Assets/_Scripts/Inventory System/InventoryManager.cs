@@ -32,6 +32,12 @@ public class InventoryManager : MonoBehaviour
         // Check if the source slot has an item to transfer
         if (sourceSlot.item != null)
         {
+            if (targetSlot is EquipmentSlot && !(sourceSlot.item is TankPartData))
+            {
+                Debug.LogWarning("Cannot transfer item. Target slot only accepts TankPartData items.");
+                return;
+            }
+
             int transferAmount = 0;
 
             // Determine the amount to transfer based on the click type

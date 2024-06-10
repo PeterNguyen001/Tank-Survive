@@ -20,6 +20,8 @@ MonoBehaviour:
   ID: ' '
   recipe: []
   recipeMutiplier: 1
-  hasTurret: 0
+  name: 
+  tankPartType: 1
+  isTurret: 1
   maxRotationAngle: 360
   rotationSpeed: 20

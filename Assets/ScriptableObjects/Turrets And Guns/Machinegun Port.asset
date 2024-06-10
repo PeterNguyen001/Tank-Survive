@@ -12,9 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15bfe66b00f51af4086a76b312dd7427, type: 3}
   m_Name: Machinegun Port
   m_EditorClassIdentifier: 
-  ammunitionData: {fileID: 0}
+  icon: {fileID: 0}
+  description: 
+  recipeGridSize: 9
+  isConsumable: 0
+  isCraftable: 0
+  ID: ' '
+  recipe: []
+  recipeMutiplier: 1
   name: 
-  hasTurret: 0
+  tankPartType: 1
+  isTurret: 1
   maxRotationAngle: 30
   rotationSpeed: 40
-  turretSprite: {fileID: 0}
