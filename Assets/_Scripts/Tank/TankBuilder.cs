@@ -35,10 +35,13 @@ public static class TankBuilder
             partSlot.RemovePartFromSlot();
             if (itemSlot.item != null)
             {
-                GameObject newTankPart = GameObject.Find(itemSlot.item.name);
-                if (newTankPart != null)
+                if (itemSlot.item is TankPartData tankPartData)
                 {
-                    partSlot.PutPartInSlot(newTankPart, itemSlot.item);
+                    GameObject newTankPart = GameObject.Find(itemSlot.item.name);
+                    if (newTankPart != null)
+                    {
+                        partSlot.PutPartInSlot(newTankPart, tankPartData);
+                    }
                 }
             }
         }

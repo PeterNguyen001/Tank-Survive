@@ -7,7 +7,7 @@ public class EquipmentSlot : ItemSlot
 {
     private TextMeshProUGUI slotNameText;
     private TankPartType tankPartType;
-    private TankPartSlot partSlot;
+    public TankPartSlot partSlot;
 
     // Override Count property to update tank part when it changes
     public override int Count
@@ -19,6 +19,8 @@ public class EquipmentSlot : ItemSlot
             UpdateTankPart(); // Call UpdateTankPart whenever the count changes
         }
     }
+
+    public TankPartType TankPartType { get => tankPartType; set => tankPartType = value; }
 
     // Method to create the TextMeshPro box
     private void CreateSlotNameText()

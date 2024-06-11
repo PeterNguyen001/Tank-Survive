@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TankPart : MonoBehaviour
 {
-    protected Item tankPart;
+    protected TankPartData tankPart;
     // Start is called before the first frame update
     void Awake()
     {
@@ -26,5 +26,5 @@ public class TankPart : MonoBehaviour
         
     }
 
-    public Item GetTankPart() { return tankPart; }
+    public TankPartData GetTankPart() { return tankPart; }
 }

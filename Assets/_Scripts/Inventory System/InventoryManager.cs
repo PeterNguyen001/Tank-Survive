@@ -32,10 +32,20 @@ public class InventoryManager : MonoBehaviour
         // Check if the source slot has an item to transfer
         if (sourceSlot.item != null)
         {
-            if (targetSlot is EquipmentSlot && !(sourceSlot.item is TankPartData))
+            if (targetSlot is EquipmentSlot equipmentSlot)
             {
-                Debug.LogWarning("Cannot transfer item. Target slot only accepts TankPartData items.");
-                return;
+                if (!(sourceSlot.item is TankPartData tankPartData))
+                {
+                    Debug.LogWarning("Cannot transfer item. Target slot only accepts TankPartData items.");
+                    return;
+                }
+
+                if (equipmentSlot.TankPartType != tankPartData.tankPartType)
+                {
+                    Debug.LogWarning("Cannot transfer item. Target slot only accepts TankPartData items of the same type.");
+                    return;
+                }
+
             }
 
             int transferAmount = 0;

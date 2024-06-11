@@ -6,13 +6,13 @@ using UnityEngine;
 public class TankPartSlot : MonoBehaviour
 {
     public TankPartType tankPartType;
-    private Item tankPart;
+    private TankPartData tankPart;
     // Start is called before the first frame update
 
-    public void PutPartInSlot(GameObject newTankPart, Item part )
+    public void PutPartInSlot(GameObject newTankPart, TankPartData part )
     {
         LinkedList<TankPartSlot> slotsToAdd = new LinkedList<TankPartSlot>();
-        Tools.FindComponentsRecursively(newTankPart.transform, slotsToAdd);
+        
 
         tankPart = part;
         Vector3 position = transform.position;
@@ -20,6 +20,8 @@ public class TankPartSlot : MonoBehaviour
 
         newTankPart = Object.Instantiate(newTankPart, position, rotation);
         newTankPart.transform.SetParent(transform);
+
+        Tools.FindComponentsRecursively(newTankPart.transform, slotsToAdd);
 
         UIStateMachine.Instance.PlayerEquipmentInventory.AddNewEquipmentSlots(slotsToAdd);
     }
@@ -35,14 +37,14 @@ public class TankPartSlot : MonoBehaviour
         UIStateMachine.Instance.PlayerEquipmentInventory.RemoveEquipmentSlots(slotsToRemove);
     }
 
-    public Item GetPartInSlot()
+    public TankPartData GetPartInSlot()
     {
         foreach (Transform child in transform)
         {
             TankPart tankPartComponent = child.GetComponent<TankPart>();
             if (tankPartComponent != null)
             {
-                Item part = tankPartComponent.GetTankPart();
+                TankPartData part = tankPartComponent.GetTankPart();
                 if (part != null)
                 {
                     tankPart = part;
