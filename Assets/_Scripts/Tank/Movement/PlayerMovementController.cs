@@ -20,7 +20,7 @@ public class PlayerMovementController : MonoBehaviour
 
     void Start()
     {
-        InitializeRigidBody();
+        Init();
         
     }
 
@@ -35,7 +35,7 @@ public class PlayerMovementController : MonoBehaviour
         moveDirection = context.ReadValue<Vector2>();
     }
 
-    private void InitializeRigidBody()
+    public void Init()
     {
         chassis = GetComponent<Rigidbody2D>();
 

@@ -13,7 +13,7 @@ public class AmmoLoader : MonoBehaviour
     {
         m_AmmoContainers.Add(new AmmoContainer(bulletPrefab1, 20));
         m_AmmoContainers.Add(new AmmoContainer(bulletPrefab2, 6));
-        SetupGuns();
+        Init();
     }
 
     // Update is called once per frame
@@ -49,7 +49,7 @@ public class AmmoLoader : MonoBehaviour
         return null;
     }
 
-   public void SetupGuns()
+   public void Init()
     {
         gunList = TankStatus.Instance.GetListOfGun();
         foreach (GunBehaviour gun in gunList)

@@ -12,6 +12,10 @@ public class TankStatus : MonoBehaviour
     private LinkedList<GunBehaviour> gunList = new LinkedList<GunBehaviour>();
     private LinkedList<TurretAndPortBehaviour> turretAndGunPortList = new LinkedList<TurretAndPortBehaviour>();
 
+    private AmmoLoader loader;
+    private PlayerGunController gunController;
+    private PlayerMovementController playerMovementController;
+
     private void Awake()
     {
         if (_instance != null && _instance != this)
@@ -21,11 +25,13 @@ public class TankStatus : MonoBehaviour
         }
         _instance = this;
         DontDestroyOnLoad(gameObject);
-        InitializeAllTankParts();
+        InitializeAllTankPartsForTankBuilder();
     }
 
-    private void InitializeAllTankParts()
+    private void InitializeAllTankPartsForTankBuilder()
     {
+        
+
         Tools.FindComponentsRecursively(transform, tankPartList);
         foreach (TankPart tankPart in tankPartList)
         {
@@ -36,6 +42,17 @@ public class TankStatus : MonoBehaviour
                 tankPart.SendMessage("Init", SendMessageOptions.DontRequireReceiver);
             }
         }
+    }
+
+    public void InitializeForGameStart()
+    {
+        loader = Tools.FindComponentRecursively<AmmoLoader>(transform);
+        gunController = Tools.FindComponentRecursively<PlayerGunController>(transform);
+        playerMovementController = Tools.FindComponentRecursively<PlayerMovementController>(transform);
+
+        loader.Init();
+        gunController.Init();
+        playerMovementController.Init();
     }
     void Start()
     {

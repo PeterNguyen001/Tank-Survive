@@ -7,6 +7,7 @@ public class TankPartSlot : MonoBehaviour
 {
     public TankPartType tankPartType;
     private TankPartData tankPart;
+
     // Start is called before the first frame update
 
     public void PutPartInSlot(GameObject newTankPart, TankPartData part )
