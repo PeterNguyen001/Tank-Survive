@@ -15,7 +15,6 @@ public class GunBehaviour : TankPart
     private bool isDelaying = false;
     private bool isReloading = false;
 
-    public bool isAIControlled = false;
 
     private void Start()
     {

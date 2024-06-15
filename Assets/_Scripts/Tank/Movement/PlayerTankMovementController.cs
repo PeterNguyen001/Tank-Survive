@@ -1,17 +1,18 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerMovementController : MonoBehaviour
+public class PlayerTankMovementController : MonoBehaviour
 {
     private Movement PlayerMovement;
 
     public float horsepower = 50;
 
-    private Rigidbody2D chassis;
-    private Rigidbody2D leftTrack;
-    private Rigidbody2D rightTrack;
+    private Rigidbody2D chassisRB;
+    private Rigidbody2D leftTrackRB;
+    private Rigidbody2D rightTrackRB;
 
     LinkedList<Tracks> trackList = new LinkedList<Tracks>();    
 
@@ -20,7 +21,6 @@ public class PlayerMovementController : MonoBehaviour
 
     void Start()
     {
-        Init();
         
     }
 
@@ -37,18 +37,18 @@ public class PlayerMovementController : MonoBehaviour
 
     public void Init()
     {
-        chassis = GetComponent<Rigidbody2D>();
+        chassisRB = Tools.FindComponentRecursively<Chassis>(transform).GetComponent<Rigidbody2D>();
 
         Tools.FindComponentsRecursively(transform, trackList);
         
         foreach (Tracks track in trackList) 
         {
             if (track.name == "Left Track")
-                leftTrack = track.gameObject.GetComponent<Rigidbody2D>();
+                leftTrackRB = track.gameObject.GetComponent<Rigidbody2D>();
             else if(track.name == "Right Track")
-                rightTrack = track.gameObject.GetComponent<Rigidbody2D>();
+                rightTrackRB = track.gameObject.GetComponent<Rigidbody2D>();
         }
-        PlayerMovement = new Movement(chassis, leftTrack, rightTrack, horsepower);
+        PlayerMovement = new Movement(chassisRB, leftTrackRB, rightTrackRB, horsepower);
     }
 
  

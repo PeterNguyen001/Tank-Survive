@@ -7,8 +7,8 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     private static GameManager _instance;
     public static GameManager Instance { get { return _instance; } }
-    PlayerMovementController playerMovementController;
-    PlayerGunController playerGunController;
+    PlayerTankMovementController playerMovementController;
+    TurretController playerGunController;
     private void Awake()
     {
         if (_instance != null && _instance != this)
@@ -22,10 +22,9 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        playerMovementController = GameObject.FindObjectOfType<PlayerMovementController>();
-        playerGunController = GameObject.FindObjectOfType<PlayerGunController>();
+        playerMovementController = GameObject.FindObjectOfType<PlayerTankMovementController>();
+        playerGunController = GameObject.FindObjectOfType<TurretController>();
         UIStateMachine.Instance.TransitionToStateUsingName("Main Menu");
-        DisablePlayerController();
     }
 
     // Update is called once per frame

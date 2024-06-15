@@ -20,7 +20,7 @@ MonoBehaviour:
   ID: ' '
   recipe: []
   recipeMutiplier: 1
-  name: 57mm cannon
+  name: 75mm cannon
   tankPartType: 2
   ammunitionData: {fileID: 11400000, guid: 883b8527c6de3b6468f5ce899dd73473, type: 2}
   isFullAuto: 0

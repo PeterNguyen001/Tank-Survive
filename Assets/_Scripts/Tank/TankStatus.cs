@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class TankStatus : MonoBehaviour
 {
@@ -12,9 +13,11 @@ public class TankStatus : MonoBehaviour
     private LinkedList<GunBehaviour> gunList = new LinkedList<GunBehaviour>();
     private LinkedList<TurretAndPortBehaviour> turretAndGunPortList = new LinkedList<TurretAndPortBehaviour>();
 
+    public PlayerInput playerInput;
+
     private AmmoLoader loader;
-    private PlayerGunController gunController;
-    private PlayerMovementController playerMovementController;
+    private TurretController gunController;
+    private PlayerTankMovementController playerMovementController;
 
     private void Awake()
     {
@@ -26,6 +29,7 @@ public class TankStatus : MonoBehaviour
         _instance = this;
         DontDestroyOnLoad(gameObject);
         InitializeAllTankPartsForTankBuilder();
+        StartBattle();
     }
 
     private void InitializeAllTankPartsForTankBuilder()
@@ -44,15 +48,16 @@ public class TankStatus : MonoBehaviour
         }
     }
 
-    public void InitializeForGameStart()
+    public void StartBattle()
     {
-        loader = Tools.FindComponentRecursively<AmmoLoader>(transform);
-        gunController = Tools.FindComponentRecursively<PlayerGunController>(transform);
-        playerMovementController = Tools.FindComponentRecursively<PlayerMovementController>(transform);
+        loader = GetComponent<AmmoLoader>();
+        gunController = GetComponent<TurretController>();
+        playerMovementController = GetComponent<PlayerTankMovementController>();
 
-        loader.Init();
+        //loader.Init();
         gunController.Init();
         playerMovementController.Init();
+
     }
     void Start()
     {

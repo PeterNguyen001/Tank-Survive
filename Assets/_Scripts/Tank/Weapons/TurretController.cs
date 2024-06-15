@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerGunController : MonoBehaviour
+public class TurretController : MonoBehaviour
 {
 
     private LinkedList<GunBehaviour> gunList = new LinkedList<GunBehaviour>();
@@ -29,25 +29,6 @@ public class PlayerGunController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        // Update each GunRotation
-        //foreach (GunBehaviour turret in gunList)
-        //{
-        //    if (!turret.isAIControlled)
-        //    {
-        //        turret.AimGunAt(mousePosition);
-        //        turret.FireGun(isPullingTheTrigger);
-        //    }
-        //    else
-        //    {
-        //        if(DetectNearestEnemyFromGun(turret) != null)
-        //        {
-        //            Vector3 enemyPosition = DetectNearestEnemyFromGun(turret).transform.position;
-        //            turret.AimGunAt(enemyPosition);
-        //            turret.FireGun(IsEnemyOnGunSight(turret));
-        //        }
-                    
-        //    }
-        //}
         foreach(TurretAndPortBehaviour turret in turretAndGunPortList) 
         {
             if (!turret.isAIControl)

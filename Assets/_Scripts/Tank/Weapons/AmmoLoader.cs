@@ -11,9 +11,7 @@ public class AmmoLoader : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        m_AmmoContainers.Add(new AmmoContainer(bulletPrefab1, 20));
-        m_AmmoContainers.Add(new AmmoContainer(bulletPrefab2, 6));
-        Init();
+        
     }
 
     // Update is called once per frame
@@ -51,6 +49,8 @@ public class AmmoLoader : MonoBehaviour
 
    public void Init()
     {
+        m_AmmoContainers.Add(new AmmoContainer(bulletPrefab1, 20));
+        m_AmmoContainers.Add(new AmmoContainer(bulletPrefab2, 6));
         gunList = TankStatus.Instance.GetListOfGun();
         foreach (GunBehaviour gun in gunList)
         {
