@@ -72,7 +72,7 @@ public class AmmoContainer
         this.ammunitionCount = ammunitionCount;
     }   
     public AmmunitionData GetAmmunitionType()
-    { return bulletPrefab.GetComponent<BulletAndShellBehavior>().GetAmmunitionData(); }
+    { return bulletPrefab.GetComponent<BulletBehavior>().GetAmmunitionData(); }
 
     public GameObject GetbulletPrefab()
     {

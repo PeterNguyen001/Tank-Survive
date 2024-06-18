@@ -54,7 +54,7 @@ public class TankStatus : MonoBehaviour
         gunController = GetComponent<TurretController>();
         playerMovementController = GetComponent<PlayerTankMovementController>();
 
-        //loader.Init();
+        loader.Init();
         gunController.Init();
         playerMovementController.Init();
 

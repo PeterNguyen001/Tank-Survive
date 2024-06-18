@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class BulletAndShellBehavior : MonoBehaviour
+public class BulletBehavior : MonoBehaviour
 {
     public AmmunitionData ammo;
     public float lifespan = 2.0f; // Adjust the lifespan as needed

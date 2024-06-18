@@ -35,6 +35,7 @@ public class GunBehaviour : TankPart
             for (int i = 0; i < gunData.shotPerMinute + 1; i++)
             {
                 GameObject bullet = Instantiate(prefab);
+                BulletBehavior bulletBehavior = bullet.GetComponent<BulletBehavior>();
                 bullet.SetActive(false);
                 bulletPool.AddLast(bullet);
             }
@@ -100,7 +101,7 @@ public class GunBehaviour : TankPart
     {
         if (hasAmmo)
         {
-            bullet.GetComponent<BulletAndShellBehavior>().Fire();
+            bullet.GetComponent<BulletBehavior>().Fire();
             currentAmmoCount--;
         }
     }
@@ -111,7 +112,7 @@ public class GunBehaviour : TankPart
         if (isDelaying)
         { yield break; }
 
-        bullet.GetComponent<BulletAndShellBehavior>().Fire();
+        bullet.GetComponent<BulletBehavior>().Fire();
         currentAmmoCount--;
         isDelaying = true;
         // Calculate the delay between shots based on shotPerMinute

@@ -20,5 +20,15 @@ public class Chassis : TankPart
     public override void Init()
     {
         tankPart = chassisData;
+        InitializeCollider();
+    }
+
+    public void InitializeCollider()
+    {
+        PolygonCollider2D meshCollider = GetComponent<PolygonCollider2D>();
+        if (meshCollider == null)
+        {
+            meshCollider = gameObject.AddComponent<PolygonCollider2D>();
+        }
     }
 }
