@@ -36,6 +36,7 @@ public class GunBehaviour : TankPart
             {
                 GameObject bullet = Instantiate(prefab);
                 BulletBehavior bulletBehavior = bullet.GetComponent<BulletBehavior>();
+                bulletBehavior.IgnoreColliders = TankStatus.Instance.GetListOfCollider2D();
                 bullet.SetActive(false);
                 bulletPool.AddLast(bullet);
             }
@@ -64,7 +65,7 @@ public class GunBehaviour : TankPart
                     bullet.transform.rotation = gunEnd.transform.rotation;
 
                     if (!gunData.isFullAuto)
-                    {
+                    {                    
                         FireSemiAuto(bullet);
                     }
                     else

@@ -12,6 +12,7 @@ public class TankStatus : MonoBehaviour
     private LinkedList<TankPart> tankPartList = new LinkedList<TankPart>();
     private LinkedList<GunBehaviour> gunList = new LinkedList<GunBehaviour>();
     private LinkedList<TurretAndPortBehaviour> turretAndGunPortList = new LinkedList<TurretAndPortBehaviour>();
+    private LinkedList<Collider2D> collider2Ds = new LinkedList<Collider2D>();
 
     public PlayerInput playerInput;
 
@@ -46,6 +47,13 @@ public class TankStatus : MonoBehaviour
                 tankPart.SendMessage("Init", SendMessageOptions.DontRequireReceiver);
             }
         }
+    }
+
+    public LinkedList<Collider2D> GetListOfCollider2D()
+    {
+        gunList.Clear();
+        Tools.FindComponentsRecursively(transform, collider2Ds);
+       return collider2Ds;
     }
 
     public void StartBattle()

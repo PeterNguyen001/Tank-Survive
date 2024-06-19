@@ -8,11 +8,15 @@ public class BulletBehavior : MonoBehaviour
     public float lifespan = 2.0f; // Adjust the lifespan as needed
     public float timer;
     private Rigidbody2D bulletRb;
+    private LinkedList<Collider2D> ignoreColliders = new LinkedList<Collider2D>();
+
+    public LinkedList<Collider2D> IgnoreColliders { get => ignoreColliders; set => ignoreColliders = value; }
 
     // Start is called before the first frame update
     void Start()
     {
         bulletRb = GetComponent<Rigidbody2D>();
+        ignoreColliders.AddLast(gameObject.GetComponent<Collider2D>());
         gameObject.SetActive(false);
     }
 
@@ -49,32 +53,34 @@ public class BulletBehavior : MonoBehaviour
     { return ammo; }
 
     // Calculate the trajectory and return a list of possible collisions
-    public List<RaycastHit2D> CalculateTrajectory(float length, List<Collider2D> ignoreColliders)
-{
-    List<RaycastHit2D> collisions = new List<RaycastHit2D>();
-
-    Vector2 position = transform.position;
-    Vector2 direction = transform.right;
-
-    // Perform a raycast
-    RaycastHit2D[] hits = Physics2D.RaycastAll(position, direction, length);
-
-    // Draw the ray in the Scene view
-    Debug.DrawRay(position, direction * length, Color.red, 1f);
-
-    // Process each hit
-    foreach (RaycastHit2D hit in hits)
+    public List<RaycastHit2D> CalculateTrajectory(float length)
     {
-        if (hit.collider != null && !ignoreColliders.Contains(hit.collider))
+        List<RaycastHit2D> collisions = new List<RaycastHit2D>();
+
+        Vector2 position = transform.position;
+        Vector2 direction = transform.right;
+
+        // Perform a raycast
+        RaycastHit2D[] hits = Physics2D.RaycastAll(position, direction, length);
+
+        // Draw the ray in the Scene view
+        Debug.DrawRay(position, direction * length, Color.red, 1f);
+
+        // Process each hit
+        foreach (RaycastHit2D hit in hits)
         {
-            Debug.Log(hit.collider.gameObject);
-            collisions.Add(hit);
-            // Draw the hit point
-            Debug.DrawLine(position, hit.point, Color.green, 1f);
+            if (hit.collider != null && !ignoreColliders.Contains(hit.collider))
+            {
+                Debug.Log(hit.collider.gameObject);
+                collisions.Add(hit);
+                // Draw the hit point
+                Debug.DrawLine(position, hit.point, Color.green, 1f);
+            }
         }
+
+        return collisions;
     }
 
-    return collisions;
-}
+
 
 }
