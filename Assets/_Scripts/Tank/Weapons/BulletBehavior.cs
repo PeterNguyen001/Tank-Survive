@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BulletBehavior : MonoBehaviour
@@ -46,4 +47,34 @@ public class BulletBehavior : MonoBehaviour
     }
     public AmmunitionData GetAmmunitionData()
     { return ammo; }
+
+    // Calculate the trajectory and return a list of possible collisions
+    public List<RaycastHit2D> CalculateTrajectory(float length, List<Collider2D> ignoreColliders)
+{
+    List<RaycastHit2D> collisions = new List<RaycastHit2D>();
+
+    Vector2 position = transform.position;
+    Vector2 direction = transform.right;
+
+    // Perform a raycast
+    RaycastHit2D[] hits = Physics2D.RaycastAll(position, direction, length);
+
+    // Draw the ray in the Scene view
+    Debug.DrawRay(position, direction * length, Color.red, 1f);
+
+    // Process each hit
+    foreach (RaycastHit2D hit in hits)
+    {
+        if (hit.collider != null && !ignoreColliders.Contains(hit.collider))
+        {
+            Debug.Log(hit.collider.gameObject);
+            collisions.Add(hit);
+            // Draw the hit point
+            Debug.DrawLine(position, hit.point, Color.green, 1f);
+        }
+    }
+
+    return collisions;
+}
+
 }
