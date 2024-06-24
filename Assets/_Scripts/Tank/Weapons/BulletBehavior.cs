@@ -80,7 +80,9 @@ public class BulletBehavior : MonoBehaviour
 
         return collisions;
     }
-
-
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        CalculateTrajectory(10);
+    }
 
 }

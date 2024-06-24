@@ -12,7 +12,7 @@ public class TankStatus : MonoBehaviour
     private LinkedList<TankPart> tankPartList = new LinkedList<TankPart>();
     private LinkedList<GunBehaviour> gunList = new LinkedList<GunBehaviour>();
     private LinkedList<TurretAndPortBehaviour> turretAndGunPortList = new LinkedList<TurretAndPortBehaviour>();
-    private LinkedList<Collider2D> collider2Ds = new LinkedList<Collider2D>();
+    private LinkedList<Collider2D> collider2DList = new LinkedList<Collider2D>();
 
     public PlayerInput playerInput;
 
@@ -38,22 +38,22 @@ public class TankStatus : MonoBehaviour
         
 
         Tools.FindComponentsRecursively(transform, tankPartList);
-        foreach (TankPart tankPart in tankPartList)
-        {
+        //foreach (TankPart tankPart in tankPartList)
+        //{
 
-            if (tankPart != null)
-            {
-                // Call Init on TankPart components if needed
-                tankPart.SendMessage("Init", SendMessageOptions.DontRequireReceiver);
-            }
-        }
+        //    if (tankPart != null)
+        //    {
+        //        // Call Init on TankPart components if needed
+        //        tankPart.SendMessage("Init", SendMessageOptions.DontRequireReceiver);
+        //    }
+        //}
     }
 
     public LinkedList<Collider2D> GetListOfCollider2D()
     {
-        gunList.Clear();
-        Tools.FindComponentsRecursively(transform, collider2Ds);
-       return collider2Ds;
+        collider2DList.Clear();
+        Tools.FindComponentsRecursively(transform, collider2DList);
+       return collider2DList;
     }
 
     public void StartBattle()
@@ -62,8 +62,8 @@ public class TankStatus : MonoBehaviour
         gunController = GetComponent<TurretController>();
         playerMovementController = GetComponent<PlayerTankMovementController>();
 
-        loader.Init();
         gunController.Init();
+        loader.Init();
         playerMovementController.Init();
 
     }

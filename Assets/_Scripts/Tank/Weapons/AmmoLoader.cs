@@ -29,6 +29,7 @@ public class AmmoLoader : MonoBehaviour
             {
                 containerToTakeFrom.RemoveOneAmmunitionCount();
                 StartCoroutine(gun.Reload());
+                
             }
             else if (containerToTakeFrom.IsEmpty())
             {
@@ -54,9 +55,11 @@ public class AmmoLoader : MonoBehaviour
         gunList = TankStatus.Instance.GetListOfGun();
         foreach (GunBehaviour gun in gunList)
         {
-            gun.InitializeBulletPool(FindCorrectAmmunitionType(gun.gunData.ammunitionData).GetbulletPrefab());
-            gun.Reload();
-            Debug.Log("relad " + gun.gameObject.name);
+            AmmoContainer correctAmmunitionType = FindCorrectAmmunitionType(gun.gunData.ammunitionData);
+            GameObject bulletPrefab = correctAmmunitionType.GetbulletPrefab();
+
+            gun.InitializeBulletPool(bulletPrefab);
+
         }
     }
 }
