@@ -2,8 +2,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class TurretController : MonoBehaviour
+public class TurretController : TankSubComponent
 {
+
 
     private LinkedList<GunBehaviour> gunList = new LinkedList<GunBehaviour>();
     private LinkedList<TurretAndPortBehaviour> turretAndGunPortList = new LinkedList<TurretAndPortBehaviour>();
@@ -14,17 +15,13 @@ public class TurretController : MonoBehaviour
     public float detectionRange = 10f;
 
     // Start is called before the first frame update
-    void Start()
-    {
-        Init();
-    }
 
-    public void Init()
+    public override void Init()
     {
         gunList.Clear();
-        gunList = TankStatus.Instance.GetListOfGun();
+        gunList = tankStatus.GetListOfGun();
         turretAndGunPortList.Clear();
-        turretAndGunPortList = TankStatus.Instance.GetListOfTurretAndPort();
+        turretAndGunPortList = tankStatus.GetListOfTurretAndPort();
     }
     // Update is called once per frame
     void FixedUpdate()

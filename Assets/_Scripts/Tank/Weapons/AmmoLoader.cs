@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AmmoLoader : MonoBehaviour
+public class AmmoLoader : TankSubComponent
 {
     public List<AmmoContainer> m_AmmoContainers = new List<AmmoContainer>();
     public LinkedList<GunBehaviour> gunList = new LinkedList<GunBehaviour>();
@@ -48,11 +48,11 @@ public class AmmoLoader : MonoBehaviour
         return null;
     }
 
-   public void Init()
+    public override void Init()
     {
         m_AmmoContainers.Add(new AmmoContainer(bulletPrefab1, 20));
         m_AmmoContainers.Add(new AmmoContainer(bulletPrefab2, 6));
-        gunList = TankStatus.Instance.GetListOfGun();
+        gunList = tankStatus.GetListOfGun();
         foreach (GunBehaviour gun in gunList)
         {
             AmmoContainer correctAmmunitionType = FindCorrectAmmunitionType(gun.gunData.ammunitionData);

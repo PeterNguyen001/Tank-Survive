@@ -34,7 +34,6 @@ public class GunBehaviour : TankPart
         if (prefab != null)
         {
             BulletBehavior bulletBehavior = prefab.GetComponent<BulletBehavior>();
-            bulletBehavior.IgnoreColliders = TankStatus.Instance.GetListOfCollider2D();
             for (int i = 0; i < gunData.shotPerMinute + 1; i++)
             {
                 GameObject bullet = Instantiate(prefab);

@@ -7,8 +7,8 @@ public class TankStatus : MonoBehaviour
 {
     // Start is called before the first frame update
     private static TankStatus _instance;
-    public static TankStatus Instance { get { return _instance; } }
 
+    private List<TankSubComponent> subComponentList = new List<TankSubComponent>();
     private LinkedList<TankPart> tankPartList = new LinkedList<TankPart>();
     private LinkedList<GunBehaviour> gunList = new LinkedList<GunBehaviour>();
     private LinkedList<TurretAndPortBehaviour> turretAndGunPortList = new LinkedList<TurretAndPortBehaviour>();
@@ -17,26 +17,20 @@ public class TankStatus : MonoBehaviour
     public PlayerInput playerInput;
 
     private AmmoLoader loader;
-    private TurretController gunController;
+    private TurretController turretController;
     private PlayerTankMovementController playerMovementController;
 
     private void Awake()
     {
-        if (_instance != null && _instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        _instance = this;
-        DontDestroyOnLoad(gameObject);
-        InitializeAllTankPartsForTankBuilder();
+
+        InitializeAllTankPartsAndComponentForTankBuilder();
         StartBattle();
     }
 
-    private void InitializeAllTankPartsForTankBuilder()
+    private void InitializeAllTankPartsAndComponentForTankBuilder()
     {
-        
 
+        Tools.FindComponentsRecursively(transform, subComponentList);
         Tools.FindComponentsRecursively(transform, tankPartList);
         //foreach (TankPart tankPart in tankPartList)
         //{
@@ -47,6 +41,7 @@ public class TankStatus : MonoBehaviour
         //        tankPart.SendMessage("Init", SendMessageOptions.DontRequireReceiver);
         //    }
         //}
+        
     }
 
     public LinkedList<Collider2D> GetListOfCollider2D()
@@ -59,11 +54,15 @@ public class TankStatus : MonoBehaviour
     public void StartBattle()
     {
         loader = GetComponent<AmmoLoader>();
-        gunController = GetComponent<TurretController>();
+        turretController = GetComponent<TurretController>();
         playerMovementController = GetComponent<PlayerTankMovementController>();
 
-        gunController.Init();
+        foreach (TankSubComponent subComponent in subComponentList)
+        {
+            subComponent.SetStatus();
+        }
         loader.Init();
+        turretController.Init();
         playerMovementController.Init();
 
     }

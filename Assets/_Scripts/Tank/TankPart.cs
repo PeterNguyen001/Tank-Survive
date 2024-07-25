@@ -5,6 +5,10 @@ using UnityEngine;
 public class TankPart : MonoBehaviour
 {
     protected TankPartData tankPart;
+    private bool isDisable;
+
+    public bool IsDisable { get => isDisable; set => isDisable = value; }
+
     // Start is called before the first frame update
     void Awake()
     {

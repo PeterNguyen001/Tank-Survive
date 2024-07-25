@@ -8,6 +8,7 @@ public class BulletBehavior : MonoBehaviour
     public float lifespan = 2.0f; // Adjust the lifespan as needed
     public float timer;
     private Rigidbody2D bulletRb;
+    private Collider2D bulletColider;
     private LinkedList<Collider2D> ignoreColliders = new LinkedList<Collider2D>();
 
     public LinkedList<Collider2D> IgnoreColliders { get => ignoreColliders; set => ignoreColliders = value; }
@@ -16,7 +17,8 @@ public class BulletBehavior : MonoBehaviour
     void Start()
     {
         bulletRb = GetComponent<Rigidbody2D>();
-        ignoreColliders.AddLast(gameObject.GetComponent<Collider2D>());
+
+        bulletColider = GetComponent<Collider2D>();
         gameObject.SetActive(false);
     }
 
@@ -69,7 +71,7 @@ public class BulletBehavior : MonoBehaviour
         // Process each hit
         foreach (RaycastHit2D hit in hits)
         {
-            if (hit.collider != null && !ignoreColliders.Contains(hit.collider))
+            if (hit.collider != null && !ignoreColliders.Contains(hit.collider) && hit.collider != bulletColider)
             {
                 Debug.Log(hit.collider.gameObject);
                 collisions.Add(hit);
@@ -82,6 +84,7 @@ public class BulletBehavior : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.Log(collision.gameObject.name);
         CalculateTrajectory(10);
     }
 

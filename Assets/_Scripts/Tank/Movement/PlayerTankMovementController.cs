@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerTankMovementController : MonoBehaviour
+public class PlayerTankMovementController : TankSubComponent
 {
     private Movement PlayerMovement;
 
@@ -35,7 +35,7 @@ public class PlayerTankMovementController : MonoBehaviour
         moveDirection = context.ReadValue<Vector2>();
     }
 
-    public void Init()
+    public override void Init()
     {
         chassisRB = Tools.FindComponentRecursively<Chassis>(transform).GetComponent<Rigidbody2D>();
 
