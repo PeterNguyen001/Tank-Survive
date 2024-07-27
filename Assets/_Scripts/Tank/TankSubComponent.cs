@@ -12,7 +12,7 @@ public class TankSubComponent : MonoBehaviour
 
     public void SetStatus()
     {
-        Debug.Log("st");
+
         tankStatus = gameObject.GetComponent<TankStatus>();
     }
 }

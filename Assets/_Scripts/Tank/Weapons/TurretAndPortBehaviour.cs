@@ -6,7 +6,7 @@ public class TurretAndPortBehaviour : TankPart
 {
     public TurretAndGunPortData turretAndGunPortData;
     private GunRotation gunRotation;
-    private LinkedList<GunBehaviour> gunUnderTurretControl = new LinkedList<GunBehaviour>();
+    private LinkedList<GunBehaviour> gunUnderTurretControl = new LinkedList<GunBehaviour> ();
 
     public bool isAIControl;
     // Start is called before the first frame update
@@ -21,12 +21,12 @@ public class TurretAndPortBehaviour : TankPart
     {
         gunRotation = new GunRotation(this);
         tankPart = turretAndGunPortData;
+        gunUnderTurretControl.Clear();
+        Tools.FindComponentsRecursively(transform, gunUnderTurretControl);
     }
 
     public LinkedList<GunBehaviour> GetGunUnderTurretControl() 
     {
-        gunUnderTurretControl.Clear();
-        Tools.FindComponentsRecursively(transform, gunUnderTurretControl);
         return gunUnderTurretControl;
     }
 

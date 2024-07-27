@@ -29,11 +29,12 @@ public class GunBehaviour : TankPart
         loader.ReloadGun(this);
     }
 
-    public void InitializeBulletPool(GameObject prefab)
+    public void InitializeBulletPool(GameObject prefab, LinkedList<Collider2D> collider2Ds)
     {
         if (prefab != null)
         {
             BulletBehavior bulletBehavior = prefab.GetComponent<BulletBehavior>();
+            bulletBehavior.SetIgnoreColliders(collider2Ds);
             for (int i = 0; i < gunData.shotPerMinute + 1; i++)
             {
                 GameObject bullet = Instantiate(prefab);

@@ -32,16 +32,11 @@ public class TankStatus : MonoBehaviour
 
         Tools.FindComponentsRecursively(transform, subComponentList);
         Tools.FindComponentsRecursively(transform, tankPartList);
-        //foreach (TankPart tankPart in tankPartList)
-        //{
+        foreach (TankPart tankPart in tankPartList)
+        {
 
-        //    if (tankPart != null)
-        //    {
-        //        // Call Init on TankPart components if needed
-        //        tankPart.SendMessage("Init", SendMessageOptions.DontRequireReceiver);
-        //    }
-        //}
-        
+        }
+
     }
 
     public LinkedList<Collider2D> GetListOfCollider2D()
@@ -60,10 +55,11 @@ public class TankStatus : MonoBehaviour
         foreach (TankSubComponent subComponent in subComponentList)
         {
             subComponent.SetStatus();
+            subComponent.Init();
         }
-        loader.Init();
-        turretController.Init();
-        playerMovementController.Init();
+        //loader.Init();
+        //turretController.Init();
+        //playerMovementController.Init();
 
     }
     void Start()

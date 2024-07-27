@@ -9,9 +9,9 @@ public static class Tools
     {
         // Check if the parent transform itself has the component(s)
         T[] parentComponents = parent.GetComponents<T>();
-        if (parentComponents != null)
+        foreach (T component in parentComponents)
         {
-            foreach (T component in parentComponents)
+            if (!componentCollection.Contains(component))
             {
                 componentCollection.Add(component);
             }
@@ -20,11 +20,12 @@ public static class Tools
         // Iterate through each child of the parent transform
         foreach (Transform child in parent)
         {
+
             // Check if the child has the component(s)
             T[] childComponents = child.GetComponents<T>();
-            if (childComponents != null)
+            foreach (T component in childComponents)
             {
-                foreach (T component in childComponents)
+                if (!componentCollection.Contains(component))
                 {
                     componentCollection.Add(component);
                 }
@@ -34,6 +35,7 @@ public static class Tools
             FindComponentsRecursively(child, componentCollection);
         }
     }
+
 
 
     public static T FindComponentRecursively<T>(Transform parent) where T : Component

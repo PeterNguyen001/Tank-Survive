@@ -5,7 +5,7 @@ using UnityEngine;
 public class AmmoLoader : TankSubComponent
 {
     public List<AmmoContainer> m_AmmoContainers = new List<AmmoContainer>();
-    public LinkedList<GunBehaviour> gunList = new LinkedList<GunBehaviour>();
+    public LinkedList<GunBehaviour> gunList;
     public GameObject bulletPrefab1;
     public GameObject bulletPrefab2;
     // Start is called before the first frame update
@@ -58,7 +58,7 @@ public class AmmoLoader : TankSubComponent
             AmmoContainer correctAmmunitionType = FindCorrectAmmunitionType(gun.gunData.ammunitionData);
             GameObject bulletPrefab = correctAmmunitionType.GetbulletPrefab();
 
-            gun.InitializeBulletPool(bulletPrefab);
+            gun.InitializeBulletPool(bulletPrefab, tankStatus.GetListOfCollider2D());
 
         }
     }

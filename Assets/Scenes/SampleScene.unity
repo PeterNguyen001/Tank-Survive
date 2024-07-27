@@ -8364,6 +8364,7 @@ GameObject:
   - component: {fileID: 1953501619}
   - component: {fileID: 1953501618}
   - component: {fileID: 1953501615}
+  - component: {fileID: 1953501620}
   m_Layer: 9
   m_Name: Sherman Chassis
   m_TagString: Player Tank Part
@@ -8480,6 +8481,58 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!60 &1953501620
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1953501613}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 3.030303, y: 3.030303}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -0.6666667, y: 0.33333334}
+      - {x: -0.69696975, y: 0.24242425}
+      - {x: -0.69696975, y: -0.3030303}
+      - {x: -0.6060606, y: -0.3939394}
+      - {x: 0.5151515, y: -0.3939394}
+      - {x: 0.5757576, y: -0.33333334}
+      - {x: 0.5757576, y: 0.33333334}
+  m_UseDelaunayMesh: 0
 --- !u!1 &2024680979
 GameObject:
   m_ObjectHideFlags: 0
