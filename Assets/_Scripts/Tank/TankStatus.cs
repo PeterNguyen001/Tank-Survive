@@ -29,7 +29,7 @@ public class TankStatus : MonoBehaviour
 
     private void InitializeAllTankPartsAndComponentForTankBuilder()
     {
-
+        Tools.FindComponentsRecursively(transform, collider2DList);
         Tools.FindComponentsRecursively(transform, subComponentList);
         Tools.FindComponentsRecursively(transform, tankPartList);
         foreach (TankPart tankPart in tankPartList)
@@ -41,8 +41,6 @@ public class TankStatus : MonoBehaviour
 
     public LinkedList<Collider2D> GetListOfCollider2D()
     {
-        collider2DList.Clear();
-        Tools.FindComponentsRecursively(transform, collider2DList);
        return collider2DList;
     }
 
@@ -69,7 +67,7 @@ public class TankStatus : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public LinkedList<GunBehaviour> GetListOfGun()

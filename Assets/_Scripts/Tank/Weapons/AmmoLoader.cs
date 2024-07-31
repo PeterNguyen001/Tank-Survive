@@ -58,7 +58,7 @@ public class AmmoLoader : TankSubComponent
             AmmoContainer correctAmmunitionType = FindCorrectAmmunitionType(gun.gunData.ammunitionData);
             GameObject bulletPrefab = correctAmmunitionType.GetbulletPrefab();
 
-            gun.InitializeBulletPool(bulletPrefab, tankStatus.GetListOfCollider2D());
+            gun.InitializeBulletPool(bulletPrefab, tankStatus);
 
         }
     }

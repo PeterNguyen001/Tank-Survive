@@ -10,19 +10,21 @@ public class BulletBehavior : MonoBehaviour
     private Rigidbody2D bulletRb;
     private LinkedList<Collider2D> ignoreColliders = new LinkedList<Collider2D>();
 
-    public LinkedList<Collider2D> IgnoreColliders { get => ignoreColliders; set => ignoreColliders = value; }
+    // Serialize this field to ensure it shows in the Inspector for debugging purposes
+    [SerializeField]
+    private TankStatus tankStatus;
 
     // Start is called before the first frame update
     void Start()
     {
         bulletRb = GetComponent<Rigidbody2D>();
 
-        gameObject.SetActive(false);
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+
         if (gameObject.activeSelf)
         {
             bulletRb.AddForce(transform.right * ammo.velocity);
@@ -40,6 +42,7 @@ public class BulletBehavior : MonoBehaviour
 
     public void Fire()
     {
+
         gameObject.SetActive(true);
     }
 
@@ -49,17 +52,24 @@ public class BulletBehavior : MonoBehaviour
         gameObject.SetActive(false);
         timer = 0f; // Reset the timer when firing
     }
-    public AmmunitionData GetAmmunitionData()
-    { return ammo; }
 
-    public void SetIgnoreColliders(LinkedList<Collider2D> Colliders)
+    public AmmunitionData GetAmmunitionData()
     {
-        ignoreColliders = Colliders;
+        return ammo;
+    }
+
+    public void SetTankStatus(TankStatus status)
+    {
+        tankStatus = status;
+
+        
     }
 
     // Calculate the trajectory and return a list of possible collisions
     public List<RaycastHit2D> CalculateTrajectory(float length)
     {
+
+
         List<RaycastHit2D> collisions = new List<RaycastHit2D>();
 
         Vector2 position = transform.position;
@@ -75,7 +85,7 @@ public class BulletBehavior : MonoBehaviour
         foreach (RaycastHit2D hit in hits)
         {
             BulletBehavior bulletBehavior = hit.collider.gameObject.GetComponent<BulletBehavior>();
-            if (hit.collider != null && !ignoreColliders.Contains(hit.collider) && bulletBehavior == null)
+            if (hit.collider != null && !tankStatus.GetListOfCollider2D().Contains(hit.collider) && bulletBehavior == null)
             {
                 Debug.Log(hit.collider.gameObject);
                 collisions.Add(hit);
@@ -86,10 +96,10 @@ public class BulletBehavior : MonoBehaviour
 
         return collisions;
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log(collision.gameObject.name);
+
         CalculateTrajectory(10);
     }
-
 }

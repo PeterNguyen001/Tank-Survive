@@ -29,17 +29,18 @@ public class GunBehaviour : TankPart
         loader.ReloadGun(this);
     }
 
-    public void InitializeBulletPool(GameObject prefab, LinkedList<Collider2D> collider2Ds)
+    public void InitializeBulletPool(GameObject prefab, TankStatus status)
     {
+        prefab.GetComponent<BulletBehavior>().SetTankStatus(status);
         if (prefab != null)
         {
-            BulletBehavior bulletBehavior = prefab.GetComponent<BulletBehavior>();
-            bulletBehavior.SetIgnoreColliders(collider2Ds);
-            for (int i = 0; i < gunData.shotPerMinute + 1; i++)
+
+            
+            for (int i = 0; i <= gunData.shotPerMinute; i++)
             {
+
+
                 GameObject bullet = Instantiate(prefab);
-                ;
-                bullet.SetActive(false);
                 bulletPool.AddLast(bullet);
             }
         }
@@ -127,7 +128,7 @@ public class GunBehaviour : TankPart
 
     public IEnumerator Reload()
     {
-        Debug.Log("reloading");
+        //Debug.Log("reloading");
         // Check if the gun is already reloading
         if (isReloading)
         {
@@ -146,7 +147,7 @@ public class GunBehaviour : TankPart
 
         // Reset the reloading flag
         isReloading = false;
-        Debug.Log("reloaded");
+        //Debug.Log("reloaded");
     }
 
 }
