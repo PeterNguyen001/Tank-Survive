@@ -29,23 +29,23 @@ public class GunBehaviour : TankPart
         loader.ReloadGun(this);
     }
 
-    public void InitializeBulletPool(GameObject prefab, TankStatus status)
+    public void InitializeBulletPool(GameObject prefab, LinkedList<Collider2D> ListOfOwnTankCollider)
     {
-        prefab.GetComponent<BulletBehavior>().SetTankStatus(status);
+        
         if (prefab != null)
         {
-
             
             for (int i = 0; i <= gunData.shotPerMinute; i++)
             {
-
-
-                GameObject bullet = Instantiate(prefab);
-                bulletPool.AddLast(bullet);
+                GameObject bulletClone = Instantiate(prefab);
+                BulletBehavior bulletBehavior = bulletClone.GetComponent<BulletBehavior>();
+                bulletBehavior.SetupBullet(ListOfOwnTankCollider);
+                bulletPool.AddLast(bulletClone);
             }
         }
         else
             Debug.Log("Out of Ammo");
+        
     }
 
 
@@ -112,7 +112,7 @@ public class GunBehaviour : TankPart
 
     private IEnumerator FireFullAuto(GameObject bullet)
     {
-        // Fire a bullet
+        // Fire a bulletClone
         if (isDelaying)
         { yield break; }
 

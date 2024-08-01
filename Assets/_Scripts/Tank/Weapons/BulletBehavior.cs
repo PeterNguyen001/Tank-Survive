@@ -8,18 +8,18 @@ public class BulletBehavior : MonoBehaviour
     public float lifespan = 2.0f; // Adjust the lifespan as needed
     public float timer;
     private Rigidbody2D bulletRb;
+
+    [SerializeField]
     private LinkedList<Collider2D> ignoreColliders = new LinkedList<Collider2D>();
+
+    private LinkedList<RaycastHit2D> collisions = new LinkedList<RaycastHit2D>();
+    private HashSet<Collider2D> existingColliders = new HashSet<Collider2D>();
 
     // Serialize this field to ensure it shows in the Inspector for debugging purposes
     [SerializeField]
     private TankStatus tankStatus;
 
     // Start is called before the first frame update
-    void Start()
-    {
-        bulletRb = GetComponent<Rigidbody2D>();
-
-    }
 
     // Update is called once per frame
     void FixedUpdate()
@@ -47,7 +47,7 @@ public class BulletBehavior : MonoBehaviour
     }
 
     // Deactivate the bullet and reset the timer
-    private void DeactivateBullet()
+    public void DeactivateBullet()
     {
         gameObject.SetActive(false);
         timer = 0f; // Reset the timer when firing
@@ -58,20 +58,15 @@ public class BulletBehavior : MonoBehaviour
         return ammo;
     }
 
-    public void SetTankStatus(TankStatus status)
+    public void SetupBullet(LinkedList<Collider2D> colliders)
     {
-        tankStatus = status;
-
-        
+        bulletRb = GetComponent<Rigidbody2D>();
+        ignoreColliders = colliders;
     }
 
     // Calculate the trajectory and return a list of possible collisions
-    public List<RaycastHit2D> CalculateTrajectory(float length)
+    public LinkedList<RaycastHit2D> CalculateTrajectory(float length)
     {
-
-
-        List<RaycastHit2D> collisions = new List<RaycastHit2D>();
-
         Vector2 position = transform.position;
         Vector2 direction = transform.right;
 
@@ -85,21 +80,47 @@ public class BulletBehavior : MonoBehaviour
         foreach (RaycastHit2D hit in hits)
         {
             BulletBehavior bulletBehavior = hit.collider.gameObject.GetComponent<BulletBehavior>();
-            if (hit.collider != null && !tankStatus.GetListOfCollider2D().Contains(hit.collider) && bulletBehavior == null)
+            if (hit.collider != null && !ignoreColliders.Contains(hit.collider) && bulletBehavior == null)
             {
-                Debug.Log(hit.collider.gameObject);
-                collisions.Add(hit);
-                // Draw the hit point
-                Debug.DrawLine(position, hit.point, Color.green, 1f);
+                if (!existingColliders.Contains(hit.collider))
+                {
+                    Debug.Log("Add collider: " + hit.collider.gameObject);
+                    collisions.AddLast(hit);
+                    existingColliders.Add(hit.collider);
+                    // Draw the hit point
+                    Debug.DrawLine(position, hit.point, Color.green, 1f);
+                }
             }
         }
 
         return collisions;
     }
 
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
 
-        CalculateTrajectory(10);
+        CalculateTrajectory(2);
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        // Remove the collider from existingColliders
+        if (existingColliders.Contains(other))
+        {
+            Debug.Log("Remove Collider: " + other);
+            existingColliders.Remove(other);
+            // Also remove from collisions list
+            LinkedListNode<RaycastHit2D> node = collisions.First;
+            while (node != null)
+            {
+                LinkedListNode<RaycastHit2D> nextNode = node.Next;
+                if (node.Value.collider == other)
+                {
+                    collisions.Remove(node);
+                }
+                node = nextNode;
+            }
+        }
     }
 }
