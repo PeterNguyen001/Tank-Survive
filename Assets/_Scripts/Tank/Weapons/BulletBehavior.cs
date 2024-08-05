@@ -15,12 +15,8 @@ public class BulletBehavior : MonoBehaviour
     private LinkedList<RaycastHit2D> collisions = new LinkedList<RaycastHit2D>();
     private HashSet<Collider2D> existingColliders = new HashSet<Collider2D>();
 
-    // Serialize this field to ensure it shows in the Inspector for debugging purposes
-    [SerializeField]
-    private TankStatus tankStatus;
-
-    // Start is called before the first frame update
-
+    private bool hasTarget;
+    private bool isMissed;
     // Update is called once per frame
     void FixedUpdate()
     {
@@ -50,6 +46,10 @@ public class BulletBehavior : MonoBehaviour
     public void DeactivateBullet()
     {
         gameObject.SetActive(false);
+        collisions.Clear();
+        existingColliders.Clear();
+        hasTarget = false;
+        isMissed = false;
         timer = 0f; // Reset the timer when firing
     }
 
@@ -97,11 +97,63 @@ public class BulletBehavior : MonoBehaviour
     }
 
 
+    public Collider2D CalculateHit(LinkedList<RaycastHit2D> hits, float missChance)
+    {
+        if (hits.Count > 0)
+        {
+            // Determine if the shot is a miss based on the miss chance
+            if (Random.value < missChance)
+            {
+                // It's a miss
+                hasTarget = false;
+                isMissed = true;
+                return null;
+            }
+
+            // Choose a random hit from the list
+            int randomIndex = Random.Range(0, hits.Count);
+            LinkedListNode<RaycastHit2D> node = hits.First;
+
+            for (int i = 0; i < randomIndex; i++)
+            {
+                node = node.Next;
+            }
+
+            RaycastHit2D hit = node.Value;
+            hasTarget = true;
+            isMissed = false;
+            return hit.collider;
+        }
+        else
+        {
+            // No hits, it's a miss
+            hasTarget = false;
+            isMissed = true;
+            return null;
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-
-        CalculateTrajectory(2);
+        // Assuming a 20% chance to miss
+        float missChance = 0.2f;
+        Collider2D hitCollider = CalculateHit(CalculateTrajectory(5), missChance);
+        if (hitCollider != null)
+        {
+            // Handle the hit
+            if(collision = hitCollider)
+            {
+                Debug.Log("Hit: " + hitCollider.gameObject.name);
+                DeactivateBullet();
+            }
+        }
+        else if (isMissed)
+        {
+            // Handle the miss
+            Debug.Log("Missed");
+        }
     }
+
 
     private void OnTriggerExit2D(Collider2D other)
     {
