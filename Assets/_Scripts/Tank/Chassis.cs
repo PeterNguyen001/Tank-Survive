@@ -20,7 +20,7 @@ public class Chassis : TankPart
     public override void Init()
     {
         tankPart = chassisData;
-        InitializeCollider();
+        //InitializeCollider();
     }
 
     public void InitializeCollider()
