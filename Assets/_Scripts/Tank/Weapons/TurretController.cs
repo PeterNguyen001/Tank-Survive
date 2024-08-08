@@ -26,28 +26,34 @@ public class TurretController : TankSubComponent
     // Update is called once per frame
     void FixedUpdate()
     {
-        foreach(TurretAndPortBehaviour turret in turretAndGunPortList) 
+        foreach (TurretAndPortBehaviour turret in turretAndGunPortList)
         {
             if (!turret.isAIControl)
             {
                 turret.AimGunAt(mousePosition);
-                foreach (GunBehaviour gun in turret.GetGunUnderTurretControl())
-                {
-                    gun.FireGun(isPullingTheTrigger);
-                }
             }
             else
             {
-                if (DetectNearestEnemyFromGun(turret) != null)
+                GameObject nearestEnemy = DetectNearestEnemyFromGun(turret);
+                if (nearestEnemy != null)
                 {
-                    Vector3 enemyPosition = DetectNearestEnemyFromGun(turret).transform.position;
+                    Vector3 enemyPosition = nearestEnemy.transform.position;
                     turret.AimGunAt(enemyPosition);
                 }
+            }
 
+            bool shouldFire = isPullingTheTrigger;
+            foreach (GunBehaviour gun in turret.GetGunUnderTurretControl())
+            {
+                if (turret.isAIControl)
+                {
+                    shouldFire = IsEnemyOnGunSight(gun);
+                }
+                gun.FireGun(shouldFire);
             }
         }
-
     }
+
 
     public void FireGun(InputAction.CallbackContext context)
     {
@@ -136,14 +142,22 @@ public class TurretController : TankSubComponent
         // Cast a ray in the direction of the turret's rotation with the detection range
         RaycastHit2D hit = Physics2D.Raycast(gunEndPosition, rayDirection, detectionRange);
 
+        // Draw the ray for debugging purposes
+        Debug.DrawRay(gunEndPosition, rayDirection * detectionRange, Color.red);
+        Debug.Log(hit.collider.name);
         // Check if the ray hits an enemy object
         if (hit.collider != null && hit.collider.CompareTag("Enemy"))
         {
+            // Draw a green line if an enemy is hit
+            Debug.DrawLine(gunEndPosition, hit.point, Color.green);
             return true;
         }
 
+        // Draw a yellow line if no enemy is hit
+        Debug.DrawLine(gunEndPosition, gunEndPosition + rayDirection * detectionRange, Color.yellow);
         return false;
     }
+
 
     //private void OnDrawGizmosSelected()
     //{
@@ -152,7 +166,7 @@ public class TurretController : TankSubComponent
     //        if (gun.gunData != null)
     //        {
     //            // Calculate the cone direction based on the maximum rotation angle
-    //            Vector3 coneDirection = Quaternion.Euler(0, 0, gun.GetGunLocalInitialAngle() +transform.eulerAngles.z % 360f) * Vector3.right;
+    //            Vector3 coneDirection = Quaternion.Euler(0, 0, gun.GetGunLocalInitialAngle() + transform.eulerAngles.z % 360f) * Vector3.right;
 
     //            // Draw the detection cone
     //            Gizmos.color = Color.yellow;

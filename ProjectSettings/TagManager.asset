@@ -6,8 +6,6 @@ TagManager:
   tags:
   - Gun
   - Enemy
-  - Player Tank Part
-  - Player Tank Part Slot
   layers:
   - Default
   - TransparentFX

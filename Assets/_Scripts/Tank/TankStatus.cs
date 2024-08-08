@@ -5,8 +5,7 @@ using UnityEngine.InputSystem;
 
 public class TankStatus : MonoBehaviour
 {
-    // Start is called before the first frame update
-    private static TankStatus _instance;
+    // Start is called before the first frame update;
 
     private List<TankSubComponent> subComponentList = new List<TankSubComponent>();
     private LinkedList<TankPart> tankPartList = new LinkedList<TankPart>();
@@ -14,11 +13,15 @@ public class TankStatus : MonoBehaviour
     private LinkedList<TurretAndPortBehaviour> turretAndGunPortList = new LinkedList<TurretAndPortBehaviour>();
     private LinkedList<Collider2D> collider2DList = new LinkedList<Collider2D>();
 
-    public PlayerInput playerInput;
 
     private AmmoLoader loader;
     private TurretController turretController;
     private PlayerTankMovementController playerMovementController;
+
+    [SerializeField]
+    private LayerMask enemyLayerMask;
+
+    public LayerMask EnemyLayerMask { get => enemyLayerMask; set => enemyLayerMask = value; }
 
     private void Awake()
     {

@@ -515,7 +515,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c3f91be845ce2e4abddc18bf56b01af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerInput: {fileID: 0}
 --- !u!114 &134827960
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1055,6 +1054,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6f093fe21a008347a5fcf134044cff8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HP: 0
   chassisData: {fileID: 11400000, guid: 01b83a77553b6124b9263a273c057ac6, type: 2}
 --- !u!60 &187488844
 PolygonCollider2D:
@@ -1290,7 +1290,7 @@ GameObject:
   - component: {fileID: 192573427}
   m_Layer: 11
   m_Name: Tracks Slot
-  m_TagString: Player Tank Part Slot
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1339,7 +1339,7 @@ GameObject:
   - component: {fileID: 254097473}
   m_Layer: 9
   m_Name: Tiger Chassis
-  m_TagString: Player Tank Part
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1373,6 +1373,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6f093fe21a008347a5fcf134044cff8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HP: 0
   chassisData: {fileID: 11400000, guid: 5c428571e227f92429722fa7b7f95762, type: 2}
 --- !u!50 &254097471
 Rigidbody2D:
@@ -2216,7 +2217,7 @@ GameObject:
   - component: {fileID: 535188194}
   m_Layer: 10
   m_Name: Machinegun
-  m_TagString: Gun
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2249,6 +2250,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d9980fd180385a42b68881beebf8836, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HP: 0
   turretAndGunPortData: {fileID: 11400000, guid: 746c3be65b3952346a13418f8b005e14, type: 2}
   isAIControl: 1
 --- !u!114 &535188195
@@ -2263,6 +2265,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f97ee3ccd0de4994cb2d2e764ceda24d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HP: 0
   gunData: {fileID: 11400000, guid: cb403b2502d81c940a64e37388f3ce2d, type: 2}
 --- !u!212 &535188196
 SpriteRenderer:
@@ -2361,7 +2364,7 @@ GameObject:
   - component: {fileID: 578308171}
   m_Layer: 0
   m_Name: Chassis Slot
-  m_TagString: Player Tank Part Slot
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2597,7 +2600,7 @@ GameObject:
   - component: {fileID: 692890745}
   m_Layer: 10
   m_Name: Mahcinegun Port Slot
-  m_TagString: Player Tank Part Slot
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4129,7 +4132,7 @@ GameObject:
   - component: {fileID: 907280067}
   m_Layer: 5
   m_Name: Tiger Turret
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4369,7 +4372,7 @@ GameObject:
   - component: {fileID: 1041314628}
   m_Layer: 10
   m_Name: Mahcinegun Port Slot
-  m_TagString: Player Tank Part Slot
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5113,7 +5116,7 @@ GameObject:
   - component: {fileID: 1186722477}
   m_Layer: 11
   m_Name: Tracks Slot
-  m_TagString: Player Tank Part Slot
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5377,7 +5380,7 @@ GameObject:
   - component: {fileID: 1251570880}
   m_Layer: 10
   m_Name: Turret 1 Slot
-  m_TagString: Player Tank Part Slot
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7442,7 +7445,7 @@ GameObject:
   - component: {fileID: 1631141148}
   m_Layer: 10
   m_Name: Turret 1 Slot
-  m_TagString: Player Tank Part Slot
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7488,7 +7491,7 @@ GameObject:
   - component: {fileID: 1635091085}
   m_Layer: 10
   m_Name: 88mm Cannon
-  m_TagString: Gun
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8042,7 +8045,7 @@ GameObject:
   - component: {fileID: 1825175398}
   m_Layer: 10
   m_Name: 75mm Cannon
-  m_TagString: Gun
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8075,6 +8078,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f97ee3ccd0de4994cb2d2e764ceda24d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HP: 0
   gunData: {fileID: 11400000, guid: e7353cbd6710c234daf0c1983a9e63ac, type: 2}
 --- !u!212 &1825175399
 SpriteRenderer:
@@ -8265,9 +8269,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1864113511}
+  - component: {fileID: 1864113512}
   m_Layer: 0
   m_Name: Dummy Target
-  m_TagString: Player Tank Part Slot
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8288,6 +8293,18 @@ Transform:
   - {fileID: 254097467}
   m_Father: {fileID: 2130047250}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1864113512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1864113510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c3f91be845ce2e4abddc18bf56b01af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1881837481
 GameObject:
   m_ObjectHideFlags: 0
@@ -8335,8 +8352,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d9980fd180385a42b68881beebf8836, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HP: 0
   turretAndGunPortData: {fileID: 11400000, guid: b4de8a7d9474b9f4f9904d7c5b8de5de, type: 2}
-  isAIControl: 0
+  isAIControl: 1
 --- !u!212 &1881837484
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -8404,7 +8422,7 @@ GameObject:
   - component: {fileID: 1953501620}
   m_Layer: 9
   m_Name: Sherman Chassis
-  m_TagString: Player Tank Part
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8438,6 +8456,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6f093fe21a008347a5fcf134044cff8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HP: 0
   chassisData: {fileID: 11400000, guid: 01b83a77553b6124b9263a273c057ac6, type: 2}
 --- !u!50 &1953501618
 Rigidbody2D:

@@ -8,6 +8,8 @@ public class TankPart : MonoBehaviour
     protected TankPartData tankPart;
     private bool isDisable;
 
+    [SerializeField]
+    private float HP;
     public bool IsDisable { get => isDisable; set => isDisable = value; }
 
     // Start is called before the first frame update
@@ -22,7 +24,7 @@ public class TankPart : MonoBehaviour
     }
     void Start()
     {
-        
+        HP = 100;
     }
 
     // Update is called once per frame
@@ -31,6 +33,10 @@ public class TankPart : MonoBehaviour
         
     }
 
+    public void TakeDamage(float damage)
+    {
+        HP -= damage;
+    }
 
     public TankPartData GetTankPart() { return tankPart; }
 }
