@@ -12,7 +12,11 @@ public class TurretController : TankSubComponent
     private Vector3 mousePosition;
     private bool isPullingTheTrigger;
 
+    private LinkedList<Collider2D> tankColliders;
+
     public float detectionRange = 10f;
+
+
 
     // Start is called before the first frame update
 
@@ -22,6 +26,7 @@ public class TurretController : TankSubComponent
         gunList = tankStatus.GetListOfGun();
         turretAndGunPortList.Clear();
         turretAndGunPortList = tankStatus.GetListOfTurretAndPort();
+        tankColliders = tankStatus.GetListOfCollider2D();
     }
     // Update is called once per frame
     void FixedUpdate()
@@ -139,12 +144,28 @@ public class TurretController : TankSubComponent
         // Calculate the direction from the right side of the gunEnd
         Vector3 rayDirection = gunRotation * Vector3.right;
 
+        // Temporarily disable the tank's colliders
+        LinkedListNode<Collider2D> current = tankColliders.First;
+        while (current != null)
+        {
+            current.Value.enabled = false;
+            current = current.Next;
+        }
+
         // Cast a ray in the direction of the turret's rotation with the detection range
         RaycastHit2D hit = Physics2D.Raycast(gunEndPosition, rayDirection, detectionRange);
 
+        // Re-enable the tank's colliders
+        current = tankColliders.First;
+        while (current != null)
+        {
+            current.Value.enabled = true;
+            current = current.Next;
+        }
+
         // Draw the ray for debugging purposes
         Debug.DrawRay(gunEndPosition, rayDirection * detectionRange, Color.red);
-        Debug.Log(hit.collider.name);
+
         // Check if the ray hits an enemy object
         if (hit.collider != null && hit.collider.CompareTag("Enemy"))
         {
