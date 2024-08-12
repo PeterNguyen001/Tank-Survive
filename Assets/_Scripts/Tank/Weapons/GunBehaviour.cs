@@ -9,6 +9,7 @@ public class GunBehaviour : TankPart
 
     private AmmoLoader loader;
     private LinkedList<GameObject> bulletPool = new LinkedList<GameObject>();
+    [SerializeField]
     private int currentAmmoCount;
 
     private bool hasAmmo = false;
