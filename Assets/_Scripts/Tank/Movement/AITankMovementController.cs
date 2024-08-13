@@ -1,27 +1,19 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AITankMovementController : TankSubComponent
+public class AITankMovementController : MovementController
 {
-    private Movement AIMovement;
+    public float detectionRange = 10f;
+    public float stoppingDistance = 2f; // Distance at which the AI stops moving towards the player
 
-    public float horsepower = 50;
 
-    private Rigidbody2D chassisRB;
-    private Rigidbody2D leftTrackRB;
-    private Rigidbody2D rightTrackRB;
 
-    LinkedList<Tracks> trackList = new LinkedList<Tracks>();
-
-    private Vector2 moveDirection;
     private Transform playerTank;
 
-    public float detectionRange = 10f;
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -29,14 +21,12 @@ public class AITankMovementController : TankSubComponent
     {
         if (DetectPlayerTank())
         {
-  
-            RotateTowardsPlayerTank();
+            MoveTowardsPlayerTank();
         }
     }
 
     private bool DetectPlayerTank()
     {
-
         Vector3 tankPosition = chassisRB.transform.position;
         float coneAngle = 90f; // Example cone angle, adjust as needed
 
@@ -61,26 +51,35 @@ public class AITankMovementController : TankSubComponent
         return false;
     }
 
-    private void RotateTowardsPlayerTank()
+    private void MoveTowardsPlayerTank()
     {
         Vector3 directionToPlayer = playerTank.position - chassisRB.transform.position;
+        float distanceToPlayer = directionToPlayer.magnitude;
         float angleToPlayer = Vector2.SignedAngle(chassisRB.transform.right, directionToPlayer);
 
-        if (Mathf.Abs(angleToPlayer) > 10f)  // Adjust the threshold angle as needed
+        if (distanceToPlayer > stoppingDistance)
         {
-            if (angleToPlayer > 0)
+            if (Mathf.Abs(angleToPlayer) > 10f)  // Adjust the threshold angle as needed
             {
-                AIMovement.RotateTankLeft();
+                if (angleToPlayer > 0)
+                {
+                    Movement.RotateTankLeft();
+                }
+                else
+                {
+                    Movement.RotateTankRight();
+                }
             }
             else
             {
-                AIMovement.RotateTankRight();
+                // Once the tank is approximately facing the player, move forward
+                Movement.MoveTankForward();
             }
         }
         else
         {
-            // Once the tank is approximately facing the player, stop rotating
-            AIMovement.SetCanMove(false);
+            // Stop moving if within stopping distance
+            Movement.SetCanMove(false);
         }
     }
 
@@ -100,18 +99,7 @@ public class AITankMovementController : TankSubComponent
 
     public override void Init()
     {
-        chassisRB = Tools.FindComponentRecursively<Chassis>(transform).GetComponent<Rigidbody2D>();
-
-        Tools.FindComponentsRecursively(transform, trackList);
-
-        foreach (Tracks track in trackList)
-        {
-            if (track.name == "Left Track")
-                leftTrackRB = track.gameObject.GetComponent<Rigidbody2D>();
-            else if (track.name == "Right Track")
-                rightTrackRB = track.gameObject.GetComponent<Rigidbody2D>();
-        }
-        AIMovement = new Movement(chassisRB, leftTrackRB, rightTrackRB, horsepower);
+        base.Init();
     }
 
     private void OnDrawGizmos()
