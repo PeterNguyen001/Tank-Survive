@@ -4,17 +4,8 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerTankMovementController : TankSubComponent
+public class PlayerTankMovementController : MovementController
 {
-    private Movement PlayerMovement;
-
-    public float horsepower = 50;
-
-    private Rigidbody2D chassisRB;
-    private Rigidbody2D leftTrackRB;
-    private Rigidbody2D rightTrackRB;
-
-    LinkedList<Tracks> trackList = new LinkedList<Tracks>();    
 
     private Vector2 moveDirection;
 
@@ -26,8 +17,8 @@ public class PlayerTankMovementController : TankSubComponent
 
     void FixedUpdate()
     {
-
-        PlayerMovement.MovePlayerTank(moveDirection);
+        Movement.MovePlayerTank(moveDirection);
+        AdjustDragBasedOnMovement();
     }
 
     public void MovePlayer(InputAction.CallbackContext context)
@@ -37,18 +28,7 @@ public class PlayerTankMovementController : TankSubComponent
 
     public override void Init()
     {
-        chassisRB = Tools.FindComponentRecursively<Chassis>(transform).GetComponent<Rigidbody2D>();
-
-        Tools.FindComponentsRecursively(transform, trackList);
-        
-        foreach (Tracks track in trackList) 
-        {
-            if (track.name == "Left Track")
-                leftTrackRB = track.gameObject.GetComponent<Rigidbody2D>();
-            else if(track.name == "Right Track")
-                rightTrackRB = track.gameObject.GetComponent<Rigidbody2D>();
-        }
-        PlayerMovement = new Movement(chassisRB, leftTrackRB, rightTrackRB, horsepower);
+        base.Init();
     }
 
  
