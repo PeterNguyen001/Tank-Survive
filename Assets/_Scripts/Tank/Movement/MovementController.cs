@@ -65,7 +65,6 @@ public class MovementController : TankSubComponent
         Vector2 tankRight = chassisRB.transform.right;
 
         float dotProduct = Vector2.Dot(velocity.normalized, tankRight);
-        Debug.Log(dotProduct);
 
         // Consider the tank to be moving forward or backward if the dot product is close to 1 or -1
         return Mathf.Abs(dotProduct) > 0.99f;

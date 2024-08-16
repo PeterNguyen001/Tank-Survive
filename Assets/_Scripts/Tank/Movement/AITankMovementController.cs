@@ -6,7 +6,7 @@ public class AITankMovementController : MovementController
     public float detectionRange = 10f;
     public float stoppingDistance = 2f; // Distance at which the AI stops moving towards the player
 
-
+    private LinkedList<Collider2D> ignoreColliders = new LinkedList<Collider2D>();
 
     private Transform playerTank;
 
@@ -21,8 +21,9 @@ public class AITankMovementController : MovementController
     {
         if (DetectPlayerTank())
         {
-            MoveTowardsPlayerTank();
+            MoveTowardsPosition(playerTank.position);
         }
+        AdjustDragBasedOnMovement();
     }
 
     private bool DetectPlayerTank()
@@ -39,11 +40,31 @@ public class AITankMovementController : MovementController
             Collider2D[] colliders = Physics2D.OverlapCircleAll(vertex, detectionRange);
             foreach (Collider2D collider in colliders)
             {
-                Debug.Log(collider.name);
                 if (collider.CompareTag("Player"))
                 {
-                    playerTank = collider.transform;
-                    return true;
+                    Vector2 directionToPlayer = collider.transform.position - tankPosition;
+                    RaycastHit2D[] hits = Physics2D.RaycastAll(tankPosition, directionToPlayer.normalized, directionToPlayer.magnitude);
+
+                    bool playerDetected = true;
+                    foreach (RaycastHit2D hit in hits)
+                    {
+                        if (ignoreColliders.Contains(hit.collider))
+                        {
+                            continue; // Ignore specified colliders
+                        }
+
+                        if (!hit.collider.CompareTag("Player"))
+                        {
+                            playerDetected = false; // Obstacle detected
+                            break;
+                        }
+                    }
+
+                    if (playerDetected)
+                    {
+                        playerTank = collider.transform;
+                        return true;
+                    }
                 }
             }
         }
@@ -51,17 +72,18 @@ public class AITankMovementController : MovementController
         return false;
     }
 
-    private void MoveTowardsPlayerTank()
+    private void MoveTowardsPosition(Vector2 targetPosition)
     {
-        Vector3 directionToPlayer = playerTank.position - chassisRB.transform.position;
-        float distanceToPlayer = directionToPlayer.magnitude;
-        float angleToPlayer = Vector2.SignedAngle(chassisRB.transform.right, directionToPlayer);
+        Vector2 TankPosition = new Vector2(chassisRB.transform.position.x, chassisRB.transform.position.y);
+        Vector2 directionToTarget = targetPosition - TankPosition;
+        float distanceToTarget = directionToTarget.magnitude;
+        float angleToTarget = Vector2.SignedAngle(chassisRB.transform.right, directionToTarget);
 
-        if (distanceToPlayer > stoppingDistance)
+        if (distanceToTarget > stoppingDistance)
         {
-            if (Mathf.Abs(angleToPlayer) > 10f)  // Adjust the threshold angle as needed
+            if (Mathf.Abs(angleToTarget) > 10f)  // Adjust the threshold angle as needed
             {
-                if (angleToPlayer > 0)
+                if (angleToTarget > 0)
                 {
                     Movement.RotateTankLeft();
                 }
@@ -72,7 +94,7 @@ public class AITankMovementController : MovementController
             }
             else
             {
-                // Once the tank is approximately facing the player, move forward
+                // Once the tank is approximately facing the target, move forward
                 Movement.MoveTankForward();
             }
         }
@@ -100,6 +122,7 @@ public class AITankMovementController : MovementController
     public override void Init()
     {
         base.Init();
+        ignoreColliders = tankStatus.GetListOfCollider2D();
     }
 
     private void OnDrawGizmos()
