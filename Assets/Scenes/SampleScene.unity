@@ -8279,6 +8279,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1864113511}
   - component: {fileID: 1864113512}
+  - component: {fileID: 1864113514}
   - component: {fileID: 1864113513}
   m_Layer: 0
   m_Name: Dummy Target
@@ -8327,11 +8328,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 1864113510}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1fd86ae421a02594d95e0f8ec406ae59, type: 3}
+  m_Script: {fileID: 11500000, guid: fe37043a2d9936e42ab2b0d20377700c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detectionRange: 10
+  coneAngle: 90
+--- !u!114 &1864113514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1864113510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 146a7ceb96a12f740822725e29659d69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   highDrag: 5
-  lowDrag: 0.5
+  lowDrag: 0
   horsepower: 50
   detectionRange: 10
   stoppingDistance: 2
