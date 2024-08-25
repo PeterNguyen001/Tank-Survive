@@ -17,6 +17,8 @@ public class CustomNavMesh2D : MonoBehaviour
     public int gridHeight = 10;
     public float nodeSize = 1f;
 
+    public Vector2 gridOffset;
+
     private GridNode[,] grid;
 
     void Start()
@@ -26,13 +28,28 @@ public class CustomNavMesh2D : MonoBehaviour
 
     void GenerateGrid()
     {
+        // Get the object's dimensions in world space using its scale
+        Vector3 objectScale = transform.localScale;
+        float objectWidth = objectScale.x;
+        float objectHeight = objectScale.y;
+
+        // Calculate the grid dimensions based on the object's size and node size
+        gridWidth = Mathf.CeilToInt(objectWidth / nodeSize);
+        gridHeight = Mathf.CeilToInt(objectHeight / nodeSize);
+
+        // Initialize the grid
         grid = new GridNode[gridWidth, gridHeight];
 
+        // Calculate the grid offset in world space based on the object's position
+        Vector2 objectPosition = transform.position;
+        gridOffset = objectPosition - new Vector2(objectWidth, objectHeight) * 0.5f;
+
+        // Generate the grid nodes
         for (int x = 0; x < gridWidth; x++)
         {
             for (int y = 0; y < gridHeight; y++)
             {
-                Vector2 worldPosition = new Vector2(x, y) * nodeSize;
+                Vector2 worldPosition = gridOffset + new Vector2(x, y) * nodeSize;
                 bool walkable = !Physics2D.OverlapCircle(worldPosition, nodeSize * 0.5f);
                 grid[x, y] = new GridNode { position = worldPosition, isWalkable = walkable };
             }
