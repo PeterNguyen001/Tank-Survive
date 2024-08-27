@@ -21,10 +21,10 @@ public class AINavigation : MovementController
     void FixedUpdate()
     {
         // If there are no more locations, add a random one
-        if (movementLocations.Count == 0)
-        {
-            AddRandomLocationNearAI(20);
-        }
+        //if (movementLocations.Count == 0)
+        //{
+        //    AddRandomLocationNearAI(20);
+        //}
 
         // Move to the current target location
         MoveToCurrentLocation();

@@ -4,10 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Gun
   - Enemy
-  - Player Tank Part Slot
-  - Player Tank Part
+  - Obstacle
   layers:
   - Default
   - TransparentFX

@@ -19,6 +19,8 @@ public class CustomNavMesh2D : MonoBehaviour
 
     public Vector2 gridOffset;
 
+    public List<string> tagsToIgnore = new List<string>();
+
     private GridNode[,] grid;
 
     void Start()
@@ -50,8 +52,35 @@ public class CustomNavMesh2D : MonoBehaviour
             for (int y = 0; y < gridHeight; y++)
             {
                 Vector2 worldPosition = gridOffset + new Vector2(x, y) * nodeSize;
-                bool walkable = !Physics2D.OverlapCircle(worldPosition, nodeSize * 0.5f);
-                grid[x, y] = new GridNode { position = worldPosition, isWalkable = walkable };
+
+                // Get all colliders in this node's area
+                Collider2D[] colliders = Physics2D.OverlapCircleAll(worldPosition, nodeSize * 0.5f);
+
+                bool isWalkable = true;
+                bool hasIgnoredTag = false;
+
+                foreach (Collider2D collider in colliders)
+                {
+                    // Check if the collider's tag is in the tagsToIgnore list
+                    if (tagsToIgnore.Contains(collider.tag))
+                    {
+                        hasIgnoredTag = true;
+                    }
+                    else
+                    {
+                        // If there is any non-ignored object, mark the node as unwalkable
+                        isWalkable = false;
+                        break;
+                    }
+                }
+
+                // If the node only has objects with ignored tags, mark it as walkable
+                if (hasIgnoredTag && isWalkable)
+                {
+                    isWalkable = true;
+                }
+
+                grid[x, y] = new GridNode { position = worldPosition, isWalkable = isWalkable };
             }
         }
     }
