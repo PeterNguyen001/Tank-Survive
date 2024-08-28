@@ -4,27 +4,33 @@ using UnityEngine;
 public class AINavigation : MovementController
 {
     public float detectionRange = 10f;
-    public float stoppingDistance = 2f; // Distance at which the AI stops moving towards each location
+    public float stoppingDistance = 0f; // Distance at which the AI stops moving towards each location
+    public float stoppingAngle = 0f;
     public Queue<Vector2> movementLocations = new Queue<Vector2>(); // Queue of locations to move to
 
     private AISensor sensor;
     private Transform playerTank;
     private Vector2 currentTarget; // Current target location
 
+    // Reference to the grid-based pathfinding system
+    public CustomNavMesh2D pathfindingSystem;
+
     // Start is called before the first frame update
     void Start()
     {
         sensor = GetComponent<AISensor>();
+        //pathfindingSystem = GetComponent<CustomNavMesh2D>(); // Assuming you have a PathfindingSystem script
+        //AddRandomLocationNearAI(25);
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        // If there are no more locations, add a random one
-        //if (movementLocations.Count == 0)
-        //{
-        //    AddRandomLocationNearAI(20);
-        //}
+        // For testing, generate a random target location and calculate a path
+        if (movementLocations.Count == 0)
+        {
+            //AddRandomLocationNearAI(25);
+        }
 
         // Move to the current target location
         MoveToCurrentLocation();
@@ -46,7 +52,7 @@ public class AINavigation : MovementController
 
         if (distanceToTarget > stoppingDistance)
         {
-            if (Mathf.Abs(angleToTarget) > 10f)  // Adjust the threshold angle as needed
+            if (Mathf.Abs(angleToTarget) > stoppingAngle)  // Adjust the threshold angle as needed
             {
                 if (angleToTarget > 0)
                 {
@@ -96,9 +102,21 @@ public class AINavigation : MovementController
         float randomDistance = Random.Range(0, radius); // Get a random distance within the specified radius
 
         Vector2 randomLocation = currentPosition + randomDirection * randomDistance;
-        AddMovementLocation(randomLocation);
 
-        Debug.Log($"Added random location: {randomLocation}");
+        // Use the pathfinding system to generate a path from the tank's position to the random location
+        List<GridNode> path = pathfindingSystem.FindPath(currentPosition, randomLocation);
+
+        if (path != null)
+        {
+            foreach (GridNode waypoint in path)
+            {
+
+                Debug.Log(waypoint.position);
+                AddMovementLocation(waypoint.position);
+            }
+        }
+
+        //Debug.Log($"Added random location: {randomLocation}");
     }
 
     public override void Init()
