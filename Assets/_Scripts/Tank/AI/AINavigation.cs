@@ -29,7 +29,7 @@ public class AINavigation : MovementController
         // For testing, generate a random target location and calculate a path
         if (movementLocations.Count == 0)
         {
-            //AddRandomLocationNearAI(25);
+            AddRandomLocationNearAI(25);
         }
 
         // Move to the current target location
@@ -104,7 +104,8 @@ public class AINavigation : MovementController
         Vector2 randomLocation = currentPosition + randomDirection * randomDistance;
 
         // Use the pathfinding system to generate a path from the tank's position to the random location
-        List<GridNode> path = pathfindingSystem.FindPath(currentPosition, randomLocation);
+        LinkedList<GridNode> path = pathfindingSystem.FindPath(currentPosition, randomLocation);
+        pathfindingSystem.HighlightPath(path);
 
         if (path != null)
         {

@@ -4,7 +4,7 @@ using UnityEngine;
 public class AISensor : TankSubComponent
 {
     public float detectionRange = 10f;
-    public float coneAngle = 90f; // Angle of detection cone
+    public float coneAngle = 100f; // Angle of detection cone
     public LinkedList<Collider2D> ignoreColliders = new LinkedList<Collider2D>();
 
     private Transform detectedTarget;
@@ -92,7 +92,7 @@ public class AISensor : TankSubComponent
         // Optionally draw the detection range circles at the vertices
         foreach (Vector2 vertex in coneVertices)
         {
-            Gizmos.DrawWireSphere(vertex, detectionRange);
+            //Gizmos.DrawWireSphere(vertex, detectionRange);
         }
     }
 }

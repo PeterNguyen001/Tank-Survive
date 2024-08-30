@@ -29,7 +29,7 @@ public class CustomNavMesh2D : MonoBehaviour
     public List<string> tagsToIgnore = new List<string>();
 
     private GridNode[,] grid;
-    private List<GridNode> path; // Store the final path
+    private LinkedList<GridNode> path; // Store the final path
 
     private bool startSelected = false;
     private Vector2 startPosition;
@@ -45,7 +45,7 @@ public class CustomNavMesh2D : MonoBehaviour
 
     void Update()
     {
-        HandleMouseInput();
+        //HandleMouseInput();
     }
 
     void GenerateGrid()
@@ -140,7 +140,7 @@ public class CustomNavMesh2D : MonoBehaviour
                 SetNodeAsGoalNode(goalPosition);
                 Debug.Log("Goal Position Selected: " + goalPosition);
 
-                List<GridNode> foundPath = FindPath(startPosition, goalPosition);
+                LinkedList<GridNode> foundPath = FindPath(startPosition, goalPosition);
                 if (foundPath != null)
                 {
                     HighlightPath(foundPath);
@@ -183,7 +183,7 @@ public class CustomNavMesh2D : MonoBehaviour
         }
     }
 
-    public List<GridNode> FindPath(Vector2 start, Vector2 goal)
+    public LinkedList<GridNode> FindPath(Vector2 start, Vector2 goal)
     {
         GridNode startNode = GetNodeFromWorldPosition(start);
         GridNode goalNode = GetNodeFromWorldPosition(goal);
@@ -194,13 +194,13 @@ public class CustomNavMesh2D : MonoBehaviour
             return null;
         }
 
-        List<GridNode> openList = new List<GridNode>();
+        LinkedList<GridNode> openList = new LinkedList<GridNode>();
         HashSet<GridNode> closedList = new HashSet<GridNode>();
 
         // Initialize the start node
         startNode.gCost = 0;
         startNode.hCost = Vector2.Distance(startNode.position, goalNode.position);
-        openList.Add(startNode);
+        openList.AddLast(startNode);
 
         while (openList.Count > 0)
         {
@@ -235,7 +235,7 @@ public class CustomNavMesh2D : MonoBehaviour
 
                     if (!openList.Contains(neighbor))
                     {
-                        openList.Add(neighbor);
+                        openList.AddLast(neighbor);
                     }
                 }
             }
@@ -245,9 +245,9 @@ public class CustomNavMesh2D : MonoBehaviour
         return null; // No path found
     }
 
-    GridNode GetNodeWithLowestFCost(List<GridNode> nodes)
+    GridNode GetNodeWithLowestFCost(LinkedList<GridNode> nodes)
     {
-        GridNode lowestFCostNode = nodes[0];
+        GridNode lowestFCostNode = nodes.First.Value;
 
         foreach (var node in nodes)
         {
@@ -260,19 +260,49 @@ public class CustomNavMesh2D : MonoBehaviour
         return lowestFCostNode;
     }
 
-    List<GridNode> RetracePath(GridNode startNode, GridNode endNode)
+    LinkedList<GridNode> RetracePath(GridNode startNode, GridNode endNode)
     {
-        List<GridNode> path = new List<GridNode>();
+        LinkedList<GridNode> path = new LinkedList<GridNode>();
         GridNode currentNode = endNode;
 
         while (currentNode != startNode)
         {
-            path.Add(currentNode);
+            path.AddFirst(currentNode);
             currentNode = currentNode.parent;
         }
-
-        path.Reverse();
         return path;
+    }
+
+    void SkimPath()
+    {
+        if (path == null || path.Count < 3)
+        {
+            return; // No need to skim if the path has less than 3 nodes
+        }
+
+        LinkedListNode<GridNode> currentNode = path.First;
+
+        while (currentNode != null && currentNode.Next != null && currentNode.Next.Next != null)
+        {
+            GridNode nodeA = currentNode.Value;
+            GridNode nodeB = currentNode.Next.Value;
+            GridNode nodeC = currentNode.Next.Next.Value;
+
+            // Check if nodeA, nodeB, and nodeC are collinear (on a straight line)
+            Vector2 directionAB = (nodeB.position - nodeA.position).normalized;
+            Vector2 directionBC = (nodeC.position - nodeB.position).normalized;
+
+            if (directionAB == directionBC) // If direction doesn't change, remove nodeB
+            {
+                // Remove the middle node (nodeB)
+                path.Remove(currentNode.Next);
+            }
+            else
+            {
+                // Move to the next node in the list
+                currentNode = currentNode.Next;
+            }
+        }
     }
 
     List<GridNode> GetNeighbors(GridNode node)
@@ -312,7 +342,7 @@ public class CustomNavMesh2D : MonoBehaviour
         return grid[x, y];
     }
 
-    void HighlightPath(List<GridNode> path)
+    public void HighlightPath(LinkedList<GridNode> path)
     {
         foreach (var node in path)
         {
