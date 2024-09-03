@@ -26,10 +26,11 @@ public class AINavigation : MovementController
     // Update is called once per frame
     void FixedUpdate()
     {
+        sensor.Detect(chassisRB.transform);
         // For testing, generate a random target location and calculate a path
         if (movementLocations.Count == 0)
         {
-            AddRandomLocationNearAI(25);
+            //AddRandomLocationNearAI(25);
         }
 
         // Move to the current target location
@@ -105,14 +106,11 @@ public class AINavigation : MovementController
 
         // Use the pathfinding system to generate a path from the tank's position to the random location
         LinkedList<GridNode> path = pathfindingSystem.FindPath(currentPosition, randomLocation);
-        pathfindingSystem.HighlightPath(path);
 
         if (path != null)
         {
             foreach (GridNode waypoint in path)
             {
-
-                Debug.Log(waypoint.position);
                 AddMovementLocation(waypoint.position);
             }
         }

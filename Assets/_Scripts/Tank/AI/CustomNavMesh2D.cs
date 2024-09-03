@@ -132,13 +132,12 @@ public class CustomNavMesh2D : MonoBehaviour
                 startPosition = mousePosition;
                 SetNodeAsStartNode(startPosition);
                 startSelected = true;
-                Debug.Log("Start Position Selected: " + startPosition);
             }
             else
             {
                 goalPosition = mousePosition;
                 SetNodeAsGoalNode(goalPosition);
-                Debug.Log("Goal Position Selected: " + goalPosition);
+
 
                 LinkedList<GridNode> foundPath = FindPath(startPosition, goalPosition);
                 if (foundPath != null)
@@ -205,12 +204,12 @@ public class CustomNavMesh2D : MonoBehaviour
         while (openList.Count > 0)
         {
             GridNode currentNode = GetNodeWithLowestFCost(openList);
-            Debug.Log("Processing node at position: " + currentNode.position);
 
             if (currentNode == goalNode)
             {
                 Debug.Log("Path found!");
                 path = RetracePath(startNode, goalNode);
+                SkimPath();
                 return path;
             }
 
@@ -270,6 +269,7 @@ public class CustomNavMesh2D : MonoBehaviour
             path.AddFirst(currentNode);
             currentNode = currentNode.parent;
         }
+        HighlightPath(path);
         return path;
     }
 
