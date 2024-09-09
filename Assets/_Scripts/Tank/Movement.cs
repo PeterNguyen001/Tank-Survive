@@ -147,7 +147,7 @@ public class Movement
     }
 }
 
-public class MoveType
+public static class MoveType
 {
     public static Vector2 MoveForward  = new Vector2(0, 1);
     public static Vector2 MoveBackward = new Vector2(0,-1);

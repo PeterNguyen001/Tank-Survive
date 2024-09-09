@@ -26,7 +26,7 @@ public class AINavigation : MovementController
     // Update is called once per frame
     void FixedUpdate()
     {
-        sensor.Detect(chassisRB.transform);
+        sensor.Detect();
         // For testing, generate a random target location and calculate a path
         if (movementLocations.Count == 0)
         {
