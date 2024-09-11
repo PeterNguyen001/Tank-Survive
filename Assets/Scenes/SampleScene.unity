@@ -10529,9 +10529,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe37043a2d9936e42ab2b0d20377700c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectionRange: 10
-  coneAngle: 90
-  tagsToFindList:
+  obstacleDetectionRange: 1.4
+  obstacleDetectionAngle: 140
+  obstacleTagsToDetectList:
   - Obstacle
   chassis: {fileID: 254097467}
 --- !u!114 &1864113514
@@ -10548,11 +10548,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   highDrag: 5
   lowDrag: 0
-  horsepower: 50
-  detectionRange: 10
-  stoppingDistance: 2
+  horsepower: 70
+  stoppingDistance: 1
   stoppingAngle: 0
   pathfindingSystem: {fileID: 119260169}
+  obstacleAvoidanceStrength: 1
 --- !u!1 &1881837481
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,37 +3,34 @@ using UnityEngine;
 
 public class AINavigation : MovementController
 {
-    public float detectionRange = 10f;
     public float stoppingDistance = 0f; // Distance at which the AI stops moving towards each location
     public float stoppingAngle = 0f;
     public Queue<Vector2> movementLocations = new Queue<Vector2>(); // Queue of locations to move to
 
     private AISensor sensor;
-    private Transform playerTank;
     private Vector2 currentTarget; // Current target location
 
     // Reference to the grid-based pathfinding system
     public CustomNavMesh2D pathfindingSystem;
 
+    // Steering parameters
+    public float obstacleAvoidanceStrength = 1f; // Strength of obstacle avoidance steering
+
     // Start is called before the first frame update
     void Start()
     {
         sensor = GetComponent<AISensor>();
-        //pathfindingSystem = GetComponent<CustomNavMesh2D>(); // Assuming you have a PathfindingSystem script
-        //AddRandomLocationNearAI(25);
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        sensor.Detect();
-        // For testing, generate a random target location and calculate a path
+
         if (movementLocations.Count == 0)
         {
-            //AddRandomLocationNearAI(25);
+            AddRandomLocationNearAI(25);
         }
 
-        // Move to the current target location
         MoveToCurrentLocation();
 
         AdjustDragBasedOnMovement();
@@ -46,16 +43,31 @@ public class AINavigation : MovementController
             return; // No more locations to move to
         }
 
-        Vector2 TankPosition = new Vector2(chassisRB.transform.position.x, chassisRB.transform.position.y);
-        Vector2 directionToTarget = currentTarget - TankPosition;
+        Vector2 tankPosition = new Vector2(chassisRB.transform.position.x, chassisRB.transform.position.y);
+        Vector2 directionToTarget = currentTarget - tankPosition;
         float distanceToTarget = directionToTarget.magnitude;
         float angleToTarget = Vector2.SignedAngle(chassisRB.transform.right, directionToTarget);
 
-        if (distanceToTarget > stoppingDistance)
+        // Get obstacle detection info
+        DetectionInfo obstacleInfo = sensor.DetectObstacle();
+        float obstacleDistance = obstacleInfo.distance;
+        float obstacleDetectionRange = sensor.GetObstacleDetectionRange();
+
+        // Check if an obstacle is detected and if it's closer than the target
+        if (obstacleInfo.position != Vector2.zero && obstacleDistance < obstacleDetectionRange)
         {
-            if (Mathf.Abs(angleToTarget) > stoppingAngle)  // Adjust the threshold angle as needed
+            // Obstacle detected: Handle avoidance
+            if (obstacleDistance < obstacleDetectionRange * 0.25f)
             {
-                if (angleToTarget > 0)
+                // If the obstacle is very close, move backward to avoid collision
+                Debug.Log("Obstacle too close, moving backward");
+                Movement.MoveTankBackward();
+            }
+            else if (obstacleDistance < obstacleDetectionRange * 0.5f)
+            {
+                // Rotate in place to avoid the obstacle
+                Debug.Log("Obstacle detected, rotating to avoid");
+                if (Vector2.SignedAngle(chassisRB.transform.right, obstacleInfo.position - tankPosition) > 0)
                 {
                     Movement.RotateTankLeft();
                 }
@@ -66,18 +78,80 @@ public class AINavigation : MovementController
             }
             else
             {
-                // Once the tank is approximately facing the target, move forward
-                Movement.MoveTankForward();
+                // Move forward-right or forward-left based on the obstacle position
+                Vector2 avoidanceDirection = (tankPosition - obstacleInfo.position).normalized;
+                if (avoidanceDirection.x > 0)
+                {
+                    Debug.Log("Avoiding obstacle by steering right");
+                    Movement.MoveTankForwardRight();
+                }
+                else
+                {
+                    Debug.Log("Avoiding obstacle by steering left");
+                    Movement.MoveTankForwardLeft();
+                }
             }
         }
         else
         {
-            // Reached the current target, dequeue the next one
-            if (movementLocations.Count > 0)
+            // No obstacle detected: proceed to the target
+
+            if (distanceToTarget > stoppingDistance)
             {
-                currentTarget = movementLocations.Dequeue();
+                Debug.Log("Rotate to Target");
+                if (Mathf.Abs(angleToTarget) > stoppingAngle)
+                {
+                    if (angleToTarget > 5)
+                    {
+                        Movement.RotateTankLeft();
+                    }
+                    else if (angleToTarget < -5)
+                    {
+                        Movement.RotateTankRight();
+                    }
+                    else if (angleToTarget > 0 && angleToTarget <= 5)
+                    {
+                        Movement.MoveTankForwardLeft();
+                    }
+                    else if (angleToTarget < 0 && angleToTarget >= -5)
+                    {
+                        Movement.MoveTankForwardRight();
+                    }
+                }
+                else
+                {
+                    Debug.Log("Moving forward to target");
+                    Movement.MoveTankForward();
+                }
+            }
+            else
+            {
+                // Reached the current target, dequeue the next one
+                if (movementLocations.Count > 0)
+                {
+                    currentTarget = movementLocations.Dequeue();
+                }
             }
         }
+    }
+
+
+    private Vector2 GetObstacleAvoidanceDirectionFromSensor()
+    {
+        // Check if the sensor has detected an obstacle
+        if (sensor.DetectObstacle().position != null)
+        {
+            Vector2 tankPosition = chassisRB.transform.position;
+            Vector2 obstaclePosition = sensor.DetectObstacle().position;
+
+            // Calculate the avoidance direction by steering away from the obstacle
+            Vector2 avoidanceDirection = (tankPosition - obstaclePosition).normalized;
+
+            return avoidanceDirection;
+        }
+
+        // No obstacles detected, return zero vector (no avoidance needed)
+        return Vector2.zero;
     }
 
     public void AddMovementLocation(Vector2 location)
@@ -114,8 +188,6 @@ public class AINavigation : MovementController
                 AddMovementLocation(waypoint.position);
             }
         }
-
-        //Debug.Log($"Added random location: {randomLocation}");
     }
 
     public override void Init()
@@ -123,3 +195,73 @@ public class AINavigation : MovementController
         base.Init();
     }
 }
+
+//private void MoveToCurrentLocation()
+//{
+//    if (movementLocations.Count == 0)
+//    {
+//        return; // No more locations to move to
+//    }
+
+//    Vector2 tankPosition = new Vector2(chassisRB.transform.position.x, chassisRB.transform.position.y);
+//    Vector2 directionToTarget = currentTarget - tankPosition;
+//    float distanceToTarget = directionToTarget.magnitude;
+//    float angleToTarget = Vector2.SignedAngle(chassisRB.transform.right, directionToTarget);
+
+//    if (distanceToTarget > stoppingDistance)
+//    {
+//        Vector2 avoidanceDirection = GetObstacleAvoidanceDirectionFromSensor();
+//        if (Mathf.Abs(angleToTarget) > stoppingAngle)
+//        {
+//            if (angleToTarget > 5)
+//            {
+//                Debug.Log("left");
+//                Movement.RotateTankLeft();
+//            }
+//            else if (angleToTarget < -5)
+//            {
+//                Debug.Log("right");
+//                Movement.RotateTankRight();
+//            }
+//            else if (angleToTarget > 0 && angleToTarget <= 5)
+//            {
+//                if (avoidanceDirection != Vector2.zero)
+//                {
+//                    Debug.Log("FL");
+//                    Movement.MoveTankForwardLeft();
+//                }
+//                else if (avoidanceDirection.x > 0)
+//                {
+//                    Debug.Log("FR");
+//                    Movement.MoveTankForwardRight();
+//                }
+//            }
+//            else if (angleToTarget < 0 && angleToTarget >= -5)
+//            {
+//                if (avoidanceDirection != Vector2.zero)
+//                {
+//                    Debug.Log("FRR");
+//                    Movement.MoveTankForwardRight();
+//                }
+//                else if (avoidanceDirection.x < 0)
+//                {
+//                    Debug.Log("FLL");
+//                    Movement.MoveTankForwardLeft();
+//                }
+//            }
+//        }
+//        else
+//        {
+//            Debug.Log("forward");
+//            Movement.MoveTankForward();
+//        }
+//    }
+//    else
+//    {
+//        // Reached the current target, dequeue the next one
+//        if (movementLocations.Count > 0)
+//        {
+//            currentTarget = movementLocations.Dequeue();
+//        }
+//    }
+//}

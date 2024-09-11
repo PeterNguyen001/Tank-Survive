@@ -191,9 +191,9 @@ public class TurretController : TankSubComponent
 
     //            // Draw the detection cone
     //            Gizmos.color = Color.yellow;
-    //            Gizmos.DrawRay(gun.transform.position, coneDirection * detectionRange);
-    //            Gizmos.DrawRay(gun.transform.position, Quaternion.Euler(0, 0, gun.gunData.maxRotationAngle) * coneDirection * detectionRange);
-    //            Gizmos.DrawRay(gun.transform.position, Quaternion.Euler(0, 0, -gun.gunData.maxRotationAngle) * coneDirection * detectionRange);
+    //            Gizmos.DrawRay(gun.transform.position, coneDirection * obstacleDetectionRange);
+    //            Gizmos.DrawRay(gun.transform.position, Quaternion.Euler(0, 0, gun.gunData.maxRotationAngle) * coneDirection * obstacleDetectionRange);
+    //            Gizmos.DrawRay(gun.transform.position, Quaternion.Euler(0, 0, -gun.gunData.maxRotationAngle) * coneDirection * obstacleDetectionRange);
 
     //            Vector3 gunEndPosition = gun.FindGunlEnd().transform.position;
     //            Quaternion gunRotation = gun.transform.rotation;
@@ -203,7 +203,7 @@ public class TurretController : TankSubComponent
 
     //            // Draw the line from the gunEnd
     //            Gizmos.color = Color.green;
-    //            Gizmos.DrawRay(gunEndPosition, lineDirection * detectionRange);
+    //            Gizmos.DrawRay(gunEndPosition, lineDirection * obstacleDetectionRange);
     //        }
     //    }
     //}

@@ -5,6 +5,7 @@ public class Movement
     
     private float forwardSpeed;
     private float backwardSpeed;
+    private float forwardTurnSpeed;
     private float rotationSpeed;
 
     private Rigidbody2D chassisRB;
@@ -21,6 +22,7 @@ public class Movement
 
         forwardSpeed = horsepower;
         backwardSpeed = horsepower/2;
+        forwardTurnSpeed = horsepower / 2;
         rotationSpeed = horsepower/3;
 
     }
@@ -111,12 +113,12 @@ public class Movement
     public void MoveTankForwardLeft()
     {
         MoveLeftTrackForward(rotationSpeed);
-        MoveRightTrackForward(forwardSpeed);
+        MoveRightTrackForward(forwardTurnSpeed);
     }
 
     public void MoveTankForwardRight() 
     {
-        MoveLeftTrackForward(forwardSpeed);
+        MoveLeftTrackForward(forwardTurnSpeed);
         MoveRightTrackForward(rotationSpeed);
     }
 
