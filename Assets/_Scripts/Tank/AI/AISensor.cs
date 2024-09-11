@@ -19,12 +19,12 @@ public class AISensor : TankSubComponent
         ignoreColliders = tankStatus.GetListOfCollider2D();
     }
 
-    public DetectionInfo Detect( float range, float angle, List<string> tags)
+    public DetectionInfo Detect(float range, float angle, List<string> tags)
     {
         Vector3 sensorPosition = chassis.position;
         Vector3 forwardDirection = chassis.right;
 
-        detectedTargetInfo = new DetectionInfo(Vector2.zero, 0,""); // Reset detected target info
+        detectedTargetInfo = new DetectionInfo(Vector2.zero, 0, ""); // Reset detected target info
         float closestDistance = Mathf.Infinity; // Initialize with a very large value
 
         Collider2D[] colliders = Physics2D.OverlapCircleAll(sensorPosition, range);
@@ -59,13 +59,11 @@ public class AISensor : TankSubComponent
 
                     if (!isObstructed)
                     {
-                        float distanceToTarget = directionToTarget.magnitude;
-                        if (distanceToTarget < closestDistance) // Update if this target is closer
+                        float distanceToHit = (hitPosition - (Vector2)sensorPosition).magnitude; // Calculate distance to ray hit point
+                        if (distanceToHit < closestDistance) // Update if this hit is closer
                         {
-                            closestDistance = distanceToTarget;
-
-                            // Use the ray hit position instead of the collider transform position
-                            detectedTargetInfo = new DetectionInfo(hitPosition, distanceToTarget, collider.tag);
+                            closestDistance = distanceToHit;
+                            detectedTargetInfo = new DetectionInfo(hitPosition, closestDistance, collider.tag);
                         }
                     }
                 }
@@ -79,6 +77,7 @@ public class AISensor : TankSubComponent
 
         return detectedTargetInfo; // Return the closest detected target with ray hit position
     }
+
 
     public DetectionInfo DetectObstacle()
     {
