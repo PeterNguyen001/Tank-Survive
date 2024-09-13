@@ -19,10 +19,10 @@ public class AISensor : TankSubComponent
         ignoreColliders = tankStatus.GetListOfCollider2D();
     }
 
-    public DetectionInfo Detect(float range, float angle, List<string> tags)
+    public DetectionInfo Detect(float range, float angle, List<string> tags, Vector3 directionOffset)
     {
         Vector3 sensorPosition = chassis.position;
-        Vector3 forwardDirection = chassis.right;
+        Vector3 detectionDirection = (chassis.right + directionOffset).normalized;
 
         detectedTargetInfo = new DetectionInfo(Vector2.zero, 0, ""); // Reset detected target info
         float closestDistance = Mathf.Infinity; // Initialize with a very large value
@@ -33,7 +33,7 @@ public class AISensor : TankSubComponent
             if (tags.Contains(collider.tag)) // Check if the collider's tag is in the list
             {
                 Vector2 directionToTarget = (Vector2)(collider.transform.position - sensorPosition);
-                float angleToTarget = Vector2.Angle(forwardDirection, directionToTarget);
+                float angleToTarget = Vector2.Angle(detectionDirection, directionToTarget);
 
                 // Check if the target is within the cone angle
                 if (angleToTarget <= angle * 0.5f)
@@ -70,11 +70,6 @@ public class AISensor : TankSubComponent
             }
         }
 
-        if (closestDistance < Mathf.Infinity)
-        {
-            //Debug.Log("Closest detected: " + detectedTargetInfo.tag + " at distance: " + closestDistance);
-        }
-
         return detectedTargetInfo; // Return the closest detected target with ray hit position
     }
 
@@ -85,11 +80,33 @@ public class AISensor : TankSubComponent
         {
             Debug.LogWarning("ObstacleTags is Empty");
         }
-       return Detect(obstacleDetectionRange, obstacleDetectionAngle, obstacleTagsToDetectList);
+       return Detect(obstacleDetectionRange, obstacleDetectionAngle, obstacleTagsToDetectList, Vector3.zero);
+    }
+    public (DetectionInfo forward, DetectionInfo left, DetectionInfo right) DetectForwardLeftRightObstacles()
+    {
+        if (obstacleTagsToDetectList.Count == 0)
+        {
+            Debug.LogWarning("ObstacleTags is Empty");
+        }
+
+        // Detect forward obstacle (no offset)
+        DetectionInfo forwardObstacle = Detect(obstacleDetectionRange, obstacleDetectionAngle, obstacleTagsToDetectList, Vector3.zero);
+
+        // Detect left obstacle (rotate chassis direction slightly left)
+        Vector3 leftOffset = Quaternion.Euler(0, 0, 45) * Vector3.right;
+        DetectionInfo leftObstacle = Detect(obstacleDetectionRange, obstacleDetectionAngle, obstacleTagsToDetectList, leftOffset);
+
+        // Detect right obstacle (rotate chassis direction slightly right)
+        Vector3 rightOffset = Quaternion.Euler(0, 0, -45) * Vector3.right;
+        DetectionInfo rightObstacle = Detect(obstacleDetectionRange, obstacleDetectionAngle, obstacleTagsToDetectList, rightOffset);
+
+        return (forwardObstacle, leftObstacle, rightObstacle);
     }
 
     public float GetObstacleDetectionRange()
-    {  return obstacleDetectionRange; }
+    {
+        return obstacleDetectionRange;
+    }
 
 
     private void OnDrawGizmos()
