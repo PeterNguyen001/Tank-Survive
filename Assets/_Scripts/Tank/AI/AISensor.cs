@@ -129,7 +129,47 @@ public class AISensor : TankSubComponent
 
         // Draw detection range circle for the main detection range
         Gizmos.DrawWireSphere(sensorPosition, obstacleDetectionRange);
+
+        // Visualize the detected obstacles' forward, left, and right detection ranges
+        var (forwardObstacle, leftObstacle, rightObstacle) = DetectForwardLeftRightObstacles();
+
+        // Draw forward obstacle detection
+        Gizmos.color = Color.red;
+        if (forwardObstacle.distance > 0)
+        {
+            Gizmos.DrawLine(sensorPosition, forwardObstacle.position);
+            Gizmos.DrawWireSphere(forwardObstacle.position, 0.2f);
+        }
+
+        // Draw left obstacle detection
+        Gizmos.color = Color.green;
+        if (leftObstacle.distance > 0)
+        {
+            Gizmos.DrawLine(sensorPosition, leftObstacle.position);
+            Gizmos.DrawWireSphere(leftObstacle.position, 0.2f);
+        }
+
+        // Draw right obstacle detection
+        Gizmos.color = Color.blue;
+        if (rightObstacle.distance > 0)
+        {
+            Gizmos.DrawLine(sensorPosition, rightObstacle.position);
+            Gizmos.DrawWireSphere(rightObstacle.position, 0.2f);
+        }
+
+        // Optionally, visualize the forward, left, and right offset detection directions (for debugging)
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawLine(sensorPosition, sensorPosition + forwardDirection * obstacleDetectionRange);
+
+        Vector3 leftOffset = Quaternion.Euler(0, 0, 45) * Vector3.right;
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawLine(sensorPosition, sensorPosition + leftOffset.normalized * obstacleDetectionRange);
+
+        Vector3 rightOffset = Quaternion.Euler(0, 0, -45) * Vector3.right;
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawLine(sensorPosition, sensorPosition + rightOffset.normalized * obstacleDetectionRange);
     }
+
 }
 
 public struct DetectionInfo

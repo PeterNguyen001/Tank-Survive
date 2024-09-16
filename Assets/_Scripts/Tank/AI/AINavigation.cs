@@ -13,35 +13,48 @@ public class AINavigation : MovementController
     // Reference to the grid-based pathfinding system
     public CustomNavMesh2D pathfindingSystem;
 
-    // Steering parameters
+    // Steering and obstacle avoidance parameters
     public float obstacleAvoidanceStrength = 1f; // Strength of obstacle avoidance steering
+    public float backwardDuration = 1f; // Time to move backward when obstacle is too close
+    public float speedAdjustmentProximity = 0.75f; // Distance at which speed adjustment starts
+
+    private float backwardTimer = 0f; // Timer to track backward movement
+
+    private float forwardSpeed;
+    private float  backwardSpeed;
+    private float rotationSpeed;
 
     // Start is called before the first frame update
     void Start()
     {
         sensor = GetComponent<AISensor>();
+        forwardSpeed = horsepower;
+        backwardSpeed = horsepower / 2;
+        rotationSpeed = horsepower / 3;
+
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-
         if (movementLocations.Count == 0)
         {
             AddRandomLocationNearAI(25);
         }
 
         MoveToCurrentLocation();
-
         AdjustDragBasedOnMovement();
     }
 
     private bool isAvoidingObstacle = false; // Track whether the tank is avoiding an obstacle
+    private bool isMovingBackward = false; // Track backward movement status
+
 
     private void MoveToCurrentLocation()
     {
         if (movementLocations.Count == 0)
         {
+            Debug.Log("No movement locations to process.");
             return; // No more locations to move to
         }
 
@@ -50,100 +63,141 @@ public class AINavigation : MovementController
         float distanceToTargetLocation = directionToTarget.magnitude;
         float angleToTarget = Vector2.SignedAngle(chassisRB.transform.right, directionToTarget);
 
-        // Get obstacle detection info
-        DetectionInfo obstacleInfo = sensor.DetectObstacle();
-        float obstacleDistance = obstacleInfo.distance;
+        // Detect forward, left, and right obstacles
+        var (forwardObstacle, leftObstacle, rightObstacle) = sensor.DetectForwardLeftRightObstacles();
+        float forwardObstacleDistance = forwardObstacle.distance;
+        float leftObstacleDistance = leftObstacle.distance;
+        float rightObstacleDistance = rightObstacle.distance;
         float obstacleDetectionRange = sensor.GetObstacleDetectionRange();
-        Vector2 directionToObstacle = obstacleInfo.position - tankPosition;
-        float angleToObstacle = Vector2.SignedAngle(chassisRB.transform.right, directionToObstacle);
 
-        // Check if an obstacle is detected and if it's closer than the target
-        if (obstacleInfo.position != Vector2.zero && obstacleDistance < obstacleDetectionRange)
+
+        // Calculate weights for each side based on proximity
+        float leftWeight = leftObstacleDistance > 0 ? Mathf.Clamp01(obstacleDetectionRange / leftObstacleDistance) : 0;
+        float rightWeight = rightObstacleDistance > 0 ? Mathf.Clamp01(obstacleDetectionRange / rightObstacleDistance) : 0;
+        float forwardWeight = forwardObstacleDistance > 0 ? Mathf.Clamp01(obstacleDetectionRange / forwardObstacleDistance) : 0;
+        float totalWeight = forwardWeight + leftWeight + rightWeight;
+
+
+
+        if (isMovingBackward)
         {
-            // Enter obstacle avoidance mode
-            isAvoidingObstacle = true;
+            backwardTimer += Time.fixedDeltaTime;
+            Debug.Log("Moving backward, Timer");
 
-            // Obstacle detected: Handle avoidance
-            if (obstacleDistance < obstacleDetectionRange * 0.5f)
+            if (backwardTimer >= backwardDuration)
             {
-                // If the obstacle is very close, move backward to avoid collision
-                Debug.Log("Obstacle too close, moving backward");
-                Movement.MoveTankBackward();
+                isMovingBackward = false; // Stop moving backward after the timer ends
+                backwardTimer = 0f; // Reset the timer
+                Debug.Log("Stopping backward movement");
             }
-            else if (obstacleDistance < obstacleDetectionRange * 0.70f && Mathf.Abs(angleToObstacle) <= 50)
+            else
             {
-                // Rotate in place to avoid the obstacle
-                Debug.Log(angleToObstacle);
-                if (angleToObstacle > 0)
+                // Adjust backward movement control here
+                float backwardSpeedAdjustment = Mathf.Clamp01(obstacleDetectionRange / forwardObstacleDistance);
+                Debug.Log("Adjusting backward speed");
+                Movement.MoveLeftTrackBackWard(backwardSpeedAdjustment * backwardSpeed);
+                Movement.MoveRightTrackBackWard(backwardSpeedAdjustment * backwardSpeed);
+                return;
+            }
+        }
+
+        if (totalWeight > 0)
+        {
+            Debug.Log("Obstacle detected");
+            float steeringDecision = (rightWeight - leftWeight) / totalWeight;
+            float closestObstacleDistance = Mathf.Min(forwardObstacleDistance, leftObstacleDistance, rightObstacleDistance);
+
+            AdjustSpeedBasedOnProximity(closestObstacleDistance);
+
+            if (forwardWeight > 0.5f)
+            {
+                if (forwardObstacleDistance < obstacleDetectionRange * 0.5f)
                 {
-                    Debug.Log("Obstacle detected, rotating right to avoid");
-                    Movement.RotateTankRight();
+                    Debug.Log("Forward obstacle too close, initiating backward movement");
+                    isMovingBackward = true;
+                    backwardTimer = 0f;
+                    Movement.MoveLeftTrackBackWard(backwardSpeed);
+                    Movement.MoveRightTrackBackWard(backwardSpeed);
+                    return;
                 }
                 else
                 {
-                    Debug.Log("Obstacle detected, rotating left to avoid");
-                    Movement.RotateTankLeft();
+                    Debug.Log("Adjusting forward movement with turning control");
+                    float adjustedTurnSpeed = rotationSpeed * Mathf.Abs(steeringDecision);
+                    if (steeringDecision > 0)
+                    {
+                        Movement.MoveLeftTrackForward(forwardSpeed - adjustedTurnSpeed);
+                        Movement.MoveRightTrackForward(forwardSpeed + adjustedTurnSpeed);
+                    }
+                    else
+                    {
+                        Movement.MoveLeftTrackForward(forwardSpeed + adjustedTurnSpeed);
+                        Movement.MoveRightTrackForward(forwardSpeed - adjustedTurnSpeed);
+                    }
                 }
             }
             else
             {
-                // Move forward-right or forward-left based on the obstacle position
-                Vector2 avoidanceDirection = (tankPosition - obstacleInfo.position).normalized;
-                if (avoidanceDirection.x > 0)
+                if (Mathf.Abs(steeringDecision) > 0.2f)
                 {
-                    Debug.Log("Avoiding obstacle by steering right");
-                    Movement.MoveTankForwardRight();
+                    Debug.Log("Executing turn based on steering decision");
+                    float adjustedTurnSpeed = rotationSpeed * Mathf.Abs(steeringDecision);
+                    if (steeringDecision > 0)
+                    {
+                        Movement.MoveLeftTrackForward(forwardSpeed - adjustedTurnSpeed);
+                        Movement.MoveRightTrackForward(forwardSpeed + adjustedTurnSpeed);
+                    }
+                    else
+                    {
+                        Movement.MoveLeftTrackForward(forwardSpeed + adjustedTurnSpeed);
+                        Movement.MoveRightTrackForward(forwardSpeed - adjustedTurnSpeed);
+                    }
                 }
                 else
                 {
-                    Debug.Log("Avoiding obstacle by steering left");
-                    Movement.MoveTankForwardLeft();
+                    Debug.Log("Moving forward with slight adjustments");
+                    Movement.MoveLeftTrackForward(forwardSpeed);
+                    Movement.MoveRightTrackForward(forwardSpeed);
                 }
             }
         }
         else
         {
-            // Exit obstacle avoidance mode
-            isAvoidingObstacle = false;
-
-            // No obstacle detected: proceed to the target
+            // Handle regular movement logic if no obstacle is detected
             if (distanceToTargetLocation > stoppingDistance)
             {
-                if (!isAvoidingObstacle) // Only rotate to target if not avoiding an obstacle
+                if (Mathf.Abs(angleToTarget) > stoppingAngle)
                 {
-                    if (Mathf.Abs(angleToTarget) > stoppingAngle)
+                    if (angleToTarget > 5)
                     {
-                        if (angleToTarget > 5)
-                        {
-                            Debug.Log("Rotate left to Target");
-                            Movement.RotateTankLeft();
-                        }
-                        else if (angleToTarget < -5)
-                        {
-                            Debug.Log("Rotate right to Target");
-                            Movement.RotateTankRight();
-                        }
-                        else if (angleToTarget > 0 && angleToTarget <= 5)
-                        {
-                            Debug.Log("Move forward left to Target");
-                            Movement.MoveTankForwardLeft();
-                        }
-                        else if (angleToTarget < 0 && angleToTarget >= -5)
-                        {
-                            Debug.Log("Move forward right to Target");
-                            Movement.MoveTankForwardRight();
-                        }
+                        Debug.Log("Rotate left to Target");
+                        Movement.RotateTankLeft();
                     }
-                    else
+                    else if (angleToTarget < -5)
                     {
-                        Debug.Log("Moving forward to target");
-                        Movement.MoveTankForward();
+                        Debug.Log("Rotate right to Target");
+                        Movement.RotateTankRight();
                     }
+                    else if (angleToTarget > 0 && angleToTarget <= 5)
+                    {
+                        Debug.Log("Move forward left to Target");
+                        Movement.MoveTankForwardLeft();
+                    }
+                    else if (angleToTarget < 0 && angleToTarget >= -5)
+                    {
+                        Debug.Log("Move forward right to Target");
+                        Movement.MoveTankForwardRight();
+                    }
+                }
+                else
+                {
+                    Debug.Log("Moving forward to target");
+                    Movement.MoveTankForward();
                 }
             }
             else
             {
-                // Reached the current target, dequeue the next one
+                Debug.Log("Reached target location, selecting next target if available.");
                 if (movementLocations.Count > 0)
                 {
                     currentTarget = movementLocations.Dequeue();
@@ -152,6 +206,27 @@ public class AINavigation : MovementController
         }
     }
 
+    // Dynamic speed adjustment based on proximity to obstacles
+    private void AdjustSpeedBasedOnProximity(float closestObstacleDistance)
+    {
+        float obstacleDetectionRange = sensor.GetObstacleDetectionRange();
+
+        if (closestObstacleDistance < obstacleDetectionRange * 0.5f)
+        {
+            Debug.Log("Slowing down significantly due to close proximity to obstacle.");
+            Movement.SetMoveSpeed(0.5f); // Slow down significantly when very close to obstacles
+        }
+        else if (closestObstacleDistance < obstacleDetectionRange * speedAdjustmentProximity)
+        {
+            Debug.Log("Slowing down moderately due to approaching obstacle.");
+            Movement.SetMoveSpeed(0.75f); // Slow down moderately when approaching obstacles
+        }
+        else
+        {
+            Debug.Log("Full speed ahead, no nearby obstacles.");
+            Movement.SetMoveSpeed(1f); // Full speed when no nearby obstacles
+        }
+    }
 
     public void AddMovementLocation(Vector2 location)
     {
@@ -194,73 +269,3 @@ public class AINavigation : MovementController
         base.Init();
     }
 }
-
-//private void MoveToCurrentLocation()
-//{
-//    if (movementLocations.Count == 0)
-//    {
-//        return; // No more locations to move to
-//    }
-
-//    Vector2 tankPosition = new Vector2(chassisRB.transform.position.x, chassisRB.transform.position.y);
-//    Vector2 directionToTarget = currentTarget - tankPosition;
-//    float distanceToTargetLocation = directionToTarget.magnitude;
-//    float angleToTarget = Vector2.SignedAngle(chassisRB.transform.right, directionToTarget);
-
-//    if (distanceToTargetLocation > stoppingDistance)
-//    {
-//        Vector2 avoidanceDirection = GetObstacleAvoidanceDirectionFromSensor();
-//        if (Mathf.Abs(angleToTarget) > stoppingAngle)
-//        {
-//            if (angleToTarget > 5)
-//            {
-//                Debug.Log("left");
-//                Movement.RotateTankLeft();
-//            }
-//            else if (angleToTarget < -5)
-//            {
-//                Debug.Log("right");
-//                Movement.RotateTankRight();
-//            }
-//            else if (angleToTarget > 0 && angleToTarget <= 5)
-//            {
-//                if (avoidanceDirection != Vector2.zero)
-//                {
-//                    Debug.Log("FL");
-//                    Movement.MoveTankForwardLeft();
-//                }
-//                else if (avoidanceDirection.x > 0)
-//                {
-//                    Debug.Log("FR");
-//                    Movement.MoveTankForwardRight();
-//                }
-//            }
-//            else if (angleToTarget < 0 && angleToTarget >= -5)
-//            {
-//                if (avoidanceDirection != Vector2.zero)
-//                {
-//                    Debug.Log("FRR");
-//                    Movement.MoveTankForwardRight();
-//                }
-//                else if (avoidanceDirection.x < 0)
-//                {
-//                    Debug.Log("FLL");
-//                    Movement.MoveTankForwardLeft();
-//                }
-//            }
-//        }
-//        else
-//        {
-//            Debug.Log("forward");
-//            Movement.MoveTankForward();
-//        }
-//    }
-//    else
-//    {
-//        // Reached the current target, dequeue the next one
-//        if (movementLocations.Count > 0)
-//        {
-//            currentTarget = movementLocations.Dequeue();
-//        }
-//    }
-//}
