@@ -10845,8 +10845,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe37043a2d9936e42ab2b0d20377700c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obstacleDetectionRange: 1.4
-  obstacleDetectionAngle: 140
+  obstacleDetectionRange: 1.01
+  frontalObstacleDetectionAngle: 20
+  leftRightObstacleDetectionAngle: 17
   obstacleTagsToDetectList:
   - Obstacle
   chassis: {fileID: 254097467}
@@ -10870,6 +10871,7 @@ MonoBehaviour:
   pathfindingSystem: {fileID: 119260169}
   obstacleAvoidanceStrength: 1
   backwardDuration: 1
+  speedAdjustmentProximity: 0.75
 --- !u!1 &1881837481
 GameObject:
   m_ObjectHideFlags: 0
