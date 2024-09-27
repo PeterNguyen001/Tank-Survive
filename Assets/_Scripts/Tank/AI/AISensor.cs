@@ -20,10 +20,12 @@ public class AISensor : TankSubComponent
         ignoreColliders = tankStatus.GetListOfCollider2D();
     }
 
-    public DetectionInfo Detect(float range, float angle, List<string> tags, Vector3 directionOffset)
+    public DetectionInfo Detect(float range, float angle, List<string> tags, float angleOffset)
     {
         Vector3 sensorPosition = chassis.position;
-        Vector3 detectionDirection = (chassis.right + directionOffset).normalized;
+
+        // Rotate the forward direction (chassis.right) by angleOffset degrees
+        Vector3 detectionDirection = Quaternion.Euler(0, 0, angleOffset) * chassis.right;
 
         detectedTargetInfo = new DetectionInfo(Vector2.zero, 0, ""); // Reset detected target info
         float closestDistance = Mathf.Infinity; // Initialize with a very large value
@@ -33,15 +35,17 @@ public class AISensor : TankSubComponent
         {
             if (tags.Contains(collider.tag)) // Check if the collider's tag is in the list
             {
-                Vector2 directionToTarget = (Vector2)(collider.transform.position - sensorPosition);
-                float angleToTarget = Vector2.Angle(detectionDirection, directionToTarget);
+                // Find the closest point of contact on the collider
+                Vector2 contactPoint = collider.ClosestPoint(sensorPosition);
+                Vector2 directionToContact = contactPoint - (Vector2)sensorPosition;
+                float angleToContact = Vector2.Angle(detectionDirection, directionToContact);
 
                 // Check if the target is within the cone angle
-                if (angleToTarget <= angle * 0.5f)
+                if (angleToContact <= angle * 0.5f)
                 {
-                    RaycastHit2D[] hits = Physics2D.RaycastAll(sensorPosition, directionToTarget.normalized, directionToTarget.magnitude);
+                    // Raycast to the contact point to check for obstructions
+                    RaycastHit2D[] hits = Physics2D.RaycastAll(sensorPosition, directionToContact.normalized, directionToContact.magnitude);
                     bool isObstructed = false;
-                    Vector2 hitPosition = Vector2.zero;
 
                     foreach (RaycastHit2D hit in hits)
                     {
@@ -53,26 +57,49 @@ public class AISensor : TankSubComponent
                             isObstructed = true; // Obstruction detected
                             break;
                         }
-
-                        // Capture the ray hit position
-                        hitPosition = hit.point;
                     }
 
                     if (!isObstructed)
                     {
-                        float distanceToHit = (hitPosition - (Vector2)sensorPosition).magnitude; // Calculate distance to ray hit point
-                        if (distanceToHit < closestDistance) // Update if this hit is closer
+                        float distanceToContact = directionToContact.magnitude;
+                        if (distanceToContact < closestDistance) // Update if this contact is closer
                         {
-                            closestDistance = distanceToHit;
-                            detectedTargetInfo = new DetectionInfo(hitPosition, closestDistance, collider.tag);
+                            closestDistance = distanceToContact;
+                            detectedTargetInfo = new DetectionInfo(contactPoint, closestDistance, collider.tag);
+                        }
+                    }
+                }
+                else
+                {
+                    // If ClosestPoint is outside the angle, cast a ray to the edge of the cone
+                    Vector3 edgeDirection = Quaternion.Euler(0, 0, angle * 0.5f * Mathf.Sign(angleOffset)) * detectionDirection;
+                    RaycastHit2D[] edgeHit = Physics2D.RaycastAll(sensorPosition, edgeDirection.normalized, range);
+                    Debug.DrawRay(sensorPosition, edgeDirection.normalized, Color.black);
+                    //Debug.Log(edgeHit.collider.name);
+                    foreach (RaycastHit2D hit in edgeHit)
+                    {
+                        if (ignoreColliders.Contains(hit.collider))
+                            continue; // Ignore specified colliders                    
+                        if (hit.collider != null && tags.Contains(hit.collider.tag))
+                        {
+                            Debug.Log(hit.collider.name);
+                            float distanceToEdgeHit = hit.distance;
+                            if (distanceToEdgeHit < closestDistance)
+                            {
+                                closestDistance = distanceToEdgeHit;
+                                detectedTargetInfo = new DetectionInfo(hit.point, closestDistance, hit.collider.tag);
+                            }
                         }
                     }
                 }
             }
         }
 
-        return detectedTargetInfo; // Return the closest detected target with ray hit position
+        return detectedTargetInfo; // Return the closest detected target with the contact point
     }
+
+
+
 
     public (DetectionInfo forward, DetectionInfo left, DetectionInfo right) DetectForwardLeftRightObstacles()
     {
@@ -81,21 +108,35 @@ public class AISensor : TankSubComponent
             Debug.LogWarning("ObstacleTags is Empty");
         }
 
-        // Detect forward obstacle (center cone)
-        DetectionInfo forwardObstacle = Detect(obstacleDetectionRange, frontalObstacleDetectionAngle, obstacleTagsToDetectList, Vector3.zero);
+        // Detect forward obstacle (angleOffset = 0)
+        DetectionInfo forwardObstacle = Detect(obstacleDetectionRange, frontalObstacleDetectionAngle, obstacleTagsToDetectList, 0);
 
-        // Left detection starts at the end of the forward cone (split to avoid overlap)
-        Quaternion leftMinRotation = Quaternion.Euler(0, 0, frontalObstacleDetectionAngle * 0.5f); // Where forward ends
-        Vector3 leftOffset = leftMinRotation * Vector3.right;
-        DetectionInfo leftObstacle = Detect(obstacleDetectionRange, leftRightObstacleDetectionAngle, obstacleTagsToDetectList, leftOffset);
+        // Detect left obstacle (angleOffset is positive to rotate left)
+        DetectionInfo leftObstacle = Detect(obstacleDetectionRange, leftRightObstacleDetectionAngle, obstacleTagsToDetectList, frontalObstacleDetectionAngle * 0.5f + leftRightObstacleDetectionAngle * 0.5f);
 
-        // Right detection starts at the end of the forward cone (split to avoid overlap)
-        Quaternion rightMinRotation = Quaternion.Euler(0, 0, -frontalObstacleDetectionAngle * 0.5f); // Where forward ends
-        Vector3 rightOffset = rightMinRotation * Vector3.right;
-        DetectionInfo rightObstacle = Detect(obstacleDetectionRange, leftRightObstacleDetectionAngle, obstacleTagsToDetectList, rightOffset);
+        // Detect right obstacle (angleOffset is negative to rotate right)
+        DetectionInfo rightObstacle = Detect(obstacleDetectionRange, leftRightObstacleDetectionAngle, obstacleTagsToDetectList, -(frontalObstacleDetectionAngle * 0.5f + leftRightObstacleDetectionAngle * 0.5f));
+
+        // Log detected obstacles in the correct cones
+        if (forwardObstacle.position != Vector2.zero)
+        {
+            Debug.Log("Detect Obstacle Infront");
+        }
+        if (leftObstacle.position != Vector2.zero)
+        {
+            Debug.Log("Detect Obstacle Left");
+        }
+        if (rightObstacle.position != Vector2.zero)
+        {
+            Debug.Log("Detect Obstacle Right");
+        }
 
         return (forwardObstacle, leftObstacle, rightObstacle);
     }
+
+
+
+
 
 
 
