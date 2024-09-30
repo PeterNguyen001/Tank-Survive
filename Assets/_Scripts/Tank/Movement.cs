@@ -8,6 +8,8 @@ public class Movement
     private float forwardTurnSpeed;
     private float rotationSpeed;
 
+    private float speedModifier = 1;
+
     private Rigidbody2D chassisRB;
     private Rigidbody2D leftTrackRB;
     private Rigidbody2D rightTrackRB;
@@ -20,10 +22,10 @@ public class Movement
         leftTrackRB.GetComponent<FixedJoint2D>().connectedBody = chassisRB;
         rightTrackRB.GetComponent<FixedJoint2D>().connectedBody= chassisRB;
 
-        forwardSpeed = horsepower;
-        backwardSpeed = horsepower/2;
-        forwardTurnSpeed = horsepower / 2;
-        rotationSpeed = horsepower/3;
+        forwardSpeed = horsepower * speedModifier;
+        backwardSpeed = horsepower/3 * speedModifier;
+        forwardTurnSpeed = horsepower / 1.5f * speedModifier;
+        rotationSpeed = horsepower / 4 * speedModifier;
 
     }
 
@@ -55,7 +57,7 @@ public class Movement
 
     public void SetMoveSpeed(float speed)
     {
-        forwardSpeed = speed;
+        speedModifier = speed;
     }
 
     public void SetRotationSpeed(float speed)

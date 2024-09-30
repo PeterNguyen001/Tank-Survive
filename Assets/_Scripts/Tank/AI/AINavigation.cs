@@ -84,101 +84,120 @@ public class AINavigation : MovementController
         if (isMovingBackward)
         {
             backwardTimer += Time.fixedDeltaTime;
+            Debug.Log("Moving backward, Timer");
+
             if (backwardTimer >= backwardDuration)
             {
-                isMovingBackward = false;
-                backwardTimer = 0f;
+                isMovingBackward = false; // Stop moving backward after the timer ends
+                backwardTimer = 0f; // Reset the timer
+                Debug.Log("Stopping backward movement");
             }
             else
             {
                 // Adjust backward movement and steering control based on obstacle proximity
-                float backwardSteeringDecision = (leftWeight * 0.55f - rightWeight * 0.55f) / totalWeight;
+                float backwardSpeedAdjustment = Mathf.Clamp01(obstacleDetectionRange / forwardObstacleDistance);
+                Debug.Log("Adjusting backward speed and steering");
+
+                // Use left and right obstacle weights to steer while moving backward
+                float backwardSteeringDecision = (leftWeight - rightWeight) / totalWeight; // Positive = steer left, Negative = steer right
 
                 if (Mathf.Abs(backwardSteeringDecision) > 0.3f)
                 {
                     if (backwardSteeringDecision > 0)
                     {
-                        Movement.MoveLeftTrackBackWard(backwardSpeed);
+                        Debug.Log("Steering left while moving backward");
+                        Movement.MoveLeftTrackBackWard(backwardSpeedAdjustment * backwardSpeed);
                     }
                     else
                     {
-                        Movement.MoveRightTrackBackWard(backwardSpeed);
+                        Debug.Log("Steering right while moving backward");
+                        Movement.MoveRightTrackBackWard(backwardSpeedAdjustment * backwardSpeed);
                     }
                 }
                 else
                 {
+                    Debug.Log("Forward obstacle too close, moving backward");
+                    isMovingBackward = true;
+                    backwardTimer = 0f; // Start backward movement timer
                     Movement.MoveTankBackward();
+                    return; // Skip other movement logic
                 }
+
                 return;
             }
         }
 
+        // Handle regular movement logic if no obstacle is detected
         if (distanceToTargetLocation > stoppingDistance)
         {
             if (Mathf.Abs(angleToTarget) > stoppingAngle)
             {
+
                 if (angleToTarget > 5)
                 {
+                    Debug.Log("Rotate left to Target");
                     Movement.RotateTankLeft();
                 }
                 else if (angleToTarget < -5)
                 {
+                    Debug.Log("Rotate right to Target");
                     Movement.RotateTankRight();
                 }
                 else if (angleToTarget >= -5 && angleToTarget <= 5)
                 {
                     if (totalWeight > 0)
                     {
-                        float steeringDecision = (rightWeight - leftWeight) / totalWeight;
+                        float steeringDecision = (rightWeight - leftWeight) / totalWeight; // Positive = steer right, Negative = steer left
 
-                        // Adjust speed based on obstacle distance
-                        float leftSpeed = 1f;
-                        float rightSpeed = 1f;
-
-                        if (leftObstacleDistance < obstacleDetectionRange * 0.5f)
-                        {
-                            leftSpeed = 0.5f; // Slow down left track
-                            isMovingBackward = true;
-                            backwardTimer = 0f;
-                            Movement.MoveTankBackward();
-                            return;
-                        }
-
-                        if (rightObstacleDistance < obstacleDetectionRange * 0.5f)
-                        {
-                            rightSpeed = 0.5f; // Slow down right track
-                            isMovingBackward = true;
-                            backwardTimer = 0f;
-                            Movement.MoveTankBackward();
-                            return;
-                        }
+                        // Dynamic Speed Adjustment Based on Proximity
+                        float closestObstacleDistance = Mathf.Min(forwardObstacleDistance, leftObstacleDistance, rightObstacleDistance);
+                        AdjustSpeedBasedOnProximity(closestObstacleDistance);
 
                         if (forwardWeight > 0.3f)
                         {
-                            if (steeringDecision > 0)
+                            // Obstacle too close: backward movement or rotation
+                            if (forwardObstacleDistance < obstacleDetectionRange * 0.5f)
                             {
-                                Movement.MoveLeftTrackForward(leftSpeed);
+                                Debug.Log("Forward obstacle too close, moving backward");
+                                isMovingBackward = true;
+                                backwardTimer = 0f; // Start backward movement timer
+                                Movement.MoveTankBackward();
+                                return; // Skip other movement logic
                             }
                             else
                             {
-                                Movement.MoveRightTrackForward(rightSpeed);
+                                // Slightly avoid obstacle based on weights
+                                if (steeringDecision > 0)
+                                {
+                                    Debug.Log("Avoiding obstacle by steering left");
+                                    Movement.MoveTankForwardLeft();
+                                }
+                                else
+                                {
+                                    Debug.Log("Avoiding obstacle by steering right");
+                                    Movement.MoveTankForwardRight();
+                                }
                             }
                         }
                         else
                         {
-                            if (Mathf.Abs(steeringDecision) > 0.3f)
+                            // Moderate obstacle detection, steer according to weights
+                            if (Mathf.Abs(steeringDecision) > 0.15f)
                             {
                                 if (steeringDecision > 0)
                                 {
-                                    Movement.MoveLeftTrackForward(leftSpeed);
+                                    Debug.Log("Weighted steering left");
+                                    Movement.MoveTankForwardLeft();
                                 }
                                 else
                                 {
-                                    Movement.MoveRightTrackForward(rightSpeed);
+                                    Debug.Log("Weighted steering right");
+                                    Movement.MoveTankForwardRight();
                                 }
                             }
                             else
                             {
+                                Debug.Log("Moving forward with slight adjustments");
                                 Movement.MoveTankForward();
                             }
                         }
@@ -187,27 +206,34 @@ public class AINavigation : MovementController
                     {
                         if (angleToTarget > 0)
                         {
+                            Debug.Log("Move forward left to Target");
                             Movement.MoveTankForwardLeft();
                         }
                         else if (angleToTarget < 0)
                         {
+                            Debug.Log("Move forward right to Target");
                             Movement.MoveTankForwardRight();
                         }
                         else
                         {
+                            Debug.Log("Moving forward to target");
                             Movement.MoveTankForward();
                         }
                     }
                 }
+
             }
+
         }
         else
         {
+            Debug.Log("Reached target location, selecting next target if available.");
             if (movementLocations.Count > 0)
             {
                 currentTarget = movementLocations.Dequeue();
             }
         }
+
     }
 
 
@@ -217,7 +243,7 @@ public class AINavigation : MovementController
     {
         float obstacleDetectionRange = sensor.GetObstacleDetectionRange();
 
-        if (closestObstacleDistance < obstacleDetectionRange * 0.75f)
+        if (closestObstacleDistance < obstacleDetectionRange * 0.80f)
         {
             Debug.Log("Slowing down significantly due to close proximity to obstacle.");
             Movement.SetMoveSpeed(0.3f); // Slow down significantly when very close to obstacles

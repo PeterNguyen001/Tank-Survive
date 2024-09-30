@@ -82,7 +82,7 @@ public class AISensor : TankSubComponent
                             continue; // Ignore specified colliders                    
                         if (hit.collider != null && tags.Contains(hit.collider.tag))
                         {
-                            Debug.Log(hit.collider.name);
+                            //Debug.Log(hit.collider.name);
                             float distanceToEdgeHit = hit.distance;
                             if (distanceToEdgeHit < closestDistance)
                             {
@@ -118,18 +118,18 @@ public class AISensor : TankSubComponent
         DetectionInfo rightObstacle = Detect(obstacleDetectionRange, leftRightObstacleDetectionAngle, obstacleTagsToDetectList, -(frontalObstacleDetectionAngle * 0.5f + leftRightObstacleDetectionAngle * 0.5f));
 
         // Log detected obstacles in the correct cones
-        if (forwardObstacle.position != Vector2.zero)
-        {
-            Debug.Log("Detect Obstacle Infront");
-        }
-        if (leftObstacle.position != Vector2.zero)
-        {
-            Debug.Log("Detect Obstacle Left");
-        }
-        if (rightObstacle.position != Vector2.zero)
-        {
-            Debug.Log("Detect Obstacle Right");
-        }
+        //if (forwardObstacle.position != Vector2.zero)
+        //{
+        //    Debug.Log("Detect Obstacle Infront");
+        //}
+        //if (leftObstacle.position != Vector2.zero)
+        //{
+        //    Debug.Log("Detect Obstacle Left");
+        //}
+        //if (rightObstacle.position != Vector2.zero)
+        //{
+        //    Debug.Log("Detect Obstacle Right");
+        //}
 
         return (forwardObstacle, leftObstacle, rightObstacle);
     }

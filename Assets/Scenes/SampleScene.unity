@@ -10606,7 +10606,7 @@ Transform:
   m_GameObject: {fileID: 1758898668}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.42, y: 0, z: 0}
+  m_LocalPosition: {x: -1.74, y: -2.99, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -11151,9 +11151,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe37043a2d9936e42ab2b0d20377700c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obstacleDetectionRange: 1.02
-  frontalObstacleDetectionAngle: 37.2
-  leftRightObstacleDetectionAngle: 11.7
+  obstacleDetectionRange: 1.61
+  frontalObstacleDetectionAngle: 31.8
+  leftRightObstacleDetectionAngle: 18.4
   obstacleTagsToDetectList:
   - Obstacle
   chassis: {fileID: 254097467}
