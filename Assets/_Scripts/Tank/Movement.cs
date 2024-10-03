@@ -24,7 +24,7 @@ public class Movement
 
         forwardSpeed = horsepower * speedModifier;
         backwardSpeed = horsepower/3 * speedModifier;
-        forwardTurnSpeed = horsepower / 1.5f * speedModifier;
+        forwardTurnSpeed = horsepower / 2 * speedModifier;
         rotationSpeed = horsepower / 4 * speedModifier;
 
     }

@@ -11151,9 +11151,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe37043a2d9936e42ab2b0d20377700c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obstacleDetectionRange: 1.61
-  frontalObstacleDetectionAngle: 31.8
-  leftRightObstacleDetectionAngle: 18.4
+  obstacleDetectionRange: 1.6
+  frontalObstacleDetectionAngle: 36
+  leftRightObstacleDetectionAngle: 29.1
   obstacleTagsToDetectList:
   - Obstacle
   chassis: {fileID: 254097467}
@@ -11173,7 +11173,7 @@ MonoBehaviour:
   lowDrag: 0
   horsepower: 70
   stoppingDistance: 0.5
-  stoppingAngle: 0
+  stoppingAngle: 10
   pathfindingSystem: {fileID: 119260169}
   obstacleAvoidanceStrength: 1
   backwardDuration: 1
