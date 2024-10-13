@@ -12,22 +12,39 @@ public abstract class State
     public abstract void Exit();
 }
 
+public class TankState : State
+{
+    protected EnemyTankAI tankAI;
+
+    public TankState(EnemyAI enemyAI) : base(enemyAI)
+    {
+        // Downcast to EnemyTankAI to access tank-specific methods
+        tankAI = enemyAI as EnemyTankAI;
+    }
+    public override void Enter() { }
+    public override void Execute() { }
+    public override void Exit() { }
+}
+
 public class AIStateMachine
 {
     private State currentState;
 
     public void ChangeState(State newState)
     {
-        if (currentState != null)
+        if (currentState != newState)
         {
-            currentState.Exit();
-        }
+            if (currentState != null)
+            {
+                currentState.Exit();
+            }
 
-        currentState = newState;
+            currentState = newState;
 
-        if (currentState != null)
-        {
-            currentState.Enter();
+            if (currentState != null)
+            {
+                currentState.Enter();
+            }
         }
     }
 

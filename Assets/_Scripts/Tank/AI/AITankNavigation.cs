@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AINavigation : MovementController
+public class AITankNavigation : MovementController
 {
     public float stoppingDistance = 0f; // Distance at which the AI stops moving towards each location
     public float stoppingAngle = 0f;
@@ -41,16 +41,16 @@ public class AINavigation : MovementController
     // Update is called once per frame
     void FixedUpdate()
     {
-        sensor.DetectForwardLeftRightObstacles();
-        if (movementLocations.Count == 0 && !debugMode)
-        {
-            AddRandomLocationNearAI(25);
-        }
-        else
-            sensor.DetectForwardLeftRightObstacles();
+        //sensor.DetectForwardLeftRightObstacles();
+        //if (movementLocations.Count == 0 && !debugMode)
+        //{
+        //    AddRandomLocationNearAI(25);
+        //}
+        //else
+        //    sensor.DetectForwardLeftRightObstacles();
 
-        MoveToCurrentLocation();
-        AdjustDragBasedOnMovement();
+        //MoveToCurrentLocation();
+        //AdjustDragBasedOnMovement();
     }
 
     private bool isAvoidingObstacle = false; // Track whether the tank is avoiding an obstacle
@@ -149,7 +149,7 @@ public class AINavigation : MovementController
                             Movement.MoveTankBackward();
                             return;
                         }
-                        else if (Mathf.Abs(steeringDecision) > 0.25f)
+                        else if (Mathf.Abs(steeringDecision) > 0.3)
                         {
                             if (steeringDecision > 0)
                             {
@@ -282,8 +282,14 @@ public class AINavigation : MovementController
         Vector2 randomLocation = currentPosition + randomDirection * randomDistance;
 
         // Use the pathfinding system to generate a path from the tank's position to the random location
-        LinkedList<GridNode> path = pathfindingSystem.FindPath(currentPosition, randomLocation);
+        SetTargetLocation(randomLocation);
+    }
 
+    public void SetTargetLocation(Vector2 targetLocation)
+    {
+        ClearMovementLocations();
+        Vector2 currentPosition = chassisRB.transform.position;
+        LinkedList<GridNode> path = pathfindingSystem.FindPath(currentPosition, targetLocation);
         if (path != null)
         {
             foreach (GridNode waypoint in path)

@@ -923,7 +923,7 @@ Transform:
   m_GameObject: {fileID: 134827957}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.51, y: 3.41, z: 0}
+  m_LocalPosition: {x: -3.61, y: 3.41, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5031,7 +5031,7 @@ Transform:
   m_GameObject: {fileID: 793524510}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.7095708, w: -0.70463413}
-  m_LocalPosition: {x: -6.95, y: 3.39, z: 0}
+  m_LocalPosition: {x: -7.01, y: 4.7, z: 0}
   m_LocalScale: {x: 1, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5977,7 +5977,7 @@ FixedJoint2D:
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 5.51, y: 3.71}
+  m_ConnectedAnchor: {x: -3.61, y: 3.71}
   m_DampingRatio: 0
   m_Frequency: 0
 --- !u!50 &890780822
@@ -6256,7 +6256,7 @@ FixedJoint2D:
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 5.51, y: 3.1100001}
+  m_ConnectedAnchor: {x: -3.61, y: 3.1100001}
   m_DampingRatio: 0
   m_Frequency: 0
 --- !u!50 &905997267
@@ -10606,7 +10606,7 @@ Transform:
   m_GameObject: {fileID: 1758898668}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.74, y: -2.99, z: 0}
+  m_LocalPosition: {x: -1.04, y: 0.46, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -11101,6 +11101,7 @@ GameObject:
   - component: {fileID: 1864113512}
   - component: {fileID: 1864113514}
   - component: {fileID: 1864113513}
+  - component: {fileID: 1864113515}
   m_Layer: 9
   m_Name: Dummy Target
   m_TagString: Untagged
@@ -11152,10 +11153,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   obstacleDetectionRange: 1.6
-  frontalObstacleDetectionAngle: 36
-  leftRightObstacleDetectionAngle: 29.1
+  frontalObstacleDetectionAngle: 43
+  leftRightObstacleDetectionAngle: 40
   obstacleTagsToDetectList:
   - Obstacle
+  playerTagsToDetectList: []
   chassis: {fileID: 254097467}
 --- !u!114 &1864113514
 MonoBehaviour:
@@ -11169,16 +11171,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 146a7ceb96a12f740822725e29659d69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tankStatus: {fileID: 0}
   highDrag: 5
   lowDrag: 0
   horsepower: 70
+  chassisRB: {fileID: 0}
+  leftTrackRB: {fileID: 0}
+  rightTrackRB: {fileID: 0}
   stoppingDistance: 0.5
   stoppingAngle: 10
+  sensor: {fileID: 0}
+  currentTarget: {x: 0, y: 0}
   pathfindingSystem: {fileID: 119260169}
   obstacleAvoidanceStrength: 1
   backwardDuration: 1
   speedAdjustmentProximity: 0.75
+  backwardTimer: 0
+  forwardSpeed: 0
+  backwardSpeed: 0
+  rotationSpeed: 0
+  forwardTurnSpeed: 0
   debugMode: 0
+  isAvoidingObstacle: 0
+  isMovingBackward: 0
+--- !u!114 &1864113515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1864113510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2426d5b1005d65340994a070d4fe2fd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detectionRange: 0
+  attackRange: 0
 --- !u!1 &1881837481
 GameObject:
   m_ObjectHideFlags: 0

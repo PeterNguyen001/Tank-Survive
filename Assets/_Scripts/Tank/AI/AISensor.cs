@@ -10,6 +10,7 @@ public class AISensor : TankSubComponent
     [SerializeField] private float frontalObstacleDetectionAngle;
     [SerializeField] private float leftRightObstacleDetectionAngle;
     [SerializeField] private List<string> obstacleTagsToDetectList = new List<string>();
+    [SerializeField] private List<string> playerTagsToDetectList = new List<string>();
 
     private DetectionInfo detectedTargetInfo;
     public Transform chassis; // Store the chassis transform
@@ -18,9 +19,10 @@ public class AISensor : TankSubComponent
     private void Start()
     {
         ignoreColliders = tankStatus.GetListOfCollider2D();
+        playerTagsToDetectList.Add("Player");
     }
 
-    public DetectionInfo Detect(float range, float angle, List<string> tags, float angleOffset)
+    public DetectionInfo Detect(float range, float angle, List<string> tags, float angleOffset = 0)
     {
         Vector3 sensorPosition = chassis.position;
 
@@ -135,7 +137,11 @@ public class AISensor : TankSubComponent
     }
 
 
-
+    public DetectionInfo DetectPlayer()
+    {
+        DetectionInfo playerDetectionInfo = Detect(5, 360, playerTagsToDetectList);
+        return playerDetectionInfo;
+    }
 
 
 
@@ -146,89 +152,84 @@ public class AISensor : TankSubComponent
     }
 
 
- private void OnDrawGizmos()
-{
-    if (chassis == null) return;
-
-    Vector3 sensorPosition = chassis.position;
-    Vector3 forwardDirection = chassis.right;
-
-    // Define half of the forward, left, and right detection angles
-    float halfForwardAngle = frontalObstacleDetectionAngle * 0.5f;
-    float halfSideAngle = leftRightObstacleDetectionAngle * 0.5f;
-
-    // Forward Detection Cone (yellow)
-    Gizmos.color = Color.yellow;
-    Quaternion forwardLeftRotation = Quaternion.Euler(0, 0, -halfForwardAngle);
-    Quaternion forwardRightRotation = Quaternion.Euler(0, 0, halfForwardAngle);
-    Vector3 forwardLeftDirection = forwardLeftRotation * forwardDirection;
-    Vector3 forwardRightDirection = forwardRightRotation * forwardDirection;
-
-    // Draw forward detection cone
-    Gizmos.DrawLine(sensorPosition, sensorPosition + forwardLeftDirection * obstacleDetectionRange);
-    Gizmos.DrawLine(sensorPosition, sensorPosition + forwardRightDirection * obstacleDetectionRange);
-    Gizmos.DrawLine(sensorPosition + forwardLeftDirection * obstacleDetectionRange, sensorPosition + forwardRightDirection * obstacleDetectionRange);
-
-    // Left Detection Cone (green)
-    Gizmos.color = Color.green;
-    Quaternion leftMinRotation = Quaternion.Euler(0, 0, halfForwardAngle); // Starting from where forward cone ends
-    Quaternion leftMaxRotation = Quaternion.Euler(0, 0, halfForwardAngle + leftRightObstacleDetectionAngle);
-    Vector3 leftMinDirection = leftMinRotation * forwardDirection;
-    Vector3 leftMaxDirection = leftMaxRotation * forwardDirection;
-
-    // Draw left detection cone
-    Gizmos.DrawLine(sensorPosition, sensorPosition + leftMinDirection * obstacleDetectionRange);
-    Gizmos.DrawLine(sensorPosition, sensorPosition + leftMaxDirection * obstacleDetectionRange);
-    Gizmos.DrawLine(sensorPosition + leftMinDirection * obstacleDetectionRange, sensorPosition + leftMaxDirection * obstacleDetectionRange);
-
-    // Right Detection Cone (blue)
-    Gizmos.color = Color.blue;
-    Quaternion rightMinRotation = Quaternion.Euler(0, 0, -halfForwardAngle); // Starting from where forward cone ends
-    Quaternion rightMaxRotation = Quaternion.Euler(0, 0, -(halfForwardAngle + leftRightObstacleDetectionAngle));
-    Vector3 rightMinDirection = rightMinRotation * forwardDirection;
-    Vector3 rightMaxDirection = rightMaxRotation * forwardDirection;
-
-    // Draw right detection cone
-    Gizmos.DrawLine(sensorPosition, sensorPosition + rightMinDirection * obstacleDetectionRange);
-    Gizmos.DrawLine(sensorPosition, sensorPosition + rightMaxDirection * obstacleDetectionRange);
-    Gizmos.DrawLine(sensorPosition + rightMinDirection * obstacleDetectionRange, sensorPosition + rightMaxDirection * obstacleDetectionRange);
-
-    // Draw the detection range as a wire sphere
-    Gizmos.color = Color.white;
-    Gizmos.DrawWireSphere(sensorPosition, obstacleDetectionRange);
-
-    // Visualize the detected obstacles
-    var (forwardObstacle, leftObstacle, rightObstacle) = DetectForwardLeftRightObstacles();
-
-    // Forward obstacle detection (yellow)
-    Gizmos.color = Color.yellow;
-    if (forwardObstacle.distance > 0)
+    private void OnDrawGizmos()
     {
-        Gizmos.DrawLine(sensorPosition, forwardObstacle.position);
-        Gizmos.DrawWireSphere(forwardObstacle.position, 0.2f);
+        if (chassis == null) return;
+
+        Vector3 sensorPosition = chassis.position;
+        Vector3 forwardDirection = chassis.right;
+
+        // Define half of the forward, left, and right detection angles
+        float halfForwardAngle = frontalObstacleDetectionAngle * 0.5f;
+        float halfSideAngle = leftRightObstacleDetectionAngle * 0.5f;
+
+        // Forward Detection Cone (yellow)
+        Gizmos.color = Color.yellow;
+        Quaternion forwardLeftRotation = Quaternion.Euler(0, 0, -halfForwardAngle);
+        Quaternion forwardRightRotation = Quaternion.Euler(0, 0, halfForwardAngle);
+        Vector3 forwardLeftDirection = forwardLeftRotation * forwardDirection;
+        Vector3 forwardRightDirection = forwardRightRotation * forwardDirection;
+
+        // Draw forward detection cone
+        Gizmos.DrawLine(sensorPosition, sensorPosition + forwardLeftDirection * obstacleDetectionRange);
+        Gizmos.DrawLine(sensorPosition, sensorPosition + forwardRightDirection * obstacleDetectionRange);
+        Gizmos.DrawLine(sensorPosition + forwardLeftDirection * obstacleDetectionRange, sensorPosition + forwardRightDirection * obstacleDetectionRange);
+
+        // Left Detection Cone (green)
+        Gizmos.color = Color.green;
+        Quaternion leftMinRotation = Quaternion.Euler(0, 0, halfForwardAngle); // Starting from where forward cone ends
+        Quaternion leftMaxRotation = Quaternion.Euler(0, 0, halfForwardAngle + leftRightObstacleDetectionAngle);
+        Vector3 leftMinDirection = leftMinRotation * forwardDirection;
+        Vector3 leftMaxDirection = leftMaxRotation * forwardDirection;
+
+        // Draw left detection cone
+        Gizmos.DrawLine(sensorPosition, sensorPosition + leftMinDirection * obstacleDetectionRange);
+        Gizmos.DrawLine(sensorPosition, sensorPosition + leftMaxDirection * obstacleDetectionRange);
+        Gizmos.DrawLine(sensorPosition + leftMinDirection * obstacleDetectionRange, sensorPosition + leftMaxDirection * obstacleDetectionRange);
+
+        // Right Detection Cone (blue)
+        Gizmos.color = Color.blue;
+        Quaternion rightMinRotation = Quaternion.Euler(0, 0, -halfForwardAngle); // Starting from where forward cone ends
+        Quaternion rightMaxRotation = Quaternion.Euler(0, 0, -(halfForwardAngle + leftRightObstacleDetectionAngle));
+        Vector3 rightMinDirection = rightMinRotation * forwardDirection;
+        Vector3 rightMaxDirection = rightMaxRotation * forwardDirection;
+
+        // Draw right detection cone
+        Gizmos.DrawLine(sensorPosition, sensorPosition + rightMinDirection * obstacleDetectionRange);
+        Gizmos.DrawLine(sensorPosition, sensorPosition + rightMaxDirection * obstacleDetectionRange);
+        Gizmos.DrawLine(sensorPosition + rightMinDirection * obstacleDetectionRange, sensorPosition + rightMaxDirection * obstacleDetectionRange);
+
+        // Draw the detection range as a wire sphere
+        Gizmos.color = Color.white;
+        Gizmos.DrawWireSphere(sensorPosition, obstacleDetectionRange);
+
+        // Visualize the detected obstacles
+        var (forwardObstacle, leftObstacle, rightObstacle) = DetectForwardLeftRightObstacles();
+
+        // Forward obstacle detection (yellow)
+        Gizmos.color = Color.yellow;
+        if (forwardObstacle.distance > 0)
+        {
+            Gizmos.DrawLine(sensorPosition, forwardObstacle.position);
+            Gizmos.DrawWireSphere(forwardObstacle.position, 0.2f);
+        }
+
+        // Left obstacle detection (green)
+        Gizmos.color = Color.green;
+        if (leftObstacle.distance > 0)
+        {
+            Gizmos.DrawLine(sensorPosition, leftObstacle.position);
+            Gizmos.DrawWireSphere(leftObstacle.position, 0.2f);
+        }
+
+        // Right obstacle detection (blue)
+        Gizmos.color = Color.blue;
+        if (rightObstacle.distance > 0)
+        {
+            Gizmos.DrawLine(sensorPosition, rightObstacle.position);
+            Gizmos.DrawWireSphere(rightObstacle.position, 0.2f);
+        }
     }
-
-    // Left obstacle detection (green)
-    Gizmos.color = Color.green;
-    if (leftObstacle.distance > 0)
-    {
-        Gizmos.DrawLine(sensorPosition, leftObstacle.position);
-        Gizmos.DrawWireSphere(leftObstacle.position, 0.2f);
-    }
-
-    // Right obstacle detection (blue)
-    Gizmos.color = Color.blue;
-    if (rightObstacle.distance > 0)
-    {
-        Gizmos.DrawLine(sensorPosition, rightObstacle.position);
-        Gizmos.DrawWireSphere(rightObstacle.position, 0.2f);
-    }
-}
-
-
-
-
-
 }
 
 public struct DetectionInfo
