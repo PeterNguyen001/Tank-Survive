@@ -49,7 +49,7 @@ public class AITankNavigation : MovementController
         //else
         //    sensor.DetectForwardLeftRightObstacles();
 
-        //MoveToCurrentLocation();
+        //MoveToTargetLocation();
         //AdjustDragBasedOnMovement();
     }
 
@@ -57,7 +57,7 @@ public class AITankNavigation : MovementController
     private bool isMovingBackward = false; // Track backward movement status
 
 
-    private void MoveToCurrentLocation()
+    public void MoveToTargetLocation()
     {
         if (movementLocations.Count == 0)
         {

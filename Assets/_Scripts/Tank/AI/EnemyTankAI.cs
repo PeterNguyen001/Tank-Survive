@@ -39,6 +39,14 @@ public class EnemyTankAI : EnemyAI
         navigation.SetTargetLocation(targetLoaction);
     }
 
+    public void ChaseEnemy()
+    {
+        if (playerDetectionInfo.tag != "")
+        {
+            navigation.MoveToTargetLocation();
+        }
+    }
+
 }
 public class TankPatrolState : TankState
 {
@@ -59,6 +67,7 @@ public class TankChaseState : TankState
     public override void Enter()
     {
         Debug.Log("Tank started chasing");
+        Debug.Log(tankAI.GetPlayerDetectionInfo().position);
         tankAI.SetTargetLoaction(tankAI.GetPlayerDetectionInfo().position);
     }
 
@@ -66,6 +75,7 @@ public class TankChaseState : TankState
     {
         // Custom patrol behavior for tanks
         Debug.Log("Tank is chasing");
+        tankAI.ChaseEnemy();
         // Add movement or other tank-specific logic here
     }
 }

@@ -11168,32 +11168,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1864113510}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 146a7ceb96a12f740822725e29659d69, type: 3}
+  m_Script: {fileID: 11500000, guid: f2dda425fe6a2894cba0f803a86d8e09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tankStatus: {fileID: 0}
   highDrag: 5
-  lowDrag: 0
-  horsepower: 70
-  chassisRB: {fileID: 0}
-  leftTrackRB: {fileID: 0}
-  rightTrackRB: {fileID: 0}
+  lowDrag: 0.5
+  horsepower: 50
   stoppingDistance: 0.5
-  stoppingAngle: 10
-  sensor: {fileID: 0}
-  currentTarget: {x: 0, y: 0}
+  stoppingAngle: 15
   pathfindingSystem: {fileID: 119260169}
   obstacleAvoidanceStrength: 1
   backwardDuration: 1
   speedAdjustmentProximity: 0.75
-  backwardTimer: 0
-  forwardSpeed: 0
-  backwardSpeed: 0
-  rotationSpeed: 0
-  forwardTurnSpeed: 0
   debugMode: 0
-  isAvoidingObstacle: 0
-  isMovingBackward: 0
 --- !u!114 &1864113515
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -32,20 +32,28 @@ public class AIStateMachine
 
     public void ChangeState(State newState)
     {
-        if (currentState != newState)
+        if (currentState != null && currentState.GetType() == newState.GetType())
         {
-            if (currentState != null)
-            {
-                currentState.Exit();
-            }
-
-            currentState = newState;
-
-            if (currentState != null)
-            {
-                currentState.Enter();
-            }
+            // If the new state is of the same type as the current state, don't change
+            return;
         }
+
+        if (currentState != null)
+        {
+            currentState.Exit();
+        }
+
+        currentState = newState;
+
+        if (currentState != null)
+        {
+            currentState.Enter();
+        }
+    }
+
+    public State GetCurrentState()
+    {
+        return currentState;
     }
 
     public void Update()
@@ -56,6 +64,7 @@ public class AIStateMachine
         }
     }
 }
+
 
 public class IdleState : State
 {
