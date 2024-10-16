@@ -16,12 +16,12 @@ public class EnemyTankAI : EnemyAI
 
     void Update()
     {
-        playerDetectionInfo = sensor.DetectPlayer();
+        playerDetectionInfo = sensor.DetectPlayer(5);
         stateMachine.Update();
 
         if (playerDetectionInfo.tag != "")
         {
-            stateMachine.ChangeState(new TankChaseState(this)); // Chase player if within range
+            //stateMachine.ChangeState(new TankChaseState(this)); // Chase player if within range
         }
         else
         {

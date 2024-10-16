@@ -8,14 +8,18 @@ public class TurretController : TankSubComponent
 
     private LinkedList<GunBehaviour> gunList = new LinkedList<GunBehaviour>();
     private LinkedList<TurretAndPortBehaviour> turretAndGunPortList = new LinkedList<TurretAndPortBehaviour>();
-    public List<TurretAndPortBehaviour>  tList = new List<TurretAndPortBehaviour>();
+    public List<TurretAndPortBehaviour>  tList = new List<TurretAndPortBehaviour>(); 
+    private LinkedList<Collider2D> tankColliders;
+
     private Vector3 mousePosition;
     private bool isPullingTheTrigger;
 
-    private LinkedList<Collider2D> tankColliders;
+
+    [SerializeField] List<string> tagsToDetect = new List<string>();
 
     public float detectionRange = 10f;
 
+    private AISensor aiSensor;
 
 
     // Start is called before the first frame update
@@ -27,6 +31,7 @@ public class TurretController : TankSubComponent
         turretAndGunPortList.Clear();
         turretAndGunPortList = tankStatus.GetListOfTurretAndPort();
         tankColliders = tankStatus.GetListOfCollider2D();
+        aiSensor = GetComponent<AISensor>();
     }
     // Update is called once per frame
     void FixedUpdate()
@@ -39,10 +44,10 @@ public class TurretController : TankSubComponent
             }
             else
             {
-                GameObject nearestEnemy = DetectNearestEnemyFromGun(turret);
-                if (nearestEnemy != null)
+                Vector3 enemyPosition = GetNearestEnemyPosition(turret);
+                if (enemyPosition != Vector3.zero)
                 {
-                    Vector3 enemyPosition = nearestEnemy.transform.position;
+                    
                     turret.AimGunAt(enemyPosition);
                 }
             }
@@ -121,6 +126,13 @@ public class TurretController : TankSubComponent
         return nearestEnemy;
     }
 
+    public Vector3 GetNearestEnemyPosition(TurretAndPortBehaviour turret)
+    {
+        Transform turretTransform = turret.transform;
+        Vector3 nearestEnemyPosition = aiSensor.Detect(turret.transform, 5, 360, tagsToDetect).position;
+        return nearestEnemyPosition;
+    }
+
     private List<Vector2> BuildDetectionCone(Vector3 gunPosition, Vector3 coneDirection, float coneAngle)
     {
         List<Vector2> coneVertices = new List<Vector2>();
@@ -179,7 +191,10 @@ public class TurretController : TankSubComponent
         return false;
     }
 
-
+    public bool IsTargetOnLineOfSight(GunBehaviour gun)
+    {
+        return false;
+    }
     //private void OnDrawGizmosSelected()
     //{
     //    foreach (var gun in gunList)

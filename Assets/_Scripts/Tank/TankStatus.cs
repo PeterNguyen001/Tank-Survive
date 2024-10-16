@@ -16,7 +16,8 @@ public class TankStatus : MonoBehaviour
 
     private AmmoLoader loader;
     private TurretController turretController;
-    private PlayerTankMovementController playerMovementController;
+    private PlayerTankMovementController movementController;
+    private AISensor aiSensor;
 
     [SerializeField]
     private LayerMask enemyLayerMask;
@@ -51,7 +52,8 @@ public class TankStatus : MonoBehaviour
     {
         loader = GetComponent<AmmoLoader>();
         turretController = GetComponent<TurretController>();
-        playerMovementController = GetComponent<PlayerTankMovementController>();
+        movementController = GetComponent<PlayerTankMovementController>();
+        aiSensor = GetComponent<AISensor>();
 
         foreach (TankSubComponent subComponent in subComponentList)
         {
@@ -60,7 +62,7 @@ public class TankStatus : MonoBehaviour
         }
         //loader.Init();
         //turretController.Init();
-        //playerMovementController.Init();
+        //movementController.Init();
 
     }
     void Start()

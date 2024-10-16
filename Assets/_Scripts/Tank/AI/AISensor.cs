@@ -11,31 +11,36 @@ public class AISensor : TankSubComponent
     [SerializeField] private float leftRightObstacleDetectionAngle;
     [SerializeField] private List<string> obstacleTagsToDetectList = new List<string>();
     [SerializeField] private List<string> playerTagsToDetectList = new List<string>();
+    Vector3 chassisPosition;
 
     private DetectionInfo detectedTargetInfo;
     public Transform chassis; // Store the chassis transform
     private LinkedList<Collider2D> ignoreColliders = new LinkedList<Collider2D>();
 
-    private void Start()
+    public override void Init()
     {
         ignoreColliders = tankStatus.GetListOfCollider2D();
+    }
+    private void Start()
+    {
+        //ignoreColliders = tankStatus.GetListOfCollider2D();
         playerTagsToDetectList.Add("Player");
     }
 
-    public DetectionInfo Detect(float range, float angle, List<string> tags, float angleOffset = 0)
+    public DetectionInfo Detect(Transform objectToAttach, float range, float angle, List<string> tagsToDetect, float angleOffset = 0)
     {
-        Vector3 sensorPosition = chassis.position;
+        Vector3 sensorPosition = objectToAttach.transform.position;
 
         // Rotate the forward direction (chassis.right) by angleOffset degrees
         Vector3 detectionDirection = Quaternion.Euler(0, 0, angleOffset) * chassis.right;
 
-        detectedTargetInfo = new DetectionInfo(Vector2.zero, 0, ""); // Reset detected target info
+        detectedTargetInfo = new DetectionInfo(null,Vector2.zero, 0, ""); // Reset detected target info
         float closestDistance = Mathf.Infinity; // Initialize with a very large value
 
         Collider2D[] colliders = Physics2D.OverlapCircleAll(sensorPosition, range);
         foreach (Collider2D collider in colliders)
         {
-            if (tags.Contains(collider.tag)) // Check if the collider's tag is in the list
+            if (tagsToDetect.Contains(collider.tag)) // Check if the collider's tag is in the list
             {
                 // Find the closest point of contact on the collider
                 Vector2 contactPoint = collider.ClosestPoint(sensorPosition);
@@ -54,7 +59,7 @@ public class AISensor : TankSubComponent
                         if (ignoreColliders.Contains(hit.collider))
                             continue; // Ignore specified colliders
 
-                        if (!tags.Contains(hit.collider.tag))
+                        if (!tagsToDetect.Contains(hit.collider.tag))
                         {
                             isObstructed = true; // Obstruction detected
                             break;
@@ -67,7 +72,7 @@ public class AISensor : TankSubComponent
                         if (distanceToContact < closestDistance) // Update if this contact is closer
                         {
                             closestDistance = distanceToContact;
-                            detectedTargetInfo = new DetectionInfo(contactPoint, closestDistance, collider.tag);
+                            detectedTargetInfo = new DetectionInfo(collider.gameObject, contactPoint, closestDistance, collider.tag);
                         }
                     }
                 }
@@ -82,14 +87,14 @@ public class AISensor : TankSubComponent
                     {
                         if (ignoreColliders.Contains(hit.collider))
                             continue; // Ignore specified colliders                    
-                        if (hit.collider != null && tags.Contains(hit.collider.tag))
+                        if (hit.collider != null && tagsToDetect.Contains(hit.collider.tag))
                         {
                             //Debug.Log(hit.collider.name);
                             float distanceToEdgeHit = hit.distance;
                             if (distanceToEdgeHit < closestDistance)
                             {
                                 closestDistance = distanceToEdgeHit;
-                                detectedTargetInfo = new DetectionInfo(hit.point, closestDistance, hit.collider.tag);
+                                detectedTargetInfo = new DetectionInfo(collider.gameObject, hit.point, closestDistance, hit.collider.tag);
                             }
                         }
                     }
@@ -111,13 +116,13 @@ public class AISensor : TankSubComponent
         }
 
         // Detect forward obstacle (angleOffset = 0)
-        DetectionInfo forwardObstacle = Detect(obstacleDetectionRange, frontalObstacleDetectionAngle, obstacleTagsToDetectList, 0);
+        DetectionInfo forwardObstacle = Detect(chassis, obstacleDetectionRange, frontalObstacleDetectionAngle, obstacleTagsToDetectList, 0);
 
         // Detect left obstacle (angleOffset is positive to rotate left)
-        DetectionInfo leftObstacle = Detect(obstacleDetectionRange, leftRightObstacleDetectionAngle, obstacleTagsToDetectList, frontalObstacleDetectionAngle * 0.5f + leftRightObstacleDetectionAngle * 0.5f);
+        DetectionInfo leftObstacle = Detect(chassis, obstacleDetectionRange, leftRightObstacleDetectionAngle, obstacleTagsToDetectList, frontalObstacleDetectionAngle * 0.5f + leftRightObstacleDetectionAngle * 0.5f);
 
         // Detect right obstacle (angleOffset is negative to rotate right)
-        DetectionInfo rightObstacle = Detect(obstacleDetectionRange, leftRightObstacleDetectionAngle, obstacleTagsToDetectList, -(frontalObstacleDetectionAngle * 0.5f + leftRightObstacleDetectionAngle * 0.5f));
+        DetectionInfo rightObstacle = Detect(chassis, obstacleDetectionRange, leftRightObstacleDetectionAngle, obstacleTagsToDetectList, -(frontalObstacleDetectionAngle * 0.5f + leftRightObstacleDetectionAngle * 0.5f));
 
         // Log detected obstacles in the correct cones
         //if (forwardObstacle.position != Vector2.zero)
@@ -137,9 +142,9 @@ public class AISensor : TankSubComponent
     }
 
 
-    public DetectionInfo DetectPlayer()
+    public DetectionInfo DetectPlayer(float range)
     {
-        DetectionInfo playerDetectionInfo = Detect(5, 360, playerTagsToDetectList);
+        DetectionInfo playerDetectionInfo = Detect(chassis, range, 360, playerTagsToDetectList);
         return playerDetectionInfo;
     }
 
@@ -234,11 +239,13 @@ public class AISensor : TankSubComponent
 
 public struct DetectionInfo
 {
+    public GameObject gameObject;
     public Vector2 position;
     public float distance;
     public string tag;
-    public DetectionInfo(Vector3 position, float distance,string tag)
+    public DetectionInfo(GameObject gameObject, Vector3 position, float distance,string tag)
     {
+        this.gameObject = gameObject;
         this.position = position;
         this.distance = distance;
         this.tag = tag;

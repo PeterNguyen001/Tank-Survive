@@ -9,6 +9,7 @@ public class TurretAndPortBehaviour : TankPart
     private LinkedList<GunBehaviour> gunUnderTurretControl = new LinkedList<GunBehaviour> ();
 
     public bool isAIControl;
+
     // Start is called before the first frame update
     void Start()
     {

@@ -1,13 +1,11 @@
 using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
-public class EnemyAI : MonoBehaviour
+public class EnemyAI : TankSubComponent
 {
     protected AISensor sensor;
     protected AIStateMachine stateMachine;
 
-    public float detectionRange;
-    public float attackRange;
 
     void Start()
     {

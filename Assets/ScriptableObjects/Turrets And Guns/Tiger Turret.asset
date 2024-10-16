@@ -24,4 +24,4 @@ MonoBehaviour:
   tankPartType: 1
   isTurret: 1
   maxRotationAngle: 360
-  rotationSpeed: 20
+  rotationSpeed: 10

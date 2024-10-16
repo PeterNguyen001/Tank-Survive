@@ -973,6 +973,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tList: []
+  tagsToDetect:
+  - Enemy
   detectionRange: 10
 --- !u!114 &134827962
 MonoBehaviour:
@@ -6349,6 +6351,7 @@ GameObject:
   - component: {fileID: 907280064}
   - component: {fileID: 907280066}
   - component: {fileID: 907280067}
+  - component: {fileID: 907280068}
   m_Layer: 9
   m_Name: Tiger Turret
   m_TagString: Enemy
@@ -6459,6 +6462,21 @@ CapsuleCollider2D:
   m_Offset: {x: -0.13308223, y: -0.0059713568}
   m_Size: {x: 0.8122597, y: 0.5847475}
   m_Direction: 1
+--- !u!114 &907280068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 907280063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d9980fd180385a42b68881beebf8836, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HP: 0
+  turretAndGunPortData: {fileID: 11400000, guid: ec90315cb3aad3b4fad76a87df8ef828, type: 2}
+  isAIControl: 1
 --- !u!1 &916068634
 GameObject:
   m_ObjectHideFlags: 0
@@ -6492,6 +6510,68 @@ Transform:
   - {fileID: 905997264}
   m_Father: {fileID: 192573426}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &962142543
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1161684516}
+    m_Modifications:
+    - target: {fileID: 1293266806525487404, guid: 2c9f72d2bfb9d4b44a1949a07ebddeef, type: 3}
+      propertyPath: m_Name
+      value: 88mm
+      objectReference: {fileID: 0}
+    - target: {fileID: 5717278207918193287, guid: 2c9f72d2bfb9d4b44a1949a07ebddeef, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.2637732
+      objectReference: {fileID: 0}
+    - target: {fileID: 5717278207918193287, guid: 2c9f72d2bfb9d4b44a1949a07ebddeef, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.05898058
+      objectReference: {fileID: 0}
+    - target: {fileID: 5717278207918193287, guid: 2c9f72d2bfb9d4b44a1949a07ebddeef, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5717278207918193287, guid: 2c9f72d2bfb9d4b44a1949a07ebddeef, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9982533
+      objectReference: {fileID: 0}
+    - target: {fileID: 5717278207918193287, guid: 2c9f72d2bfb9d4b44a1949a07ebddeef, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5717278207918193287, guid: 2c9f72d2bfb9d4b44a1949a07ebddeef, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5717278207918193287, guid: 2c9f72d2bfb9d4b44a1949a07ebddeef, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.059079822
+      objectReference: {fileID: 0}
+    - target: {fileID: 5717278207918193287, guid: 2c9f72d2bfb9d4b44a1949a07ebddeef, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5717278207918193287, guid: 2c9f72d2bfb9d4b44a1949a07ebddeef, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5717278207918193287, guid: 2c9f72d2bfb9d4b44a1949a07ebddeef, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -6.774
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2c9f72d2bfb9d4b44a1949a07ebddeef, type: 3}
+--- !u!4 &962142544 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5717278207918193287, guid: 2c9f72d2bfb9d4b44a1949a07ebddeef, type: 3}
+  m_PrefabInstance: {fileID: 962142543}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &971298819
 GameObject:
   m_ObjectHideFlags: 0
@@ -7383,6 +7463,7 @@ Transform:
   - {fileID: 722460142}
   - {fileID: 27982439}
   - {fileID: 1333498712}
+  - {fileID: 962142544}
   m_Father: {fileID: 2130047250}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1168452074
@@ -10169,6 +10250,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1635091083}
   - component: {fileID: 1635091085}
+  - component: {fileID: 1635091086}
   m_Layer: 9
   m_Name: 88mm Cannon
   m_TagString: Untagged
@@ -10244,6 +10326,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1635091086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1635091082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f97ee3ccd0de4994cb2d2e764ceda24d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HP: 0
+  gunData: {fileID: 11400000, guid: c0f2f521c6d91c94aac32d0e6aae8bda, type: 2}
+  currentAmmoCount: 0
 --- !u!1001 &1659273972
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10860,6 +10957,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tankPartType: 2
+--- !u!1 &1819793238 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1293266806525487404, guid: 2c9f72d2bfb9d4b44a1949a07ebddeef, type: 3}
+  m_PrefabInstance: {fileID: 962142543}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1825175396
 GameObject:
   m_ObjectHideFlags: 0
@@ -11102,6 +11204,8 @@ GameObject:
   - component: {fileID: 1864113514}
   - component: {fileID: 1864113513}
   - component: {fileID: 1864113515}
+  - component: {fileID: 1864113517}
+  - component: {fileID: 1864113516}
   m_Layer: 9
   m_Name: Dummy Target
   m_TagString: Untagged
@@ -11156,7 +11260,7 @@ MonoBehaviour:
   frontalObstacleDetectionAngle: 43
   leftRightObstacleDetectionAngle: 40
   obstacleTagsToDetectList:
-  - Obstacle
+  - Player
   playerTagsToDetectList: []
   chassis: {fileID: 254097467}
 --- !u!114 &1864113514
@@ -11193,8 +11297,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2426d5b1005d65340994a070d4fe2fd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectionRange: 0
-  attackRange: 0
+--- !u!114 &1864113516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1864113510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba4ed9e6a0800f2479a3645f1bc750ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tList: []
+  tagsToDetect:
+  - Player
+  detectionRange: 10
+--- !u!114 &1864113517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1864113510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 907b4da7ba1711345a88e9bdf5e0e2f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletPrefab1: {fileID: 1819793238}
+  bulletPrefab2: {fileID: 1333498707}
 --- !u!1 &1881837481
 GameObject:
   m_ObjectHideFlags: 0
@@ -11900,6 +12032,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tList: []
+  tagsToDetect: []
   detectionRange: 10
 --- !u!1001 &2054536092
 PrefabInstance:
