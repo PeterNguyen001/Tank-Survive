@@ -57,7 +57,7 @@ public class TurretController : TankSubComponent
             {
                 if (turret.isAIControl)
                 {
-                    shouldFire = IsEnemyOnGunSight(gun);
+                    shouldFire = IsTargetOnLineOfSight(gun);
                 }
                 gun.FireGun(shouldFire);
             }
@@ -193,6 +193,12 @@ public class TurretController : TankSubComponent
 
     public bool IsTargetOnLineOfSight(GunBehaviour gun)
     {
+        DetectionInfo targetDetectionInfo = aiSensor.Detect(gun.FindGunlEnd().transform, 5, 2, tagsToDetect);
+        if (targetDetectionInfo.tag != "")
+        {
+            Debug.Log("Enemy Spotted");
+            return true;
+        }
         return false;
     }
     //private void OnDrawGizmosSelected()
