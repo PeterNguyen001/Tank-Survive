@@ -5,7 +5,7 @@ public class AITankNavigation : MovementController
 {
     public float stoppingDistance = 0f; // Distance at which the AI stops moving towards each location
     public float stoppingAngle = 0f;
-    public Queue<Vector2> movementLocations = new Queue<Vector2>(); // Queue of locations to move to
+    public Queue<Vector2> movementQueue = new Queue<Vector2>(); // Queue of locations to move to
 
     private AISensor sensor;
     private Vector2 currentTarget; // Current target location
@@ -42,7 +42,7 @@ public class AITankNavigation : MovementController
     void FixedUpdate()
     {
         //sensor.DetectForwardLeftRightObstacles();
-        //if (movementLocations.Count == 0 && !debugMode)
+        //if (movementQueue.Count == 0 && !debugMode)
         //{
         //    AddRandomLocationNearAI(25);
         //}
@@ -59,7 +59,7 @@ public class AITankNavigation : MovementController
 
     public void MoveToTargetLocation()
     {
-        if (movementLocations.Count == 0)
+        if (movementQueue.Count == 0)
         {
             Debug.Log("No movement locations to process.");
             return; // No more locations to move to
@@ -196,9 +196,9 @@ public class AITankNavigation : MovementController
         else
         {
             Debug.Log("Reached target location, selecting next target if available.");
-            if (movementLocations.Count > 0)
+            if (movementQueue.Count > 0)
             {
-                currentTarget = movementLocations.Dequeue();
+                currentTarget = movementQueue.Dequeue();
             }
         }
     }
@@ -230,10 +230,10 @@ public class AITankNavigation : MovementController
 
     public void AddMovementLocation(Vector2 location)
     {
-        movementLocations.Enqueue(location);
+        movementQueue.Enqueue(location);
 
         // If the AI has no current target, immediately set the new target
-        if (movementLocations.Count == 1)
+        if (movementQueue.Count == 1)
         {
             currentTarget = location;
         }
@@ -268,9 +268,9 @@ public class AITankNavigation : MovementController
     //    }
     //}
 
-    public void ClearMovementLocations()
+    public void ClearMovementQueue()
     {
-        movementLocations.Clear();
+        movementQueue.Clear();
     }
 
     public void AddRandomLocationNearAI(float radius)
@@ -287,7 +287,7 @@ public class AITankNavigation : MovementController
 
     public void SetTargetLocation(Vector2 targetLocation)
     {
-        ClearMovementLocations();
+        ClearMovementQueue();
         Vector2 currentPosition = chassisRB.transform.position;
         LinkedList<GridNode> path = pathfindingSystem.FindPath(currentPosition, targetLocation);
         if (path != null)

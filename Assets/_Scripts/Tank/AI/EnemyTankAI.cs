@@ -6,8 +6,11 @@ public class EnemyTankAI : EnemyAI
 {
     DetectionInfo playerDetectionInfo;
     private AITankNavigation navigation;
+    protected Vector2 enemyLastKnowPosition;
+    public float lastKnowPositionOffset;
     void Start()
     {
+
         sensor = GetComponent<AISensor>();
         navigation = GetComponent<AITankNavigation>();
         stateMachine = new AIStateMachine();
@@ -19,9 +22,10 @@ public class EnemyTankAI : EnemyAI
         playerDetectionInfo = sensor.DetectPlayer(5);
         stateMachine.Update();
 
-        if (playerDetectionInfo.tag != "")
+        if (playerDetectionInfo.tag == "Player")
         {
-            //stateMachine.ChangeState(new TankChaseState(this)); // Chase player if within range
+            SetEnemyLastKnowPosition(playerDetectionInfo.position);
+            stateMachine.ChangeState(new TankChaseState(this)); // Chase player if within range
         }
         else
         {
@@ -41,10 +45,27 @@ public class EnemyTankAI : EnemyAI
 
     public void ChaseEnemy()
     {
-        if (playerDetectionInfo.tag != "")
-        {
             navigation.MoveToTargetLocation();
+    }
+
+    public void StopMoving()
+    {
+        navigation.ClearMovementQueue();
+    }
+
+    public void SetEnemyLastKnowPosition(Vector2 newPosition)
+    {
+        // Check the distance between the current last known position and the new position
+        if (Vector2.Distance(enemyLastKnowPosition, newPosition) > lastKnowPositionOffset && newPosition != Vector2.zero)
+        {
+            // Update the last known position if the new position is far enough
+            enemyLastKnowPosition = newPosition;
         }
+    }
+
+    public Vector2 GetEnemyLastKnowPosition()
+    {
+        return enemyLastKnowPosition;
     }
 
 }
@@ -52,10 +73,22 @@ public class TankPatrolState : TankState
 {
     public TankPatrolState(EnemyAI enemyAI) : base(enemyAI) { }
 
+    public override void Enter()
+    {
+        if(tankAI.GetEnemyLastKnowPosition() != Vector2.zero)
+        {
+            Debug.Log("Tank is patrolling last seen");
+            tankAI.SetTargetLoaction(tankAI.GetEnemyLastKnowPosition());
+        }
+        // Custom patrol behavior for tanks
+        Debug.Log("Tank is patrolling");
+        // Add movement or other tank-specific logic here
+    }
     public override void Execute()
     {
         // Custom patrol behavior for tanks
-        Debug.Log("Tank is patrolling");
+        Debug.Log("Tank is checking");
+        tankAI.ChaseEnemy();
         // Add movement or other tank-specific logic here
     }
 }
@@ -67,7 +100,6 @@ public class TankChaseState : TankState
     public override void Enter()
     {
         Debug.Log("Tank started chasing");
-        Debug.Log(tankAI.GetPlayerDetectionInfo().position);
         tankAI.SetTargetLoaction(tankAI.GetPlayerDetectionInfo().position);
     }
 
@@ -77,6 +109,11 @@ public class TankChaseState : TankState
         Debug.Log("Tank is chasing");
         tankAI.ChaseEnemy();
         // Add movement or other tank-specific logic here
+    }
+
+    public override void Exit()
+    {
+        tankAI.StopMoving();
     }
 }
 

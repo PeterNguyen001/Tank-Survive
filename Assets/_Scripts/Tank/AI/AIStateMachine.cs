@@ -32,11 +32,11 @@ public class AIStateMachine
 
     public void ChangeState(State newState)
     {
-        if (currentState != null && currentState.GetType() == newState.GetType())
-        {
-            // If the new state is of the same type as the current state, don't change
-            return;
-        }
+        //if (currentState != null && currentState.GetType() == newState.GetType())
+        //{
+        //    // If the new state is of the same type as the current state, don't change
+        //    return;
+        //}
 
         if (currentState != null)
         {
