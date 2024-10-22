@@ -22,8 +22,14 @@ public class EnemyTankAI : EnemyAI
         playerDetectionInfo = sensor.DetectPlayer(5);
         stateMachine.Update();
 
+        Vector2 enemyNewPosition = playerDetectionInfo.position;
         if (playerDetectionInfo.tag == "Player")
         {
+            if (Vector2.Distance(enemyLastKnowPosition, enemyNewPosition) > lastKnowPositionOffset && enemyNewPosition != Vector2.zero)
+            {
+                // Update the last known position if the new position is far enough
+                enemyLastKnowPosition = enemyNewPosition;
+            }
             SetEnemyLastKnowPosition(playerDetectionInfo.position);
             stateMachine.ChangeState(new TankChaseState(this)); // Chase player if within range
         }
@@ -55,12 +61,7 @@ public class EnemyTankAI : EnemyAI
 
     public void SetEnemyLastKnowPosition(Vector2 newPosition)
     {
-        // Check the distance between the current last known position and the new position
-        if (Vector2.Distance(enemyLastKnowPosition, newPosition) > lastKnowPositionOffset && newPosition != Vector2.zero)
-        {
-            // Update the last known position if the new position is far enough
-            enemyLastKnowPosition = newPosition;
-        }
+            enemyLastKnowPosition = newPosition; 
     }
 
     public Vector2 GetEnemyLastKnowPosition()
@@ -79,6 +80,7 @@ public class TankPatrolState : TankState
         {
             Debug.Log("Tank is patrolling last seen");
             tankAI.SetTargetLoaction(tankAI.GetEnemyLastKnowPosition());
+            tankAI.SetEnemyLastKnowPosition(Vector2.zero);
         }
         // Custom patrol behavior for tanks
         Debug.Log("Tank is patrolling");
