@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class TankStatus : MonoBehaviour
+public class TankPartManager : MonoBehaviour
 {
     // Start is called before the first frame update;
 
@@ -17,12 +17,14 @@ public class TankStatus : MonoBehaviour
     private AmmoLoader loader;
     private TurretController turretController;
     private PlayerTankMovementController movementController;
-    private AISensor aiSensor;
+    private AISensor aISensor;
+    private AITankNavigation aITankNavigation;
 
-    [SerializeField]
-    private LayerMask enemyLayerMask;
-
-    public LayerMask EnemyLayerMask { get => enemyLayerMask; set => enemyLayerMask = value; }
+    public AmmoLoader Loader { get => loader; set => loader = value; }
+    public TurretController TurretController { get => turretController; set => turretController = value; }
+    public PlayerTankMovementController MovementController { get => movementController; set => movementController = value; }
+    public AISensor AISensor { get => aISensor; set => aISensor = value; }
+    public AITankNavigation AITankNavigation { get => aITankNavigation; set => aITankNavigation = value; }
 
     private void Awake()
     {
@@ -36,11 +38,6 @@ public class TankStatus : MonoBehaviour
         Tools.FindComponentsRecursively(transform, collider2DList);
         Tools.FindComponentsRecursively(transform, subComponentList);
         Tools.FindComponentsRecursively(transform, tankPartList);
-        foreach (TankPart tankPart in tankPartList)
-        {
-
-        }
-
     }
 
     public LinkedList<Collider2D> GetListOfCollider2D()
@@ -50,10 +47,12 @@ public class TankStatus : MonoBehaviour
 
     public void StartBattle()
     {
+
         loader = GetComponent<AmmoLoader>();
         turretController = GetComponent<TurretController>();
         movementController = GetComponent<PlayerTankMovementController>();
-        aiSensor = GetComponent<AISensor>();
+        aISensor = GetComponent<AISensor>();
+        AITankNavigation = GetComponent<AITankNavigation>();
 
         foreach (TankSubComponent subComponent in subComponentList)
         {

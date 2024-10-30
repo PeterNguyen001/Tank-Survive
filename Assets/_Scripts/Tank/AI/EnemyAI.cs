@@ -3,8 +3,10 @@ using UnityEngine;
 
 public class EnemyAI : TankSubComponent
 {
+
     protected AISensor sensor;
     protected AIStateMachine stateMachine;
+
 
 
     void Start()

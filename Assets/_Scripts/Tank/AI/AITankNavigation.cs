@@ -5,6 +5,8 @@ public class AITankNavigation : MovementController
 {
     public float stoppingDistance = 0f; // Distance at which the AI stops moving towards each location
     public float stoppingAngle = 0f;
+    public float randomAngleRange = 5f;
+
     public Queue<Vector2> movementQueue = new Queue<Vector2>(); // Queue of locations to move to
 
     private AISensor sensor;
@@ -33,8 +35,8 @@ public class AITankNavigation : MovementController
         sensor = GetComponent<AISensor>();
         forwardSpeed = horsepower;
         backwardSpeed = horsepower * 0.5f;
-        forwardTurnSpeed = horsepower * 0.5f;
-        rotationSpeed = horsepower * 0.25f;
+        forwardTurnSpeed = horsepower * 0.6f;
+        rotationSpeed = horsepower * 0.2f;
 
     }
 
@@ -97,8 +99,8 @@ public class AITankNavigation : MovementController
             else
             {
                 // Use left and right weights to control backward movement speed
-                float backwardLeftSpeed = leftWeight * backwardSpeed;
-                float backwardRightSpeed = rightWeight * backwardSpeed;
+                float backwardLeftSpeed = rightWeight * backwardSpeed;
+                float backwardRightSpeed = leftWeight * backwardSpeed;
 
                 Debug.Log($"Moving backward with left speed: {backwardLeftSpeed}, right speed: {backwardRightSpeed}");
 
@@ -203,7 +205,34 @@ public class AITankNavigation : MovementController
         }
     }
 
+    public void RotateToFaceTarget(Vector2 targetLocation)
+    {
+        Vector2 tankPosition = new Vector2(chassisRB.transform.position.x, chassisRB.transform.position.y);
+        Vector2 directionToTarget = targetLocation - tankPosition;
+        float angleToTarget = Vector2.SignedAngle(chassisRB.transform.right, directionToTarget);
 
+        // Apply a random angle within the specified range to the stopping condition
+        float adjustedStoppingAngle = Random.Range(-randomAngleRange, randomAngleRange);
+
+        // Rotate the tank to face the target location
+        if (Mathf.Abs(angleToTarget) > adjustedStoppingAngle)
+        {
+            if (angleToTarget > 0)
+            {
+                Debug.Log("Rotating left to face target");
+                Movement.RotateTankLeft();
+            }
+            else
+            {
+                Debug.Log("Rotating right to face target");
+                Movement.RotateTankRight();
+            }
+        }
+        else
+        {
+            Debug.Log("Tank is facing the target location within the adjusted stopping angle");
+        }
+    }
 
 
     // Dynamic speed adjustment based on proximity to obstacles
@@ -239,38 +268,14 @@ public class AITankNavigation : MovementController
         }
     }
 
-    //void HandleMouseInput()
-    //{
-    //    if (Input.GetMouseButtonDown(0))
-    //    {
-    //        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-    //        if (!startSelected)
-    //        {
-    //            startPosition = mousePosition;
-    //            SetNodeAsStartNode(startPosition);
-    //            startSelected = true;
-    //        }
-    //        else
-    //        {
-    //            goalPosition = mousePosition;
-    //            SetNodeAsGoalNode(goalPosition);
-
-
-    //            LinkedList<GridNode> foundPath = FindPath(startPosition, goalPosition);
-    //            if (foundPath != null)
-    //            {
-    //                HighlightPath(foundPath);
-    //            }
-
-    //            startSelected = false; // Reset for the next path
-    //        }
-    //    }
-    //}
-
     public void ClearMovementQueue()
     {
         movementQueue.Clear();
+    }
+
+    public bool IsMovementQueueEmpty()
+    {
+        return movementQueue.Count == 0;
     }
 
     public void AddRandomLocationNearAI(float radius)

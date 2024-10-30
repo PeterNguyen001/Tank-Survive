@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TankSubComponent : MonoBehaviour
 {
-    protected TankStatus tankStatus;
+    protected TankPartManager tankStatus;
     // Start is called before the first frame update
     public virtual void Init()
     {
@@ -13,6 +13,6 @@ public class TankSubComponent : MonoBehaviour
     public void SetStatus()
     {
 
-        tankStatus = gameObject.GetComponent<TankStatus>();
+        tankStatus = gameObject.GetComponent<TankPartManager>();
     }
 }
