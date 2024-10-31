@@ -36,7 +36,19 @@ public class TurretController : TankSubComponent
     // Update is called once per frame
     void FixedUpdate()
     {
-
+        foreach (TurretAndPortBehaviour turret in turretAndGunPortList)
+        {
+            if (!turret.isAIControl)
+            {
+                turret.AimGunAt(mousePosition);
+            }
+           
+            bool shouldFire = isPullingTheTrigger;
+            foreach (GunBehaviour gun in turret.GetGunUnderTurretControl())
+            {
+                gun.FireGun(shouldFire);
+            }
+        }
     }
 
     public void AttackTaget()

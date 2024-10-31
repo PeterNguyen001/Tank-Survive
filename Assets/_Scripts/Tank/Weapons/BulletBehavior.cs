@@ -135,22 +135,33 @@ public class BulletBehavior : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // Assuming a 20% chance to miss
-        float missChance = 0.2f;
-        Collider2D hitCollider = CalculateHit(CalculateTrajectory(5), missChance);
-        if (hitCollider != null)
+        if (collision.tag != "Obstacle")
         {
-            // Handle the hit
-            if(collision = hitCollider)
+            // Assuming a 20% chance to miss
+            float missChance = 0.2f;
+            Collider2D hitCollider = CalculateHit(CalculateTrajectory(5), missChance);
+            TankPart part = null;
+            hitCollider.TryGetComponent(out part);                 
+            if (hitCollider != null && part != null)
             {
-                Debug.Log("Hit: " + hitCollider.gameObject.name);
-                DeactivateBullet();
+                // Handle the hit
+                if (collision = hitCollider)
+                {
+                    part.TakeDamage(5);
+                    Debug.Log("Hit: " + hitCollider.gameObject.name);
+                    DeactivateBullet();
+                }
+            }
+            else if (isMissed)
+            {
+                // Handle the miss
+                Debug.Log("Missed");
             }
         }
-        else if (isMissed)
+        else
         {
-            // Handle the miss
-            Debug.Log("Missed");
+            DeactivateBullet();
+            Debug.Log("Hit wall");
         }
     }
 
