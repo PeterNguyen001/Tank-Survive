@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class EnemyTankAI : EnemyAI
 {
-    protected TankPartManager tankPartManager;
 
     DetectionInfo playerDetectionInfo;
     AITankNavigation tankNavigation;
@@ -122,7 +121,7 @@ public class TankAttackEnemy : TankState
     public override void Execute() 
     {
         tankAI.TankNavigation.RotateToFaceTarget(tankAI.GetEnemyLastKnowPosition());
-        tankAI.TurretController.AttackTaget();
+        tankAI.TurretController.AIControl();
     }
 }
 public class TankPatrol : TankState

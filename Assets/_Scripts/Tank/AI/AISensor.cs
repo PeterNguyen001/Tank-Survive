@@ -20,11 +20,11 @@ public class AISensor : TankSubComponent
 
     public override void Init()
     {
-        ignoreColliders = tankStatus.GetListOfCollider2D();
+        ignoreColliders = tankPartManager.GetListOfCollider2D();
     }
     private void Start()
     {
-        //ignoreColliders = tankStatus.GetListOfCollider2D();
+        //ignoreColliders = tankPartManager.GetListOfCollider2D();
         playerTagsToDetectList.Add("Player");
     }
 

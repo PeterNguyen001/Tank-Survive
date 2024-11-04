@@ -122,7 +122,7 @@ public class AITankMovementController : MovementController
     public override void Init()
     {
         base.Init();
-        ignoreColliders = tankStatus.GetListOfCollider2D();
+        ignoreColliders = tankPartManager.GetListOfCollider2D();
     }
 
     private void OnDrawGizmos()

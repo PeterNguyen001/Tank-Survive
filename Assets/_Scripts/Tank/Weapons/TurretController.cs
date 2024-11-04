@@ -27,39 +27,43 @@ public class TurretController : TankSubComponent
     public override void Init()
     {
         gunList.Clear();
-        gunList = tankStatus.GetListOfGun();
+        gunList = tankPartManager.GetListOfGun();
         turretAndGunPortList.Clear();
-        turretAndGunPortList = tankStatus.GetListOfTurretAndPort();
-        tankColliders = tankStatus.GetListOfCollider2D();
+        turretAndGunPortList = tankPartManager.GetListOfTurretAndPort();
+        tankColliders = tankPartManager.GetListOfCollider2D();
         aiSensor = GetComponent<AISensor>();
     }
     // Update is called once per frame
     void FixedUpdate()
     {
+        PlayerControll();
+    }
+
+    private void PlayerControll()
+    {
         foreach (TurretAndPortBehaviour turret in turretAndGunPortList)
         {
-            if (!turret.isAIControl)
+            if (!turret.IsDisable)
             {
-                turret.AimGunAt(mousePosition);
-            }
-           
-            bool shouldFire = isPullingTheTrigger;
-            foreach (GunBehaviour gun in turret.GetGunUnderTurretControl())
-            {
-                gun.FireGun(shouldFire);
+                if (!turret.isAIControl)
+                {
+                    turret.AimGunAt(mousePosition);
+                }
+
+                bool shouldFire = isPullingTheTrigger;
+                foreach (GunBehaviour gun in turret.GetGunUnderTurretControl())
+                {
+                    gun.FireGun(shouldFire);
+                }
             }
         }
     }
 
-    public void AttackTaget()
+    public void AIControl()
     {
         foreach (TurretAndPortBehaviour turret in turretAndGunPortList)
         {
-            if (!turret.isAIControl)
-            {
-                turret.AimGunAt(mousePosition);
-            }
-            else
+            if (!turret.IsDisable)
             {
                 Vector3 enemyPosition = GetNearestEnemyPosition(turret);
                 if (enemyPosition != Vector3.zero)
@@ -67,16 +71,16 @@ public class TurretController : TankSubComponent
 
                     turret.AimGunAt(enemyPosition);
                 }
-            }
 
-            bool shouldFire = isPullingTheTrigger;
-            foreach (GunBehaviour gun in turret.GetGunUnderTurretControl())
-            {
-                if (turret.isAIControl)
+                bool shouldFire = isPullingTheTrigger;
+                foreach (GunBehaviour gun in turret.GetGunUnderTurretControl())
                 {
-                    shouldFire = IsTargetOnLineOfSight(gun);
+                    if (turret.isAIControl)
+                    {
+                        shouldFire = IsTargetOnLineOfSight(gun);
+                    }
+                    gun.FireGun(shouldFire);
                 }
-                gun.FireGun(shouldFire);
             }
         }
     }

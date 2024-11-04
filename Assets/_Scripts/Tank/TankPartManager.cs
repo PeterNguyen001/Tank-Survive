@@ -12,6 +12,7 @@ public class TankPartManager : MonoBehaviour
     private LinkedList<GunBehaviour> gunList = new LinkedList<GunBehaviour>();
     private LinkedList<TurretAndPortBehaviour> turretAndGunPortList = new LinkedList<TurretAndPortBehaviour>();
     private LinkedList<Collider2D> collider2DList = new LinkedList<Collider2D>();
+    private LinkedList<TankPart> disabledTanlPartList = new LinkedList<TankPart>();
 
 
     private AmmoLoader loader;
@@ -56,9 +57,14 @@ public class TankPartManager : MonoBehaviour
 
         foreach (TankSubComponent subComponent in subComponentList)
         {
-            subComponent.SetStatus();
+            subComponent.SetManager();
             subComponent.Init();
         }
+        foreach (TankPart tankPart in tankPartList)
+        {
+            tankPart.SetManager(this);
+        }
+
         //loader.Init();
         //turretController.Init();
         //movementController.Init();

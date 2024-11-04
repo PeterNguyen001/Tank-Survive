@@ -53,13 +53,13 @@ public class AmmoLoader : TankSubComponent
     {
         m_AmmoContainers.Add(new AmmoContainer(bulletPrefab1, 20));
         m_AmmoContainers.Add(new AmmoContainer(bulletPrefab2, 6));
-        gunList = tankStatus.GetListOfGun();
+        gunList = tankPartManager.GetListOfGun();
         foreach (GunBehaviour gun in gunList)
         {
             AmmoContainer correctAmmunitionType = FindCorrectAmmunitionType(gun.gunData.ammunitionData);
             GameObject bulletPrefab = correctAmmunitionType.GetbulletPrefab();
 
-            gun.InitializeBulletPool(bulletPrefab, tankStatus.GetListOfCollider2D());
+            gun.InitializeBulletPool(bulletPrefab, tankPartManager.GetListOfCollider2D());
 
         }
     }
