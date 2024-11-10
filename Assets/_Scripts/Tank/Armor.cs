@@ -4,17 +4,11 @@ using UnityEngine;
 
 public class Armor : MonoBehaviour
 {
+    Collider2D armorCollider2D;
     [SerializeField]
-     ArmorData armorData;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    Collider2D tankPatCollider2D;
+    [SerializeField]
+    int thickness;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
+

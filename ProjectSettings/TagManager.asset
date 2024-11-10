@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Enemy
   - Obstacle
+  - Player Tank Part Slot
+  - Player Tank Part
+  - Projectile
   layers:
   - Default
   - TransparentFX

@@ -6,6 +6,7 @@ public class AmmunitionData : Item
     public new string name; // You can use the 'name' field from ScriptableObject
     public int damage = 10;
     public float velocity = 200;
+    public int penetrationPower = 50;
     public Sprite ammoSprite; // Assuming you want to store a sprite for the gun
                               // Add other parameters as needed
 
