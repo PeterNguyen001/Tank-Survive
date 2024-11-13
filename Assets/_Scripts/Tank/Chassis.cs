@@ -5,6 +5,15 @@ using UnityEngine;
 public class Chassis : TankPart
 {
     public ChassisData chassisData;
+
+    [SerializeField]
+    private Armor frontArmor;
+    [SerializeField]
+    private Armor rightArmor;
+    [SerializeField]
+    private Armor leftArmor;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,7 +29,8 @@ public class Chassis : TankPart
     public override void Init()
     {
         tankPart = chassisData;
-        //InitializeCollider();
+        armorList = new Armor[] {frontArmor, rightArmor, leftArmor };
+
     }
 
     public void InitializeCollider()

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BulletBehavior : MonoBehaviour
@@ -14,6 +15,8 @@ public class BulletBehavior : MonoBehaviour
 
     private LinkedList<RaycastHit2D> collisions = new LinkedList<RaycastHit2D>();
     private HashSet<Collider2D> existingColliders = new HashSet<Collider2D>();
+
+    private LinkedList<Armor> hitArmorList = new LinkedList<Armor>();
 
     private bool hasTarget;
     private bool isMissed;
@@ -45,6 +48,11 @@ public class BulletBehavior : MonoBehaviour
     // Deactivate the bullet and reset the timer
     public void DeactivateBullet()
     {
+        Debug.Log("De");
+        foreach (Armor armor in hitArmorList)
+        {
+            armor.IsBeingHit = false;
+        }
         gameObject.SetActive(false);
         collisions.Clear();
         existingColliders.Clear();
@@ -80,7 +88,9 @@ public class BulletBehavior : MonoBehaviour
         foreach (RaycastHit2D hit in hits)
         {
             BulletBehavior bulletBehavior = hit.collider.gameObject.GetComponent<BulletBehavior>();
-            if (hit.collider != null && !ignoreColliders.Contains(hit.collider) && bulletBehavior == null)
+
+           TankPart part = hit.collider.gameObject.GetComponent<TankPart>();
+            if (hit.collider != null && !ignoreColliders.Contains(hit.collider) && bulletBehavior == null && part != null)
             {
                 if (!existingColliders.Contains(hit.collider))
                 {
@@ -135,19 +145,28 @@ public class BulletBehavior : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag != "Obstacle")
+        if (collision.tag == "Armor")
         {
-            // Assuming a 20% chance to miss
-            float missChance = 0.2f;
-            Collider2D hitCollider = CalculateHit(CalculateTrajectory(5), missChance);
-            TankPart part = null;
-            hitCollider.TryGetComponent(out part);                 
-            if (hitCollider != null && part != null)
+            hitArmorList.AddLast(collision.GetComponent<Armor>());
+        }
+        if (collision.tag == "Obstacle")
+        {
+            DeactivateBullet();
+            Debug.Log("Hit wall");
+        }
+        // Assuming a 20% chance to miss
+        float missChance = 0.2f;
+        Collider2D hitCollider = CalculateHit(CalculateTrajectory(5), missChance);
+       
+        TankPart part = null;
+        hitCollider.TryGetComponent(out part);                 
+            if (hasTarget && hitCollider != null && part != null)
             {
                 // Handle the hit
                 if (collision = hitCollider)
                 {
-                    part.TakeDamage(5);
+
+                    part.TakeHit(this);
                     Debug.Log("Hit: " + hitCollider.gameObject.name);
                     DeactivateBullet();
                 }
@@ -157,12 +176,8 @@ public class BulletBehavior : MonoBehaviour
                 // Handle the miss
                 Debug.Log("Missed");
             }
-        }
-        else
-        {
-            DeactivateBullet();
-            Debug.Log("Hit wall");
-        }
+        
+      
     }
 
 

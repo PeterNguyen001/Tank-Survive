@@ -9,6 +9,8 @@ public class TankPart : MonoBehaviour
     private bool isDisable;
     private SpriteRenderer spriteRenderer;
 
+    protected Armor[] armorList;
+
     [SerializeField]
     public float HP;
     public float maxHP = 10; // Maximum HP to calculate color intensity
@@ -35,16 +37,28 @@ public class TankPart : MonoBehaviour
     }
 
     // Called whenever the tank part takes damage
-    public void TakeDamage(float damage)
+    public void TakeHit(BulletBehavior bullet)
     {
-        HP -= damage;
-        if (HP <= 0)
+        bool isPenetraded;
+        float damage = bullet.GetAmmunitionData().damage;
+        foreach (Armor armor in armorList)
         {
-            HP = 0;
-            IsDisable = true;
+            isPenetraded = armor.CheckForPenetration(bullet.GetAmmunitionData());
+            if (isPenetraded)
+            {
+                HP -= damage;
+                if (HP <= 0)
+                {
+                    UpdateSpriteColor();
+                    HP = 0;
+                    IsDisable = true;
+                }
+                break;
+            }
         }
+      
 
-        UpdateSpriteColor(); // Update color based on new HP value
+
     }
 
     // Update the sprite color to reflect damage level
