@@ -43,17 +43,26 @@ public class TankPart : MonoBehaviour
         float damage = bullet.GetAmmunitionData().damage;
         foreach (Armor armor in armorList)
         {
-            isPenetraded = armor.CheckForPenetration(bullet.GetAmmunitionData());
-            if (isPenetraded)
+            if (armor.IsBeingHit)
             {
-                HP -= damage;
-                if (HP <= 0)
+                isPenetraded = armor.CheckForPenetration(bullet);
+                if (!isPenetraded)
                 {
-                    UpdateSpriteColor();
-                    HP = 0;
-                    IsDisable = true;
+                    bullet.DeactivateBullet();
+                    break;
                 }
-                break;
+                else
+                {
+                    HP -= damage;
+                    bullet.DeactivateBullet();
+                    if (HP <= 0)
+                    {
+                        UpdateSpriteColor();
+                        HP = 0;
+                        IsDisable = true;
+                    }
+                    break;
+                }
             }
         }
       

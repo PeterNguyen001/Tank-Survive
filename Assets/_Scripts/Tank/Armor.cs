@@ -8,7 +8,7 @@ public class Armor : MonoBehaviour
     [SerializeField]
     int thickness;
 
-    bool isBeingHit;
+    public bool isBeingHit;
     bool isPenetrated;
 
     public bool IsBeingHit { get => isBeingHit; set => isBeingHit = value; }
@@ -18,29 +18,38 @@ public class Armor : MonoBehaviour
        armorCollider2D = GetComponent<Collider2D>();
     }
 
-    public bool CheckForPenetration(AmmunitionData ammunitionData)
+    public bool CheckForPenetration(BulletBehavior bullet)
     {
-        if(ammunitionData.penetrationPower > thickness)
+        Debug.Log(gameObject.name);
+        if (bullet.GetAmmunitionData().penetrationPower > thickness)
+        {
+            Debug.Log("Pen");
             return true;
-        else return false;
+        }
+        else
+        {
+            bullet.DeactivateBullet();
+            Debug.Log("NonPen");
+            return false;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-       if (collision.tag == "Projectile")
+        if (collision.tag == "Projectile")
         {
-            Debug.Log("A");
+            Debug.Log("Projectile hit armor!");
             isBeingHit = true;
         }
     }
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Projectile"))
-        {
-            Debug.Log("Projectile left the armor!");
-            isBeingHit = false;
-        }
-    }
+    //private void OnTriggerExit2D(Collider2D collision)
+    //{
+    //    if (collision.CompareTag("Projectile"))
+    //    {
+    //        Debug.Log("Projectile left the armor!");
+    //        isBeingHit = false;
+    //    }
+    //}
 
 }
 

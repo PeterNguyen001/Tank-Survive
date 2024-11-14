@@ -17,13 +17,15 @@ public class BulletBehavior : MonoBehaviour
     private HashSet<Collider2D> existingColliders = new HashSet<Collider2D>();
 
     private LinkedList<Armor> hitArmorList = new LinkedList<Armor>();
+    private HashSet<Armor> existingArmor = new HashSet<Armor>(); // New HashSet for Armor components
 
     private bool hasTarget;
     private bool isMissed;
+    private bool hasHitted;
+
     // Update is called once per frame
     void FixedUpdate()
     {
-
         if (gameObject.activeSelf)
         {
             bulletRb.AddForce(transform.right * ammo.velocity);
@@ -41,23 +43,31 @@ public class BulletBehavior : MonoBehaviour
 
     public void Fire()
     {
-
         gameObject.SetActive(true);
     }
 
     // Deactivate the bullet and reset the timer
     public void DeactivateBullet()
     {
-        Debug.Log("De");
+        Debug.Log("Deactivating bullet");
+
+        // Reset all Armor's IsBeingHit status before deactivating
         foreach (Armor armor in hitArmorList)
         {
             armor.IsBeingHit = false;
         }
+
         gameObject.SetActive(false);
+
+        // Clear all collections for reuse
         collisions.Clear();
         existingColliders.Clear();
+        hitArmorList.Clear();
+        existingArmor.Clear();
+
         hasTarget = false;
         isMissed = false;
+        hasHitted = false;
         timer = 0f; // Reset the timer when firing
     }
 
@@ -88,8 +98,7 @@ public class BulletBehavior : MonoBehaviour
         foreach (RaycastHit2D hit in hits)
         {
             BulletBehavior bulletBehavior = hit.collider.gameObject.GetComponent<BulletBehavior>();
-
-           TankPart part = hit.collider.gameObject.GetComponent<TankPart>();
+            TankPart part = hit.collider.gameObject.GetComponent<TankPart>();
             if (hit.collider != null && !ignoreColliders.Contains(hit.collider) && bulletBehavior == null && part != null)
             {
                 if (!existingColliders.Contains(hit.collider))
@@ -105,7 +114,6 @@ public class BulletBehavior : MonoBehaviour
 
         return collisions;
     }
-
 
     public Collider2D CalculateHit(LinkedList<RaycastHit2D> hits, float missChance)
     {
@@ -147,39 +155,47 @@ public class BulletBehavior : MonoBehaviour
     {
         if (collision.tag == "Armor")
         {
-            hitArmorList.AddLast(collision.GetComponent<Armor>());
+            Debug.Log("Hit Armor");
+            Armor armor = collision.GetComponent<Armor>();
+
+            if (armor != null && !existingArmor.Contains(armor))
+            {
+                hitArmorList.AddLast(armor);
+                existingArmor.Add(armor); // Add to HashSet to avoid duplicates
+                armor.IsBeingHit = true;
+            }
         }
+
         if (collision.tag == "Obstacle")
         {
             DeactivateBullet();
             Debug.Log("Hit wall");
         }
+
         // Assuming a 20% chance to miss
         float missChance = 0.2f;
         Collider2D hitCollider = CalculateHit(CalculateTrajectory(5), missChance);
-       
         TankPart part = null;
-        hitCollider.TryGetComponent(out part);                 
-            if (hasTarget && hitCollider != null && part != null)
+        if (hitCollider != null)
+        {
+             part = hitCollider.GetComponent<TankPart>();
+        }
+        if (hasTarget && !hasHitted && part != null)
+        {
+            // Handle the hit
+            if (collision == hitCollider)
             {
-                // Handle the hit
-                if (collision = hitCollider)
-                {
-
-                    part.TakeHit(this);
-                    Debug.Log("Hit: " + hitCollider.gameObject.name);
-                    DeactivateBullet();
-                }
+                hasHitted = true;
+                part.TakeHit(this);
+                Debug.Log("Hit: " + hitCollider.gameObject.name);
             }
-            else if (isMissed)
-            {
-                // Handle the miss
-                Debug.Log("Missed");
-            }
-        
-      
+        }
+        else if (isMissed)
+        {
+            // Handle the miss
+            Debug.Log("Missed");
+        }
     }
-
 
     private void OnTriggerExit2D(Collider2D other)
     {
@@ -188,6 +204,7 @@ public class BulletBehavior : MonoBehaviour
         {
             Debug.Log("Remove Collider: " + other);
             existingColliders.Remove(other);
+
             // Also remove from collisions list
             LinkedListNode<RaycastHit2D> node = collisions.First;
             while (node != null)
@@ -198,6 +215,27 @@ public class BulletBehavior : MonoBehaviour
                     collisions.Remove(node);
                 }
                 node = nextNode;
+            }
+        }
+
+        // Remove armor if exiting from Armor collider
+        Armor armor = other.GetComponent<Armor>();
+        if (armor != null && existingArmor.Contains(armor))
+        {
+            Debug.Log("Remove Armor: " + other);
+            armor.IsBeingHit = false;
+            existingArmor.Remove(armor);
+
+            // Also remove from hitArmorList
+            LinkedListNode<Armor> armorNode = hitArmorList.First;
+            while (armorNode != null)
+            {
+                LinkedListNode<Armor> nextArmorNode = armorNode.Next;
+                if (armorNode.Value == armor)
+                {
+                    hitArmorList.Remove(armorNode);
+                }
+                armorNode = nextArmorNode;
             }
         }
     }
