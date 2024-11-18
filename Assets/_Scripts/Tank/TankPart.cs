@@ -80,5 +80,19 @@ public class TankPart : MonoBehaviour
         }
     }
 
+    public void SetTankPartForArmor()
+    {
+        if (armorList.Length > 0)
+        {
+            foreach (Armor armor in armorList)
+            {
+                //Debug.Log(armor.name);
+                //Debug.Log(" " + this.name);
+
+                armor.TankPartAttachedTo = this;
+            }
+        }
+    }
+
     public TankPartData GetTankPart() { return tankPart; }
 }

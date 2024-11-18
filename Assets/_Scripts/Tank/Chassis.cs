@@ -30,7 +30,7 @@ public class Chassis : TankPart
     {
         tankPart = chassisData;
         armorList = new Armor[] {frontArmor, rightArmor, leftArmor };
-
+        SetTankPartForArmor();
     }
 
     public void InitializeCollider()

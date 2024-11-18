@@ -49,7 +49,6 @@ public class BulletBehavior : MonoBehaviour
     // Deactivate the bullet and reset the timer
     public void DeactivateBullet()
     {
-        Debug.Log("Deactivating bullet");
 
         // Reset all Armor's IsBeingHit status before deactivating
         foreach (Armor armor in hitArmorList)
@@ -103,7 +102,6 @@ public class BulletBehavior : MonoBehaviour
             {
                 if (!existingColliders.Contains(hit.collider))
                 {
-                    Debug.Log("Add collider: " + hit.collider.gameObject);
                     collisions.AddLast(hit);
                     existingColliders.Add(hit.collider);
                     // Draw the hit point
@@ -153,7 +151,7 @@ public class BulletBehavior : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Armor")
+        if (collision.CompareTag("Armor"))
         {
             Debug.Log("Hit Armor");
             Armor armor = collision.GetComponent<Armor>();
@@ -161,48 +159,58 @@ public class BulletBehavior : MonoBehaviour
             if (armor != null && !existingArmor.Contains(armor))
             {
                 hitArmorList.AddLast(armor);
-                existingArmor.Add(armor); // Add to HashSet to avoid duplicates
+                existingArmor.Add(armor);
                 armor.IsBeingHit = true;
+                float missChance = 0.2f;
+                Collider2D hitCollider = CalculateHit(CalculateTrajectory(5), missChance);
+                if (hitCollider != null && !hasHitted)
+                {
+                    TankPart part = hitCollider.GetComponent<TankPart>();
+                    if (part == armor.TankPartAttachedTo)
+                    {
+                        hasHitted = true;
+                        part?.TakeHit(this);
+                        Debug.Log("Hit: " + hitCollider.gameObject.name);
+                    }
+                }
             }
+
+            // Exit here to process armor hit first
+            return;
         }
 
-        if (collision.tag == "Obstacle")
+        if (collision.CompareTag("Obstacle"))
         {
             DeactivateBullet();
             Debug.Log("Hit wall");
+            return;
         }
 
-        // Assuming a 20% chance to miss
-        float missChance = 0.2f;
-        Collider2D hitCollider = CalculateHit(CalculateTrajectory(5), missChance);
-        TankPart part = null;
-        if (hitCollider != null)
-        {
-             part = hitCollider.GetComponent<TankPart>();
-        }
-        if (hasTarget && !hasHitted && part != null)
-        {
-            // Handle the hit
-            if (collision == hitCollider)
-            {
-                hasHitted = true;
-                part.TakeHit(this);
-                Debug.Log("Hit: " + hitCollider.gameObject.name);
-            }
-        }
+        // Only calculate a hit on TankPart if no armor is hit
+        //if (collision.GetComponent<TankPart>() )
+        //{
+        //    float missChance = 0.2f;
+        //    Collider2D hitCollider = CalculateHit(CalculateTrajectory(5), missChance);
+        //    if (hitCollider != null && !hasHitted)
+        //    {
+        //        hasHitted = true;
+        //        TankPart part = hitCollider.GetComponent<TankPart>();
+        //        part?.TakeHit(this);
+        //        Debug.Log("Hit: " + hitCollider.gameObject.name);
+        //    }
+        //}
         else if (isMissed)
         {
-            // Handle the miss
             Debug.Log("Missed");
         }
     }
+
 
     private void OnTriggerExit2D(Collider2D other)
     {
         // Remove the collider from existingColliders
         if (existingColliders.Contains(other))
         {
-            Debug.Log("Remove Collider: " + other);
             existingColliders.Remove(other);
 
             // Also remove from collisions list
@@ -222,7 +230,6 @@ public class BulletBehavior : MonoBehaviour
         Armor armor = other.GetComponent<Armor>();
         if (armor != null && existingArmor.Contains(armor))
         {
-            Debug.Log("Remove Armor: " + other);
             armor.IsBeingHit = false;
             existingArmor.Remove(armor);
 
