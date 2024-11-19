@@ -19,6 +19,12 @@ public class BulletBehavior : MonoBehaviour
     private LinkedList<Armor> hitArmorList = new LinkedList<Armor>();
     private HashSet<Armor> existingArmor = new HashSet<Armor>(); // New HashSet for Armor components
 
+    // Define cone properties
+    public float coneAngle = 5f;
+    public int rayCount = 5;
+    public float rayLength = 5f;
+
+
     private bool hasTarget;
     private bool isMissed;
     private bool hasHitted;
@@ -81,6 +87,57 @@ public class BulletBehavior : MonoBehaviour
         ignoreColliders = colliders;
     }
 
+    public void CastRayConeAndCalculateHitAngles(Armor armor)
+    {
+        Vector2 position = transform.position;
+        Vector2 bulletDirection = transform.right;
+
+        // Calculate the starting angle of the cone
+        float startAngle = -coneAngle / 2f;
+
+        List<Vector2> hitPoints = new List<Vector2>();
+
+        for (int i = 0; i < rayCount; i++)
+        {
+            // Calculate each ray's angle within the cone
+            float angle = startAngle + (coneAngle / (rayCount - 1)) * i;
+            Vector2 direction = Quaternion.Euler(0, 0, angle) * bulletDirection;
+
+            // Perform RaycastAll in the current direction within the cone
+            RaycastHit2D[] hits = Physics2D.RaycastAll(position, direction, rayLength);
+
+            // Filter hits to include only the specified Armor object
+            foreach (RaycastHit2D hit in hits)
+            {
+                if (hit.collider != null && hit.collider.gameObject == armor.gameObject)
+                {
+                    hitPoints.Add(hit.point); // Collect the hit point
+                    Debug.DrawRay(position, direction * hit.distance, Color.green, 1f);
+                    break; // Stop after the first hit on this armor to avoid extra hits along the same ray
+                }
+            }
+        }
+
+        // Calculate and log angles between bullet direction and lines formed by consecutive hit points
+        for (int i = 0; i < hitPoints.Count - 1; i++)
+        {
+            Vector2 pointA = hitPoints[i];
+            Vector2 pointB = hitPoints[i + 1];
+
+            // Draw a line between consecutive hit points
+            Debug.DrawLine(pointA, pointB, Color.blue, 1f);
+
+            // Calculate the direction vector of the line segment
+            Vector2 lineDirection = (pointB - pointA).normalized;
+
+            // Calculate angle between bullet direction and line segment direction
+            float angleToSurface = Vector2.Angle(bulletDirection, lineDirection);
+            Debug.Log("Angle between bullet and line segment: " + angleToSurface);
+        }
+    }
+
+
+
     // Calculate the trajectory and return a list of possible collisions
     public LinkedList<RaycastHit2D> CalculateTrajectory(float length)
     {
@@ -101,7 +158,7 @@ public class BulletBehavior : MonoBehaviour
             if (hit.collider != null && !ignoreColliders.Contains(hit.collider) && bulletBehavior == null && part != null)
             {
                 if (!existingColliders.Contains(hit.collider))
-                {
+                {                   
                     collisions.AddLast(hit);
                     existingColliders.Add(hit.collider);
                     // Draw the hit point
@@ -168,6 +225,7 @@ public class BulletBehavior : MonoBehaviour
                     TankPart part = hitCollider.GetComponent<TankPart>();
                     if (part == armor.TankPartAttachedTo)
                     {
+                        CastRayConeAndCalculateHitAngles(armor);
                         hasHitted = true;
                         part?.TakeHit(this);
                         Debug.Log("Hit: " + hitCollider.gameObject.name);
@@ -186,19 +244,6 @@ public class BulletBehavior : MonoBehaviour
             return;
         }
 
-        // Only calculate a hit on TankPart if no armor is hit
-        //if (collision.GetComponent<TankPart>() )
-        //{
-        //    float missChance = 0.2f;
-        //    Collider2D hitCollider = CalculateHit(CalculateTrajectory(5), missChance);
-        //    if (hitCollider != null && !hasHitted)
-        //    {
-        //        hasHitted = true;
-        //        TankPart part = hitCollider.GetComponent<TankPart>();
-        //        part?.TakeHit(this);
-        //        Debug.Log("Hit: " + hitCollider.gameObject.name);
-        //    }
-        //}
         else if (isMissed)
         {
             Debug.Log("Missed");
