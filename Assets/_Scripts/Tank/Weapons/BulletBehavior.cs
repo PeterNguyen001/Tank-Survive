@@ -20,9 +20,9 @@ public class BulletBehavior : MonoBehaviour
     private HashSet<Armor> existingArmor = new HashSet<Armor>(); // New HashSet for Armor components
 
     // Define cone properties
-    public float coneAngle = 5f;
+    public float coneAngle = 10f;
     public int rayCount = 5;
-    public float rayLength = 5f;
+    public float rayLength = 10f;
 
 
     private bool hasTarget;
@@ -87,15 +87,20 @@ public class BulletBehavior : MonoBehaviour
         ignoreColliders = colliders;
     }
 
-    public void CastRayConeAndCalculateHitAngles(Armor armor)
+    public float CastRayConeAndCalculateAverageHitAngle(Armor armor)
     {
-        Vector2 position = transform.position;
+        // Adjust this offset to move the raycast start position
+        float rayStartOffset = 0.5f;
+
+        // Calculate the adjusted starting position for the raycasts
+        Vector2 position = (Vector2)transform.position - (Vector2)transform.right * rayStartOffset;
         Vector2 bulletDirection = transform.right;
 
         // Calculate the starting angle of the cone
         float startAngle = -coneAngle / 2f;
 
         List<Vector2> hitPoints = new List<Vector2>();
+        List<float> angles = new List<float>();
 
         for (int i = 0; i < rayCount; i++)
         {
@@ -109,7 +114,8 @@ public class BulletBehavior : MonoBehaviour
             // Filter hits to include only the specified Armor object
             foreach (RaycastHit2D hit in hits)
             {
-                if (hit.collider != null && hit.collider.gameObject == armor.gameObject)
+                Collider2D collider = hit.collider;
+                if (collider != null && collider.gameObject == armor.gameObject)
                 {
                     hitPoints.Add(hit.point); // Collect the hit point
                     Debug.DrawRay(position, direction * hit.distance, Color.green, 1f);
@@ -118,7 +124,7 @@ public class BulletBehavior : MonoBehaviour
             }
         }
 
-        // Calculate and log angles between bullet direction and lines formed by consecutive hit points
+        // Calculate angles between bullet direction and lines formed by consecutive hit points
         for (int i = 0; i < hitPoints.Count - 1; i++)
         {
             Vector2 pointA = hitPoints[i];
@@ -131,10 +137,30 @@ public class BulletBehavior : MonoBehaviour
             Vector2 lineDirection = (pointB - pointA).normalized;
 
             // Calculate angle between bullet direction and line segment direction
-            float angleToSurface = Vector2.Angle(bulletDirection, lineDirection);
-            Debug.Log("Angle between bullet and line segment: " + angleToSurface);
+            float angleToSurface = Mathf.Abs(Vector2.Angle(bulletDirection, lineDirection)) - 90;
+            angles.Add(angleToSurface);
+        }
+
+        // Calculate and return the average angle
+        if (angles.Count > 0)
+        {
+            float averageAngle = 0;
+            foreach (float angle in angles)
+            {
+                averageAngle += angle;
+            }
+            averageAngle /= angles.Count;
+            Debug.Log("Average angle of incidence: " + averageAngle);
+            return averageAngle;
+        }
+        else
+        {
+            Debug.Log("No valid angles to calculate average.");
+            return 0f; // Return 0 if no angles were calculated
         }
     }
+
+
 
 
 
@@ -210,7 +236,6 @@ public class BulletBehavior : MonoBehaviour
     {
         if (collision.CompareTag("Armor"))
         {
-            Debug.Log("Hit Armor");
             Armor armor = collision.GetComponent<Armor>();
 
             if (armor != null && !existingArmor.Contains(armor))
@@ -225,7 +250,7 @@ public class BulletBehavior : MonoBehaviour
                     TankPart part = hitCollider.GetComponent<TankPart>();
                     if (part == armor.TankPartAttachedTo)
                     {
-                        CastRayConeAndCalculateHitAngles(armor);
+                        CastRayConeAndCalculateAverageHitAngle(armor);
                         hasHitted = true;
                         part?.TakeHit(this);
                         Debug.Log("Hit: " + hitCollider.gameObject.name);

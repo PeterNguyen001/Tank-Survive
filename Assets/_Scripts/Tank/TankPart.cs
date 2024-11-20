@@ -88,7 +88,7 @@ public class TankPart : MonoBehaviour
             {
                 //Debug.Log(armor.name);
                 //Debug.Log(" " + this.name);
-
+                if(armor != null)
                 armor.TankPartAttachedTo = this;
             }
         }

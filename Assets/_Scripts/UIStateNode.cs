@@ -19,7 +19,9 @@ public class UIStateNode : MonoBehaviour
     public void Activate()
     {
         if (gameObject != null)
+        {
             gameObject.SetActive(true);
+        }
     }
     public void Deactivate() 
     { 

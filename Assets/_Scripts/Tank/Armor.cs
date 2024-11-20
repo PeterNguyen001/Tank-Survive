@@ -6,7 +6,7 @@ public class Armor : MonoBehaviour
 {
     Collider2D armorCollider2D;
     [SerializeField]
-    int thickness;
+    int thickness; // Base armor thickness in millimeters
 
     public bool isBeingHit;
     bool isPenetrated;
@@ -17,23 +17,46 @@ public class Armor : MonoBehaviour
 
     private void Start()
     {
-       armorCollider2D = GetComponent<Collider2D>();
-
+        armorCollider2D = GetComponent<Collider2D>();
     }
 
-    // Method to generate normals along the edges of the polygon collider
-  
+    /// <summary>
+    /// Calculates the effective armor thickness based on the angle of incidence.
+    /// </summary>
+    /// <param name="hitAngle">The angle between the bullet's direction and the armor's surface normal in degrees.</param>
+    /// <returns>The effective armor thickness.</returns>
+    public float CalculateEffectiveArmor(float hitAngle)
+    {
+        // Convert angle to radians for the cosine calculation
+        float angleInRadians = Mathf.Deg2Rad * hitAngle;
+
+        // Effective thickness formula: baseThickness / cos(angle)
+        float effectiveThickness = thickness / Mathf.Cos(angleInRadians);
+
+        // Prevent extreme values for grazing angles
+        if (float.IsInfinity(effectiveThickness) || effectiveThickness > thickness * 10)
+        {
+            effectiveThickness = thickness * 10;
+        }
+
+        Debug.Log($"Effective armor thickness: {effectiveThickness} (angle: {hitAngle} degrees)");
+        return effectiveThickness;
+    }
+
     public bool CheckForPenetration(BulletBehavior bullet)
     {
-        if (bullet.GetAmmunitionData().penetrationPower > thickness)
+        float hitAngle = bullet.CastRayConeAndCalculateAverageHitAngle(this);
+        float effectiveThickness = CalculateEffectiveArmor(hitAngle);
+
+        if (bullet.GetAmmunitionData().penetrationPower > effectiveThickness)
         {
-            Debug.Log("Pen");
+            Debug.Log("Penetrated!");
             return true;
         }
         else
         {
             bullet.DeactivateBullet();
-            Debug.Log("NonPen");
+            Debug.Log("Non-Penetration!");
             return false;
         }
     }
@@ -42,10 +65,7 @@ public class Armor : MonoBehaviour
     {
         if (collision.CompareTag("Projectile"))
         {
-            Debug.Log("Projectile left the armor!");
             isBeingHit = false;
         }
     }
-
 }
-
