@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2f5e9383a34e664d99f4ba7081457d6, type: 3}
-  m_Name: 88mm
+  m_Script: {fileID: 11500000, guid: c5281bff3911f6d4d8b828cc223956e7, type: 3}
+  m_Name: Test Engine
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
   description: 
@@ -20,8 +20,8 @@ MonoBehaviour:
   ID: ' '
   recipe: []
   recipeMutiplier: 1
-  name: 75mm
-  damage: 10
-  velocity: 100
-  penetrationPower: 50
-  ammoSprite: {fileID: 0}
+  name: 
+  tankPartType: 0
+  weight: 0
+  horsePower: 150
+  maxSpeed: 40

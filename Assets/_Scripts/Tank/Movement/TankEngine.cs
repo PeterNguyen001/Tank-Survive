@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class TankEngine : TankPart
 {
+    [SerializeField]    
+    TankEngineData tankEngineData;
+
+    public TankEngineData TankEngineData { get => tankEngineData; set => tankEngineData = value; }
     // Start is called before the first frame update
-    
+
+
+
 }

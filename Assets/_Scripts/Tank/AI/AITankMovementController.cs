@@ -10,20 +10,15 @@ public class AITankMovementController : MovementController
 
     private Transform playerTank;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
     // Update is called once per frame
     void FixedUpdate()
     {
+        base.FixedUpdate();
         if (DetectPlayerTank())
         {
             MoveTowardsPosition(playerTank.position);
         }
-        AdjustDragBasedOnMovement();
+
     }
 
     private bool DetectPlayerTank()

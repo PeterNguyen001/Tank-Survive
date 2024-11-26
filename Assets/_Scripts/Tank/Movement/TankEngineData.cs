@@ -1,20 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+[CreateAssetMenu(fileName = "TankPart", menuName = "Tank Parts/New Engine")]
 public class TankEngineData : TankPartData
 {
-    [SerializeField]
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public float horsePower;
+    public float maxSpeed;
 }

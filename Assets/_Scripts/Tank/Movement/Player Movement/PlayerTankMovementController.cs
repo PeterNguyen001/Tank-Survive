@@ -17,8 +17,8 @@ public class PlayerTankMovementController : MovementController
 
     void FixedUpdate()
     {
+        base.FixedUpdate();
         Movement.MovePlayerTank(moveDirection);
-        AdjustDragBasedOnMovement();
     }
 
     public void MovePlayer(InputAction.CallbackContext context)

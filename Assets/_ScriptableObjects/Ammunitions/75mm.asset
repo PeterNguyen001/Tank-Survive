@@ -22,6 +22,6 @@ MonoBehaviour:
   recipeMutiplier: 1
   name: 75mm
   damage: 10
-  velocity: 150
+  velocity: 100
   penetrationPower: 140
   ammoSprite: {fileID: 0}

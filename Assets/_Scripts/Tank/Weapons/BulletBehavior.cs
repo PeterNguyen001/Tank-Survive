@@ -9,6 +9,7 @@ public class BulletBehavior : MonoBehaviour
     public float lifespan = 2.0f; // Adjust the lifespan as needed
     public float timer;
     private Rigidbody2D bulletRb;
+    private int penetrationPower;
 
     [SerializeField]
     private LinkedList<Collider2D> ignoreColliders = new LinkedList<Collider2D>();
