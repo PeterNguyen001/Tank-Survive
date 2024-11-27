@@ -54,7 +54,7 @@ public class TankPart : MonoBehaviour
                 else
                 {
                     HP -= damage;
-                    bullet.DeactivateBullet();
+                    //bullet.DeactivateBullet();
                     if (HP <= 0)
                     {
                         UpdateSpriteColor();

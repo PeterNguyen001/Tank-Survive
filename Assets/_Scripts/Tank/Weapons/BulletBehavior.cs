@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BulletBehavior : MonoBehaviour
 {
-    public AmmunitionData ammo;
+    public AmmunitionData ammoData;
     public float lifespan = 2.0f; // Adjust the lifespan as needed
     public float timer;
     private Rigidbody2D bulletRb;
@@ -18,6 +18,7 @@ public class BulletBehavior : MonoBehaviour
     private HashSet<Collider2D> existingColliders = new HashSet<Collider2D>();
 
     private LinkedList<Armor> hitArmorList = new LinkedList<Armor>();
+    private HashSet<Armor> penetratedArmorList = new HashSet<Armor>();
     private HashSet<Armor> existingArmor = new HashSet<Armor>(); // New HashSet for Armor components
 
     // Define cone properties
@@ -30,12 +31,14 @@ public class BulletBehavior : MonoBehaviour
     private bool isMissed;
     private bool hasHitted;
 
+    public int PenetrationPower { get => penetrationPower; set => penetrationPower = value; }
+
     // Update is called once per frame
     void FixedUpdate()
     {
         if (gameObject.activeSelf)
         {
-            bulletRb.AddForce(transform.right * ammo.velocity);
+            bulletRb.AddForce(transform.right * ammoData.velocity);
 
             // Update the timer
             timer += Time.fixedDeltaTime;
@@ -50,6 +53,7 @@ public class BulletBehavior : MonoBehaviour
 
     public void Fire()
     {
+        penetrationPower = ammoData.penetrationPower;
         gameObject.SetActive(true);
     }
 
@@ -70,6 +74,7 @@ public class BulletBehavior : MonoBehaviour
         existingColliders.Clear();
         hitArmorList.Clear();
         existingArmor.Clear();
+        penetratedArmorList.Clear();
 
         hasTarget = false;
         isMissed = false;
@@ -79,7 +84,7 @@ public class BulletBehavior : MonoBehaviour
 
     public AmmunitionData GetAmmunitionData()
     {
-        return ammo;
+        return ammoData;
     }
 
     public void SetupBullet(LinkedList<Collider2D> colliders)
@@ -162,8 +167,19 @@ public class BulletBehavior : MonoBehaviour
     }
 
 
+    public void RemovePenetratedPower(int effectiveThickness)
+    {
+        penetrationPower -= effectiveThickness;
+        if (penetrationPower <= 0f)
+        {
+            DeactivateBullet();
+        }
+    }
 
-
+    public void AddArmorToPenetratedList(Armor armor)
+    {
+        penetratedArmorList.Add(armor);
+    }
 
     // Calculate the trajectory and return a list of possible collisions
     public LinkedList<RaycastHit2D> CalculateTrajectory(float length)
@@ -239,7 +255,7 @@ public class BulletBehavior : MonoBehaviour
         {
             Armor armor = collision.GetComponent<Armor>();
 
-            if (armor != null && !existingArmor.Contains(armor))
+            if (armor != null && !existingArmor.Contains(armor) && !penetratedArmorList.Contains(armor) )
             {
                 hitArmorList.AddLast(armor);
                 existingArmor.Add(armor);

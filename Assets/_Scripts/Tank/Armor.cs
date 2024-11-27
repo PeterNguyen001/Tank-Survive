@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -48,8 +49,10 @@ public class Armor : MonoBehaviour
         float hitAngle = bullet.CastRayConeAndCalculateAverageHitAngle(this);
         float effectiveThickness = CalculateEffectiveArmor(hitAngle);
 
-        if (bullet.GetAmmunitionData().penetrationPower > effectiveThickness)
+        if (bullet.PenetrationPower > effectiveThickness)
         {
+            bullet.RemovePenetratedPower(Convert.ToInt16(effectiveThickness));
+            bullet.AddArmorToPenetratedList(this);
             Debug.Log("Penetrated!");
             return true;
         }

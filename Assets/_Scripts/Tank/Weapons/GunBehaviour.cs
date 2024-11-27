@@ -142,7 +142,7 @@ public class GunBehaviour : TankPart
         // Perform the reload process
         yield return new WaitForSeconds(gunData.reloadTime);
 
-        // Reset ammo count and set hasAmmo flag to true
+        // Reset ammoData count and set hasAmmo flag to true
         currentAmmoCount = gunData.ammoCapacity;
         hasAmmo = true;
 
