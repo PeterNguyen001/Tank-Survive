@@ -169,6 +169,7 @@ public class BulletBehavior : MonoBehaviour
 
     public void RemovePenetratedPower(int effectiveThickness)
     {
+        Debug.Log("P");
         penetrationPower -= effectiveThickness;
         if (penetrationPower <= 0f)
         {
@@ -257,6 +258,7 @@ public class BulletBehavior : MonoBehaviour
 
             if (armor != null && !existingArmor.Contains(armor) && !penetratedArmorList.Contains(armor) )
             {
+                Debug.Log("Hit: " + armor.gameObject.name);
                 hitArmorList.AddLast(armor);
                 existingArmor.Add(armor);
                 armor.IsBeingHit = true;
@@ -268,7 +270,7 @@ public class BulletBehavior : MonoBehaviour
                     if (part == armor.TankPartAttachedTo)
                     {
                         CastRayConeAndCalculateAverageHitAngle(armor);
-                        hasHitted = true;
+                        //hasHitted = true;
                         part?.TakeHit(this);
                         Debug.Log("Hit: " + hitCollider.gameObject.name);
                     }
@@ -295,6 +297,7 @@ public class BulletBehavior : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
+        //Debug.Log(other.gameObject.name);
         // Remove the collider from existingColliders
         if (existingColliders.Contains(other))
         {
