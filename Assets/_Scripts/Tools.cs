@@ -1,7 +1,11 @@
 
 using System.Collections.Generic;
-using UnityEngine;
 
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+using UnityEngine;
 public static class Tools
 {
     // Generic function to find components of type T recursively and add them to the linked list
@@ -58,5 +62,17 @@ public static class Tools
 
         // Return null if no component is found
         return null;
+    }
+
+    public static void PauseEditor()
+    {
+#if UNITY_EDITOR
+        // Check if the application is currently playing and not paused
+        if (EditorApplication.isPlaying && !EditorApplication.isPaused)
+        {
+            EditorApplication.isPaused = true; // Pause the editor
+            Debug.Log("Editor paused!");
+        }
+#endif
     }
 }

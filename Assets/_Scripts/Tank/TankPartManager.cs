@@ -30,8 +30,8 @@ public class TankPartManager : MonoBehaviour
     private void Awake()
     {
 
-        InitializeAllTankPartsAndComponentForTankBuilder();
-        StartBattle();
+        //InitializeAllTankPartsAndComponentForTankBuilder();
+        //StartBattle();
     }
 
     private void InitializeAllTankPartsAndComponentForTankBuilder()

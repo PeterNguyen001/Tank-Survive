@@ -258,6 +258,7 @@ public class BulletBehavior : MonoBehaviour
 
             if (armor != null && !existingArmor.Contains(armor) && !penetratedArmorList.Contains(armor) )
             {
+                //Tools.PauseEditor();
                 Debug.Log("Hit: " + armor.gameObject.name);
                 hitArmorList.AddLast(armor);
                 existingArmor.Add(armor);

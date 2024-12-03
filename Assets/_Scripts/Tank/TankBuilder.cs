@@ -14,7 +14,7 @@ public static class TankBuilder
     public static void FindAllSlot()
     {
         tankSlotToBuildIn.Clear();
-        Tools.FindComponentsRecursively(GameObject.FindGameObjectWithTag("Player").transform, tankSlotToBuildIn);
+        Tools.FindComponentsRecursively(GameObject.FindGameObjectWithTag("Player").transform, tankSlotToBuildIn);   
     }
 
     public static LinkedList<TankPartSlot> GetSlotToBuildInList()

@@ -63,6 +63,7 @@ public class PlayerEquipmentInventory : Inventory
         // Remove and destroy the slots
         foreach (EquipmentSlot slot in slotsToBeRemoved)
         {
+            Debug.Log(slot.name);
             itemSlots.Remove(slot);
             Destroy(slot.gameObject);
         }
