@@ -7,5 +7,6 @@ public enum InventoryType
     Crafting,
     Chest,
     Personal,
-    Equiping
+    Equiping,
+    Ammo
 }

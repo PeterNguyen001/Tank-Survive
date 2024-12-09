@@ -9,18 +9,20 @@ using UnityEngine;
 public static class Tools
 {
     // Generic function to find components of type T recursively and add them to the linked list
-    public static void FindComponentsRecursively<T>(Transform parent, ICollection<T> componentCollection) where T : Component
+    public static void FindComponentsRecursively<T>(Transform parent, ICollection<T> componentCollection, bool ignoreParent = false) where T : Component
     {
         // Check if the parent transform itself has the component(s)
-        T[] parentComponents = parent.GetComponents<T>();
-        foreach (T component in parentComponents)
+        if (!ignoreParent)
         {
-            if (!componentCollection.Contains(component))
+            T[] parentComponents = parent.GetComponents<T>();
+            foreach (T component in parentComponents)
             {
-                componentCollection.Add(component);
+                if (!componentCollection.Contains(component))
+                {
+                    componentCollection.Add(component);
+                }
             }
         }
-
         // Iterate through each child of the parent transform
         foreach (Transform child in parent)
         {

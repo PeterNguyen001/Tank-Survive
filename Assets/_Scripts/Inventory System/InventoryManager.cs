@@ -164,3 +164,5 @@ public enum ClickType
     TakeHalf = 1,
     TakeAll = 2
 }
+
+

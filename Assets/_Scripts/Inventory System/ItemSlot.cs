@@ -144,6 +144,11 @@ public class ItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         }
     }
 
+    public void TakeInItem( Item item, int count)
+    {
+
+    }
+
 public Item GetItem()
     {
             return item;
@@ -154,6 +159,7 @@ public enum SlotType
 { 
    Inventory,
    Shop,
-   EquipmentSlot
+   EquipmentSlot,
+   AmmoSlot
 }
 

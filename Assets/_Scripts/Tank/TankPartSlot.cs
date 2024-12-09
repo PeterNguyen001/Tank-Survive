@@ -29,7 +29,7 @@ public class TankPartSlot : MonoBehaviour
     public void RemovePartFromSlot()
     {
         LinkedList<TankPartSlot> slotsToRemove = new LinkedList<TankPartSlot>();
-        Tools.FindComponentsRecursively(transform, slotsToRemove);
+        Tools.FindComponentsRecursively(transform, slotsToRemove, true);
         tankPart = null;
         foreach (Transform child in transform)
         {
