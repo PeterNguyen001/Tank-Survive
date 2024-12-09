@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: 7.62mm
   m_EditorClassIdentifier: 
   icon: {fileID: -897626479, guid: 683aaacc0994561458a19bba4d09bedb, type: 3}
+  slotType: 3
   description: 
   recipeGridSize: 9
   isConsumable: 0

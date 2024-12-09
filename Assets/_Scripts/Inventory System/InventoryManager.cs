@@ -73,25 +73,33 @@ public class InventoryManager : MonoBehaviour
             //    return; // Exit the method without performing any transfer
             //}
 
-           
+
             // Transfer logic when the target slot is empty
-            if (targetSlot.item == null)
+            if (targetSlot.slotType == sourceSlot.item.slotType || targetSlot.slotType == SlotType.Inventory)
             {
-                // Assign the item from the source to the target slot
-                targetSlot.item = sourceSlot.item;
-
-               
-                targetSlot.Count += transferAmount;
-                sourceSlot.Count -= transferAmount;
+                if (targetSlot.item == null)
+                {
+                    // Assign the item from the source to the target slot
+                    targetSlot.item = sourceSlot.item;
 
 
+                    targetSlot.Count += transferAmount;
+                    sourceSlot.Count -= transferAmount;
+
+
+                }
+                // Transfer logic when the target slot has the same item type
+                else if (sourceSlot.item == targetSlot.item)
+                {
+                    // Same as above, adjust the item counts for both slots
+                    targetSlot.Count += transferAmount;
+                    sourceSlot.Count -= transferAmount;
+                }
             }
-            // Transfer logic when the target slot has the same item type
-            else if (sourceSlot.item == targetSlot.item)
+            else
             {
-                // Same as above, adjust the item counts for both slots
-                targetSlot.Count += transferAmount;
-                sourceSlot.Count -= transferAmount;
+                Debug.Log(sourceSlot.slotType);
+                Debug.Log(targetSlot.slotType);
             }
 
         }

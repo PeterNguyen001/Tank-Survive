@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: 7.62mm Machinegun
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
+  slotType: 2
   description: 
   recipeGridSize: 9
   isConsumable: 0
@@ -22,6 +23,7 @@ MonoBehaviour:
   recipeMutiplier: 1
   name: 7.62mm Machinegun
   tankPartType: 3
+  weight: 0
   ammunitionData: {fileID: 11400000, guid: 7e874bc572b8f2e4098aaf23ead26c8c, type: 2}
   isFullAuto: 1
   ammoCapacity: 200

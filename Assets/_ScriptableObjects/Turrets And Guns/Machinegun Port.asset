@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Machinegun Port
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
+  slotType: 2
   description: 
   recipeGridSize: 9
   isConsumable: 0
@@ -22,6 +23,7 @@ MonoBehaviour:
   recipeMutiplier: 1
   name: 
   tankPartType: 1
+  weight: 0
   isTurret: 1
   maxRotationAngle: 30
   rotationSpeed: 40

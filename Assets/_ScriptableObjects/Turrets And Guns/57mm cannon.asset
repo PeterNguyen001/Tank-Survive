@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: 57mm cannon
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
+  slotType: 2
   description: 
   recipeGridSize: 9
   isConsumable: 0
@@ -22,6 +23,7 @@ MonoBehaviour:
   recipeMutiplier: 1
   name: 57mm cannon
   tankPartType: 2
+  weight: 0
   ammunitionData: {fileID: 11400000, guid: d6acfdb29aad4314e96dea8679e46f37, type: 2}
   isFullAuto: 0
   ammoCapacity: 1

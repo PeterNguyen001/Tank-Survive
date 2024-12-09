@@ -8,8 +8,11 @@ using UnityEngine;
 public class Item : ScriptableObject //Extending SO allows us to have an object which exists in the project, not in the scene
 {
     public Sprite icon;
+    public SlotType slotType;
+
     [TextArea]
     public string description = "";
+
     public int recipeGridSize = 9;
     public bool isConsumable = false;
     public bool isCraftable = false;

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Sherman Chassis
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: 1fdb1e5bab5d6d74c86ed7bffada3853, type: 3}
+  slotType: 2
   description: 
   recipeGridSize: 9
   isConsumable: 0
@@ -22,3 +23,4 @@ MonoBehaviour:
   recipeMutiplier: 1
   name: 
   tankPartType: 0
+  weight: 0

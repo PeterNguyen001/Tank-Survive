@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: 75mm Cannon
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
+  slotType: 2
   description: 
   recipeGridSize: 9
   isConsumable: 0
@@ -22,6 +23,7 @@ MonoBehaviour:
   recipeMutiplier: 1
   name: 75mm cannon
   tankPartType: 2
+  weight: 0
   ammunitionData: {fileID: 11400000, guid: 883b8527c6de3b6468f5ce899dd73473, type: 2}
   isFullAuto: 0
   ammoCapacity: 1

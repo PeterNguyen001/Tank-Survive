@@ -12,7 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2f5e9383a34e664d99f4ba7081457d6, type: 3}
   m_Name: 57mm
   m_EditorClassIdentifier: 
+  icon: {fileID: 0}
+  slotType: 3
+  description: 
+  recipeGridSize: 9
+  isConsumable: 0
+  isCraftable: 0
+  ID: ' '
+  recipe: []
+  recipeMutiplier: 1
   name: 57mm
   damage: 10
   velocity: 150
+  penetrationPower: 50
   ammoSprite: {fileID: 0}

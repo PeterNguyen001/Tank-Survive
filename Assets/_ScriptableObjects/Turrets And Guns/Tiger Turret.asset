@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Tiger Turret
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: f63cec61602b74243be0b533c12d89a3, type: 3}
+  slotType: 2
   description: 
   recipeGridSize: 9
   isConsumable: 0
@@ -22,6 +23,7 @@ MonoBehaviour:
   recipeMutiplier: 1
   name: 
   tankPartType: 1
+  weight: 0
   isTurret: 1
   maxRotationAngle: 360
   rotationSpeed: 10

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Sherman Turret
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: c05df7d07d71b144681de52079530a60, type: 3}
+  slotType: 2
   description: 
   recipeGridSize: 9
   isConsumable: 0
@@ -22,6 +23,7 @@ MonoBehaviour:
   recipeMutiplier: 1
   name: 
   tankPartType: 1
+  weight: 0
   isTurret: 1
   maxRotationAngle: 360
   rotationSpeed: 15

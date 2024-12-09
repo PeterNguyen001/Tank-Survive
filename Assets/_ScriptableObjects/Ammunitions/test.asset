@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: test
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
+  slotType: 3
   description: 
   recipeGridSize: 9
   isConsumable: 0

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Tiger Chassis
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: 5163679abfc71ba47bca4c46a0e0a34e, type: 3}
+  slotType: 2
   description: 
   recipeGridSize: 9
   isConsumable: 0
@@ -22,3 +23,4 @@ MonoBehaviour:
   recipeMutiplier: 1
   name: 
   tankPartType: 0
+  weight: 0
