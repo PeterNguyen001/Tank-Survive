@@ -7,6 +7,7 @@ public class UIStateMachine : MonoBehaviour
     public static UIStateMachine Instance { get { return _instance; } }
 
     public PlayerEquipmentInventory PlayerEquipmentInventory { get => playerEquipmentInventory; set => playerEquipmentInventory = value; }
+    public UIStateNode CurrentState { get => currentState; }
 
     [SerializeField] private UIStateNode currentState;
 
@@ -78,7 +79,7 @@ public class UIStateMachine : MonoBehaviour
        
 
         // Activate the new UI state object
-        currentState.gameObject.SetActive(true);
+        currentState.Activate();
         if (currentState.subStates != null && currentState.subStates.Count > 0)
         {
             subNodeStack.Clear();

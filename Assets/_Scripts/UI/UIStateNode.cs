@@ -16,14 +16,14 @@ public class UIStateNode : MonoBehaviour
         subStates = new List<UIStateNode>();
     }
 
-    public void Activate()
+    public virtual void Activate()
     {
         if (gameObject != null)
         {
             gameObject.SetActive(true);
         }
     }
-    public void Deactivate() 
+    public virtual void Deactivate() 
     { 
         gameObject.SetActive(false);
     }

@@ -26,6 +26,7 @@ public class TankPartManager : MonoBehaviour
     public PlayerTankMovementController MovementController { get => movementController; set => movementController = value; }
     public AISensor AISensor { get => aISensor; set => aISensor = value; }
     public AITankNavigation AITankNavigation { get => aITankNavigation; set => aITankNavigation = value; }
+    public List<TankSubComponent> SubComponentList { get => subComponentList; set => subComponentList = value; }
 
     private void Awake()
     {
@@ -39,6 +40,11 @@ public class TankPartManager : MonoBehaviour
         Tools.FindComponentsRecursively(transform, collider2DList);
         Tools.FindComponentsRecursively(transform, subComponentList);
         Tools.FindComponentsRecursively(transform, tankPartList);
+    }
+
+    public void FillListOfSubComponent()
+    {
+        Tools.FindComponentsRecursively(transform, subComponentList);
     }
 
     public LinkedList<Collider2D> GetListOfCollider2D()
