@@ -1948,7 +1948,7 @@ FixedJoint2D:
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: -0.8300171, y: 2.1000366}
+  m_ConnectedAnchor: {x: 960, y: 539.7}
   m_DampingRatio: 0
   m_Frequency: 0
 --- !u!50 &188287573
@@ -3967,8 +3967,8 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 134827960}
-        m_TargetAssemblyTypeName: PlayerMovementController, Assembly-CSharp
+      - m_Target: {fileID: 889228004}
+        m_TargetAssemblyTypeName: PlayerTankMovementController, Assembly-CSharp
         m_MethodName: MovePlayer
         m_Mode: 0
         m_Arguments:
@@ -3983,7 +3983,7 @@ MonoBehaviour:
     m_ActionName: PlayerController/New action
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 134827961}
+      - m_Target: {fileID: 889228005}
         m_TargetAssemblyTypeName: TurretController, Assembly-CSharp
         m_MethodName: FireGun
         m_Mode: 0
@@ -3999,7 +3999,7 @@ MonoBehaviour:
     m_ActionName: PlayerController/Fire Gun[/Mouse/leftButton]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 134827961}
+      - m_Target: {fileID: 889228005}
         m_TargetAssemblyTypeName: TurretController, Assembly-CSharp
         m_MethodName: MoveMouse
         m_Mode: 0
@@ -4195,7 +4195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bf8069a642e2124e9467b87e1048d10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerTank: {fileID: 578308169}
+  playerTank: {fileID: 0}
   followSpeed: 5
   edgeMoveSpeed: 5
   edgeMoveThreshold: 50
@@ -5721,7 +5721,7 @@ Transform:
   m_GameObject: {fileID: 776510090}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -960.83, y: -537.6, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6107,7 +6107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d21e2790ce455574ab627d344284e3f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentState: {fileID: 2130047251}
+  currentState: {fileID: 0}
 --- !u!114 &798821971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6670,7 +6670,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &854326537
 Transform:
   m_ObjectHideFlags: 0
@@ -9568,7 +9568,7 @@ FixedJoint2D:
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: -0.8300171, y: 2.7000122}
+  m_ConnectedAnchor: {x: 960, y: 540.3}
   m_DampingRatio: 0
   m_Frequency: 0
 --- !u!50 &1209389101
@@ -13211,13 +13211,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1837855529}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: BuildTank
-        m_Mode: 1
+      - m_Target: {fileID: 798821970}
+        m_TargetAssemblyTypeName: UIStateMachine, Assembly-CSharp
+        m_MethodName: TransitionToStateUsingObject
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 2130047251}
+          m_ObjectArgumentAssemblyTypeName: UIStateNode, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -14039,7 +14039,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1864113511
 Transform:
   m_ObjectHideFlags: 0
@@ -15400,7 +15400,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2130047249}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5dcda98081fc1974cb111036d29feb49, type: 3}
+  m_Script: {fileID: 11500000, guid: 490581261a131ee41b29efafd5440e25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   uiState: {fileID: 2130047249}

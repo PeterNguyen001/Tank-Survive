@@ -28,11 +28,27 @@ public class TankPartManager : MonoBehaviour
     public AITankNavigation AITankNavigation { get => aITankNavigation; set => aITankNavigation = value; }
     public List<TankSubComponent> SubComponentList { get => subComponentList; set => subComponentList = value; }
 
-    private void Awake()
-    {
+    //private void Awake()
+    //{
+    //    if (tag == "Player")
+    //    {
+    //        GameManager.Instance.PlayerTank = this.gameObject;
+    //    }
 
-        //InitializeAllTankPartsAndComponentForTankBuilder();
-        //StartBattle();
+    //    FillListOfSubComponent();
+    //    //SetEnableSubComponents(false);
+    //    ActivateTank();
+    //}
+    private void Start()
+    {
+        if (tag == "Player")
+        {
+            GameManager.Instance.PlayerTank = this.gameObject;
+        }
+
+        FillListOfSubComponent();
+        SetEnableSubComponents(false);
+        //ActivateTank();
     }
 
     private void InitializeAllTankPartsAndComponentForTankBuilder()
@@ -52,22 +68,27 @@ public class TankPartManager : MonoBehaviour
        return collider2DList;
     }
 
-    public void StartBattle()
+    public void ActivateTank()
     {
 
-        loader = GetComponent<AmmoLoader>();
-        turretController = GetComponent<TurretController>();
-        movementController = GetComponent<PlayerTankMovementController>();
-        aISensor = GetComponent<AISensor>();
-        AITankNavigation = GetComponent<AITankNavigation>();
+        //loader = GetComponent<AmmoLoader>();
+        //turretController = GetComponent<TurretController>();
+        //movementController = GetComponent<PlayerTankMovementController>();
+        //aISensor = GetComponent<AISensor>();
+        //AITankNavigation = GetComponent<AITankNavigation>();
+
+        Tools.FindComponentsRecursively(transform, collider2DList);
+        Tools.FindComponentsRecursively(transform, tankPartList);
 
         foreach (TankSubComponent subComponent in subComponentList)
         {
+            subComponent.enabled = true;
             subComponent.SetManager();
             subComponent.Init();
         }
         foreach (TankPart tankPart in tankPartList)
         {
+
             tankPart.SetManager(this);
         }
 
@@ -76,15 +97,17 @@ public class TankPartManager : MonoBehaviour
         //movementController.Init();
 
     }
-    void Start()
+
+    public void SetEnableSubComponents(bool isEnable)
     {
+        foreach (TankSubComponent subComponent in subComponentList)
+        {
+
+            subComponent.enabled = isEnable;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
 
-    }
 
     public LinkedList<GunBehaviour> GetListOfGun()
     {

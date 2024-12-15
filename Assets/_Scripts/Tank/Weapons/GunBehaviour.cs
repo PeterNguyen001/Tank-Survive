@@ -19,7 +19,7 @@ public class GunBehaviour : TankPart
 
     private void Start()
     {
-        Init();
+        //Init();
     }
 
     public override void Init()
