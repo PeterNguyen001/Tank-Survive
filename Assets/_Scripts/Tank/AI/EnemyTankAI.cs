@@ -121,7 +121,7 @@ public class TankAttackEnemy : TankState
     public override void Execute() 
     {
         tankAI.TankNavigation.RotateToFaceTarget(tankAI.GetEnemyLastKnowPosition());
-        tankAI.TurretController.AIControl();
+        tankAI.TurretController.AIControlTurretAndGun();
     }
 }
 public class TankPatrol : TankState

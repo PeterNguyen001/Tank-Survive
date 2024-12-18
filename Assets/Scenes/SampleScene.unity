@@ -1211,6 +1211,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 907b4da7ba1711345a88e9bdf5e0e2f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ammoPefabContainer: {fileID: 0}
   bulletPrefab1: {fileID: 722460137}
   bulletPrefab2: {fileID: 1333498707}
 --- !u!1 &136789243
@@ -7034,6 +7035,7 @@ GameObject:
   - component: {fileID: 889228006}
   - component: {fileID: 889228005}
   - component: {fileID: 889228004}
+  - component: {fileID: 889228008}
   m_Layer: 9
   m_Name: Player Tank
   m_TagString: Player
@@ -7100,6 +7102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 907b4da7ba1711345a88e9bdf5e0e2f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ammoPefabContainer: {fileID: 1161684515}
   bulletPrefab1: {fileID: 722460137}
   bulletPrefab2: {fileID: 1333498707}
 --- !u!114 &889228007
@@ -7112,6 +7115,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a60579554b5601c439373b3290707cfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &889228008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 889228002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08ce47b54c61bb746bf1153e7d4bbcf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &890278997
@@ -8354,6 +8369,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1161684516}
   - {fileID: 79142296}
   - {fileID: 1706973831}
   - {fileID: 2086692791}
@@ -9133,7 +9149,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1161684516}
   m_Layer: 0
-  m_Name: AmmoPrefab
+  m_Name: Ammo Prefab Container
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9147,7 +9163,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1161684515}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -9156,7 +9172,7 @@ Transform:
   - {fileID: 27982439}
   - {fileID: 1333498712}
   - {fileID: 962142544}
-  m_Father: {fileID: 2130047250}
+  m_Father: {fileID: 1030735759}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1168452074
 GameObject:
@@ -14151,6 +14167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 907b4da7ba1711345a88e9bdf5e0e2f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ammoPefabContainer: {fileID: 0}
   bulletPrefab1: {fileID: 1819793238}
   bulletPrefab2: {fileID: 1333498707}
 --- !u!1 &1881837481
@@ -15388,7 +15405,6 @@ Transform:
   - {fileID: 1617510718}
   - {fileID: 619394802}
   - {fileID: 451285405}
-  - {fileID: 1161684516}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2130047251
@@ -15510,6 +15526,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1030735759}
     m_Modifications:
+    - target: {fileID: 996758962330101395, guid: f0ceba479e2961e4d9574961ee68f336, type: 3}
+      propertyPath: inventoryPanel
+      value: 
+      objectReference: {fileID: 4939740536548618051}
     - target: {fileID: 5613601936019892612, guid: f0ceba479e2961e4d9574961ee68f336, type: 3}
       propertyPath: m_Name
       value: PlayerAmmoInventory
@@ -15615,6 +15635,11 @@ PrefabInstance:
 --- !u!224 &4939740536548618050 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8538605484318331611, guid: f0ceba479e2961e4d9574961ee68f336, type: 3}
+  m_PrefabInstance: {fileID: 4939740536548618049}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4939740536548618051 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6018158636192493676, guid: f0ceba479e2961e4d9574961ee68f336, type: 3}
   m_PrefabInstance: {fileID: 4939740536548618049}
   m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807

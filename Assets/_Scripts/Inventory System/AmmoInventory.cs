@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class AmmoInventory : Inventory
 {
+    List<ItemSlot> slots = new List<ItemSlot>();
     // Start is called before the first frame update
+
         void Start()
     {
         
@@ -14,5 +16,11 @@ public class AmmoInventory : Inventory
     void Update()
     {
         
+    }
+
+    public List<ItemSlot> GetListOfAmmoSlot()
+    {
+        Tools.FindComponentsRecursively(this.transform, slots, true);
+        return slots;
     }
 }

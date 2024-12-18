@@ -23,11 +23,7 @@ public class MovementController : TankSubComponent
     LinkedList<Tracks> trackList = new LinkedList<Tracks>();
 
     // Start is called before the first frame update
-    void Start()
-    {
-        // Ensure drag is set initially
-        SetDrag(lowDrag);
-    }
+
 
     // Update is called once per frame
     protected void FixedUpdate()
@@ -42,6 +38,9 @@ public class MovementController : TankSubComponent
 
 
         chassisRB = Tools.FindComponentRecursively<Chassis>(transform).GetComponent<Rigidbody2D>();
+
+        // Ensure drag is set initially
+        SetDrag(lowDrag);
 
         Tools.FindComponentsRecursively(transform, trackList);
 

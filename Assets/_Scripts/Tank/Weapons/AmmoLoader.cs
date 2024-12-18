@@ -4,20 +4,32 @@ using UnityEngine;
 
 public class AmmoLoader : TankSubComponent
 {
+    public GameObject ammoPefabContainer;
+    public List<BulletBehavior> ammoPrefabList = new List<BulletBehavior>();
+
     public List<AmmoContainer> m_AmmoContainers = new List<AmmoContainer>();
     public LinkedList<GunBehaviour> gunList;
     public GameObject bulletPrefab1;
     public GameObject bulletPrefab2;
     // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        Tools.FindComponentsRecursively(ammoPefabContainer.transform,ammoPrefabList, true);
+    }
+    public override void Init()
+    {
+        //m_AmmoContainers.Add(new AmmoContainer(bulletPrefab1, 20));
+        //m_AmmoContainers.Add(new AmmoContainer(bulletPrefab2, 6));
+        gunList = tankPartManager.GetListOfGun();
+        foreach (GunBehaviour gun in gunList)
+        {
+            AmmoContainer correctAmmunitionType = FindCorrectAmmunitionType(gun.gunData.ammunitionData);
+            GameObject bulletPrefab = correctAmmunitionType.GetbulletPrefab();
+
+            gun.InitializeBulletPool(bulletPrefab, tankPartManager.GetListOfCollider2D());
+
+        }
     }
 
     public void  ReloadGun(GunBehaviour gun)
@@ -41,7 +53,7 @@ public class AmmoLoader : TankSubComponent
 
     public AmmoContainer FindCorrectAmmunitionType( AmmunitionData ammunitionData)
     {
-        foreach (var item in m_AmmoContainers)
+        foreach (AmmoContainer item in m_AmmoContainers)
         {
             if (item.GetAmmunitionType() == ammunitionData)
                 return item;
@@ -49,17 +61,37 @@ public class AmmoLoader : TankSubComponent
         return null;
     }
 
-    public override void Init()
+    public void AddAmmos(List<ItemSlot> itemSlots)
     {
-        m_AmmoContainers.Add(new AmmoContainer(bulletPrefab1, 20));
-        m_AmmoContainers.Add(new AmmoContainer(bulletPrefab2, 6));
-        gunList = tankPartManager.GetListOfGun();
-        foreach (GunBehaviour gun in gunList)
+        foreach (ItemSlot item in itemSlots)
         {
-            AmmoContainer correctAmmunitionType = FindCorrectAmmunitionType(gun.gunData.ammunitionData);
-            GameObject bulletPrefab = correctAmmunitionType.GetbulletPrefab();
+            if (item.Count != 0 && item.GetItem() is AmmunitionData ammunitionData)
+            {
+                bool foudExistingAmmoType = false;
+                if (m_AmmoContainers.Count != 0 )
+                {
+                    foreach (AmmoContainer ammo in m_AmmoContainers)
+                    {
+                        if (ammo.GetAmmunitionType().name == ammunitionData.name)
+                        {
+                            ammo.AddAmmunitionByCount(item.Count);
+                            foudExistingAmmoType = true;
+                        }
 
-            gun.InitializeBulletPool(bulletPrefab, tankPartManager.GetListOfCollider2D());
+                    }
+                }
+                else if (foudExistingAmmoType)
+                {
+                    foreach (BulletBehavior bulletBehavior in ammoPrefabList)
+                    {
+                        if(bulletBehavior.GetAmmunitionData().name == ammunitionData.name)
+                        {
+                            m_AmmoContainers.Add(new AmmoContainer(bulletBehavior.gameObject, item.Count));
+                            break;
+                        }
+                    }
+                }
+            }
 
         }
     }
@@ -76,7 +108,9 @@ public class AmmoContainer
         this.ammunitionCount = ammunitionCount;
     }   
     public AmmunitionData GetAmmunitionType()
-    { return bulletPrefab.GetComponent<BulletBehavior>().GetAmmunitionData(); }
+    { 
+        return bulletPrefab.GetComponent<BulletBehavior>().GetAmmunitionData(); 
+    }
 
     public GameObject GetbulletPrefab()
     {
@@ -86,6 +120,10 @@ public class AmmoContainer
     { return ammunitionCount; }
     public void RemoveOneAmmunitionCount()
     { ammunitionCount--; }
+    public void AddAmmunitionByCount(int count)
+    {
+        ammunitionCount += count;
+    }
     public bool IsEmpty()
     {
         return ammunitionCount == 0;

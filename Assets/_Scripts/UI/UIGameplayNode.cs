@@ -10,6 +10,7 @@ public class UIGameplayNode : UIStateNode
     {
         base.Activate();
         GameManager.Instance.PlayerTank.transform.parent = this.gameObject.transform;
+        GameManager.Instance.PlayerTank.enabled = true;
         GameManager.Instance.PlayerTank.GetComponent<TankPartManager>().ActivateTank();
     }
 

@@ -9,16 +9,9 @@ public class PlayerTankMovementController : MovementController
 
     private Vector2 moveDirection;
 
-
-    void Start()
-    {
-        
-    }
-
     void FixedUpdate()
     {
-        base.FixedUpdate();
-        Movement.MovePlayerTank(moveDirection);
+       
     }
 
     public void MovePlayer(InputAction.CallbackContext context)
@@ -31,7 +24,10 @@ public class PlayerTankMovementController : MovementController
         base.Init();
     }
 
- 
-
+    public void MovePlayerTankBaseOnInput()
+    {
+        base.FixedUpdate();
+        Movement.MovePlayerTank(moveDirection);
+    }
 }
 

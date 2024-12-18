@@ -15,9 +15,9 @@ public class Inventory : MonoBehaviour
 
     void Start()
     {
-      
+
         //Read all itemSlots as children of inventory panel
-        
+        //Tools.FindComponentsRecursively(inventoryPanel.transform, itemSlots);
     }
 
     public GameObject GetInventoryPanel()

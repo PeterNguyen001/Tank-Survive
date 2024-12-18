@@ -33,13 +33,8 @@ public class TurretController : TankSubComponent
         tankColliders = tankPartManager.GetListOfCollider2D();
         aiSensor = GetComponent<AISensor>();
     }
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        PlayerControll();
-    }
 
-    private void PlayerControll()
+    public void ControlTurretAndWeaponBaseOnInput()
     {
         foreach (TurretAndPortBehaviour turret in turretAndGunPortList)
         {
@@ -59,7 +54,7 @@ public class TurretController : TankSubComponent
         }
     }
 
-    public void AIControl()
+    public void AIControlTurretAndGun()
     {
         foreach (TurretAndPortBehaviour turret in turretAndGunPortList)
         {

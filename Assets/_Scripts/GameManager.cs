@@ -8,9 +8,9 @@ public class GameManager : MonoBehaviour
     private static GameManager _instance;
     public static GameManager Instance { get { return _instance; } }
 
-    public GameObject PlayerTank { get => playerTank; set => playerTank = value; }
+    public PlayerTank PlayerTank { get => playerTank; set => playerTank = value; }
 
-    private GameObject playerTank;
+    private PlayerTank playerTank;
 
     private void Awake()
     {

@@ -41,13 +41,12 @@ public class TankPartManager : MonoBehaviour
     //}
     private void Start()
     {
-        if (tag == "Player")
-        {
-            GameManager.Instance.PlayerTank = this.gameObject;
-        }
-
+        loader = GetComponent<AmmoLoader>();
+        turretController = GetComponent<TurretController>();
+        movementController = GetComponent<PlayerTankMovementController>();
+        aISensor = GetComponent<AISensor>();
+        AITankNavigation = GetComponent<AITankNavigation>();
         FillListOfSubComponent();
-        SetEnableSubComponents(false);
         //ActivateTank();
     }
 
