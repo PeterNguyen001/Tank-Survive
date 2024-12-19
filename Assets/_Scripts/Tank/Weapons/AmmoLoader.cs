@@ -25,10 +25,12 @@ public class AmmoLoader : TankSubComponent
         foreach (GunBehaviour gun in gunList)
         {
             AmmoContainer correctAmmunitionType = FindCorrectAmmunitionType(gun.gunData.ammunitionData);
-            GameObject bulletPrefab = correctAmmunitionType.GetbulletPrefab();
+            if (correctAmmunitionType != null)
+            {
+                GameObject bulletPrefab = correctAmmunitionType.GetbulletPrefab();
 
-            gun.InitializeBulletPool(bulletPrefab, tankPartManager.GetListOfCollider2D());
-
+                gun.InitializeBulletPool(bulletPrefab, tankPartManager.GetListOfCollider2D());
+            }
         }
     }
 
@@ -80,7 +82,7 @@ public class AmmoLoader : TankSubComponent
 
                     }
                 }
-                else if (foudExistingAmmoType)
+                else if (!foudExistingAmmoType)
                 {
                     foreach (BulletBehavior bulletBehavior in ammoPrefabList)
                     {
