@@ -8,6 +8,6 @@ public class TankPartData : Item
     // Start is called before the first frame update
     public new string name;// You can use the 'name' field from ScriptableObject
     public TankPartType tankPartType;
-
+    public int maxHP = 10;
     public float weight;
 }

@@ -9,6 +9,8 @@ public class TankPart : MonoBehaviour
     private bool isDisable;
     private SpriteRenderer spriteRenderer;
 
+    public bool isInternalPart;
+
     protected Armor[] armorList;
 
     [SerializeField]
@@ -21,6 +23,7 @@ public class TankPart : MonoBehaviour
     void Awake()
     {
         Init();
+        maxHP = tankPart.maxHP;
         spriteRenderer = GetComponent<SpriteRenderer>(); // Get SpriteRenderer component
         HP = maxHP; // Initialize HP to max
         UpdateSpriteColor(); // Initial color setup
@@ -39,34 +42,42 @@ public class TankPart : MonoBehaviour
     // Called whenever the tank part takes damage
     public void TakeHit(BulletBehavior bullet)
     {
-        bool isPenetraded;
-        float damage = bullet.GetAmmunitionData().damage;
-        foreach (Armor armor in armorList)
-        {
-            if (armor.IsBeingHit)
-            {
-                isPenetraded = armor.CheckForPenetration(bullet);
-                if (!isPenetraded)
-                {
-                    bullet.DeactivateBullet();
-                    break;
-                }
-                else
-                {
-                    HP -= damage;
-                    //bullet.DeactivateBullet();
-                    if (HP <= 0)
-                    {
-                        UpdateSpriteColor();
-                        HP = 0;
-                        IsDisable = true;
-                    }
-                    break;
-                }
-            }
-        }
-      
+        //bool isPenetraded;
+        //float damage = bullet.GetAmmunitionData().damage;
+        //foreach (Armor armor in armorList)
+        //{
+        //    if (armor.IsBeingHit)
+        //    {
+        //        isPenetraded = armor.CheckForPenetration(bullet);
+        //        if (!isPenetraded)
+        //        {
+        //            bullet.DeactivateBullet();
+        //            break;
+        //        }
+        //        else
+        //        {
+        //            HP -= damage;
+        //            //bullet.DeactivateBullet();
+        //            if (HP <= 0)
+        //            {
+        //                UpdateSpriteColor();
+        //                HP = 0;
+        //                IsDisable = true;
+        //            }
+        //            break;
+        //        }
+        //    }
+        //}
 
+        float damage = bullet.GetAmmunitionData().damage;
+        HP -= damage;
+        //bullet.DeactivateBullet();
+        if (HP <= 0)
+        {
+            UpdateSpriteColor();
+            HP = 0;
+            IsDisable = true;
+        }
 
     }
 

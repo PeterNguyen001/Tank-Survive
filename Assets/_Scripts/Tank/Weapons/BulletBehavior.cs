@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 public class BulletBehavior : MonoBehaviour
@@ -252,34 +253,84 @@ public class BulletBehavior : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        //if (collision.CompareTag("Armor"))
+        //{
+        //    Armor armor = collision.GetComponent<Armor>();
+
+        //    if (armor != null && !existingArmor.Contains(armor) && !penetratedArmorList.Contains(armor) )
+        //    {
+        //        //Tools.PauseEditor();
+        //        Debug.Log("Hit: " + armor.gameObject.name);
+        //        hitArmorList.AddLast(armor);
+        //        existingArmor.Add(armor);
+        //        armor.IsBeingHit = true;
+        //        float missChance = 0.2f;
+        //        Collider2D hitCollider = CalculateHit(CalculateTrajectory(5), missChance);
+        //        if (hitCollider != null && !hasHitted)
+        //        {
+        //            TankPart part = hitCollider.GetComponent<TankPart>();
+        //            if (part == armor.TankPartAttachedTo)
+        //            {
+        //                CastRayConeAndCalculateAverageHitAngle(armor);
+        //                //hasHitted = true;
+        //                part?.TakeHit(this);
+        //                Debug.Log("Hit: " + hitCollider.gameObject.name);
+        //            }
+        //        }
+        //    }
+
+        //    // Exit here to process armor hit first
+        //    return;
+        //}
+
         if (collision.CompareTag("Armor"))
         {
             Armor armor = collision.GetComponent<Armor>();
 
-            if (armor != null && !existingArmor.Contains(armor) && !penetratedArmorList.Contains(armor) )
+            if (armor != null && !existingArmor.Contains(armor) && !penetratedArmorList.Contains(armor))
             {
                 //Tools.PauseEditor();
                 Debug.Log("Hit: " + armor.gameObject.name);
                 hitArmorList.AddLast(armor);
                 existingArmor.Add(armor);
                 armor.IsBeingHit = true;
-                float missChance = 0.2f;
-                Collider2D hitCollider = CalculateHit(CalculateTrajectory(5), missChance);
-                if (hitCollider != null && !hasHitted)
-                {
-                    TankPart part = hitCollider.GetComponent<TankPart>();
-                    if (part == armor.TankPartAttachedTo)
-                    {
-                        CastRayConeAndCalculateAverageHitAngle(armor);
-                        //hasHitted = true;
-                        part?.TakeHit(this);
-                        Debug.Log("Hit: " + hitCollider.gameObject.name);
-                    }
-                }
+                
+                //Collider2D hitCollider = CalculateHit(CalculateTrajectory(5), missChance);
+                //if (hitCollider != null && !hasHitted)
+                //{
+                //    TankPart part = hitCollider.GetComponent<TankPart>();
+                //    if (part == armor.TankPartAttachedTo)
+                //    {
+                //        CastRayConeAndCalculateAverageHitAngle(armor);
+                //        //hasHitted = true;
+                //        part?.TakeHit(this);
+                //        Debug.Log("Hit: " + hitCollider.gameObject.name);
+                //    }
+                //}
+
+                    armor.CheckForPenetration(this);
+               
             }
 
             // Exit here to process armor hit first
             return;
+        }
+
+        if (collision.GetComponent<TankPart>())
+        {
+            Debug.Log(collision.name);
+            EditorApplication.isPaused = true;
+            float missChance = 0.2f;
+            Collider2D hitCollider = CalculateHit(CalculateTrajectory(5), missChance);
+            if (hitCollider != null && !hasHitted)
+            {
+                TankPart part = hitCollider.GetComponent<TankPart>();
+
+                    hasHitted = true;
+                    part?.TakeHit(this);
+                    Debug.Log("Hit: " + hitCollider.gameObject.name);
+                
+            }
         }
 
         if (collision.CompareTag("Obstacle"))

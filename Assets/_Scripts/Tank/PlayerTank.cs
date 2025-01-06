@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
 public class PlayerTank : MonoBehaviour
@@ -21,5 +22,10 @@ public class PlayerTank : MonoBehaviour
     {
         partManager.MovementController.MovePlayerTankBaseOnInput();
         partManager.TurretController.ControlTurretAndWeaponBaseOnInput();
+    }
+
+    public void AddAmmoToPlayer(List<ItemSlot> ammoSlot)
+    {
+        partManager.Loader.AddAmmos(ammoSlot);
     }
 }

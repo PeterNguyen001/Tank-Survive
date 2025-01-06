@@ -5,8 +5,8 @@ using UnityEngine;
 public class AmmoLoader : TankSubComponent
 {
     public GameObject ammoPefabContainer;
-    public List<BulletBehavior> ammoPrefabList = new List<BulletBehavior>();
-
+    private List<BulletBehavior> ammoPrefabList = new List<BulletBehavior>();
+    [SerializeField]
     public List<AmmoContainer> m_AmmoContainers = new List<AmmoContainer>();
     public LinkedList<GunBehaviour> gunList;
     public GameObject bulletPrefab1;
@@ -15,12 +15,16 @@ public class AmmoLoader : TankSubComponent
 
     private void Start()
     {
-        Tools.FindComponentsRecursively(ammoPefabContainer.transform,ammoPrefabList, true);
+        if (tag != "Enemy")
+            Tools.FindComponentsRecursively(ammoPefabContainer.transform,ammoPrefabList, true);
     }
     public override void Init()
     {
-        //m_AmmoContainers.Add(new AmmoContainer(bulletPrefab1, 20));
-        //m_AmmoContainers.Add(new AmmoContainer(bulletPrefab2, 6));
+        if (tag == "Enemy")
+        {
+            m_AmmoContainers.Add(new AmmoContainer(bulletPrefab1, 20));
+            m_AmmoContainers.Add(new AmmoContainer(bulletPrefab2, 6));
+        }
         gunList = tankPartManager.GetListOfGun();
         foreach (GunBehaviour gun in gunList)
         {

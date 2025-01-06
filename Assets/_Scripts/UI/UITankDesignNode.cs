@@ -16,7 +16,7 @@ public class UITankDesignNode : UIStateNode
             AmmoInventory inventory = Tools.FindComponentRecursively<AmmoInventory>(this.transform);
             List<ItemSlot> slots = inventory.GetListOfAmmoSlot();
 
-            GameManager.Instance.PlayerTank.PartManager.Loader.AddAmmos(slots);
+            GameManager.Instance.PlayerTank.AddAmmoToPlayer(slots);
         }
         base.Deactivate();
     }

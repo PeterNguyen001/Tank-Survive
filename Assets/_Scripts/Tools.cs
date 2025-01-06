@@ -31,6 +31,8 @@ public static class Tools
             T[] childComponents = child.GetComponents<T>();
             foreach (T component in childComponents)
             {
+                if(componentCollection == null)
+                { Debug.Log("nul"); }
                 if (!componentCollection.Contains(component))
                 {
                     componentCollection.Add(component);

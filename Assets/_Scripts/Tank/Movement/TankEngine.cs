@@ -10,6 +10,13 @@ public class TankEngine : TankPart
     public TankEngineData TankEngineData { get => tankEngineData; set => tankEngineData = value; }
     // Start is called before the first frame update
 
+    void Start()
+    {
+        Init();
+    }
 
-
+    public override void Init()
+    {
+        tankPart = tankEngineData;
+    }
 }

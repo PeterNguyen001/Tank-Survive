@@ -28,26 +28,19 @@ public class TankPartManager : MonoBehaviour
     public AITankNavigation AITankNavigation { get => aITankNavigation; set => aITankNavigation = value; }
     public List<TankSubComponent> SubComponentList { get => subComponentList; set => subComponentList = value; }
 
-    //private void Awake()
-    //{
-    //    if (tag == "Player")
-    //    {
-    //        GameManager.Instance.PlayerTank = this.gameObject;
-    //    }
-
-    //    FillListOfSubComponent();
-    //    //SetEnableSubComponents(false);
-    //    ActivateTank();
-    //}
-    private void Start()
+    private void Awake()
     {
         loader = GetComponent<AmmoLoader>();
         turretController = GetComponent<TurretController>();
         movementController = GetComponent<PlayerTankMovementController>();
         aISensor = GetComponent<AISensor>();
         AITankNavigation = GetComponent<AITankNavigation>();
-        FillListOfSubComponent();
-        //ActivateTank();
+        Tools.FindComponentsRecursively(transform, subComponentList);
+    }
+    private void Start()
+    {
+       
+
     }
 
     private void InitializeAllTankPartsAndComponentForTankBuilder()
@@ -57,11 +50,6 @@ public class TankPartManager : MonoBehaviour
         Tools.FindComponentsRecursively(transform, tankPartList);
     }
 
-    public void FillListOfSubComponent()
-    {
-        Tools.FindComponentsRecursively(transform, subComponentList);
-    }
-
     public LinkedList<Collider2D> GetListOfCollider2D()
     {
        return collider2DList;
@@ -69,13 +57,6 @@ public class TankPartManager : MonoBehaviour
 
     public void ActivateTank()
     {
-
-        //loader = GetComponent<AmmoLoader>();
-        //turretController = GetComponent<TurretController>();
-        //movementController = GetComponent<PlayerTankMovementController>();
-        //aISensor = GetComponent<AISensor>();
-        //AITankNavigation = GetComponent<AITankNavigation>();
-
         Tools.FindComponentsRecursively(transform, collider2DList);
         Tools.FindComponentsRecursively(transform, tankPartList);
 
@@ -90,10 +71,6 @@ public class TankPartManager : MonoBehaviour
 
             tankPart.SetManager(this);
         }
-
-        //loader.Init();
-        //turretController.Init();
-        //movementController.Init();
 
     }
 

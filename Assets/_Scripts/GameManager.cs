@@ -28,5 +28,9 @@ public class GameManager : MonoBehaviour
         //UIStateMachine.Instance.TransitionToStateUsingName("Main Menu");
     }
 
-
+    public void ActivatePlayer()
+    {
+        playerTank.enabled = true;
+        playerTank.GetComponent<TankPartManager>().ActivateTank();
+    }
 }
