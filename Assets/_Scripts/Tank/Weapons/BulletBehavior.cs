@@ -7,6 +7,9 @@ using UnityEngine;
 public class BulletBehavior : MonoBehaviour
 {
     public AmmunitionData ammoData;
+    
+    private GameObject ownerObject;
+
     public float lifespan = 2.0f; // Adjust the lifespan as needed
     public float timer;
     private Rigidbody2D bulletRb;
@@ -52,10 +55,11 @@ public class BulletBehavior : MonoBehaviour
         }
     }
 
-    public void Fire()
+    public void Fire(GameObject owner)
     {
         penetrationPower = ammoData.penetrationPower;
         gameObject.SetActive(true);
+        ownerObject = owner;
     }
 
     // Deactivate the bullet and reset the timer
@@ -80,6 +84,7 @@ public class BulletBehavior : MonoBehaviour
         hasTarget = false;
         isMissed = false;
         hasHitted = false;
+        ownerObject = null;
         timer = 0f; // Reset the timer when firing
     }
 
@@ -287,7 +292,7 @@ public class BulletBehavior : MonoBehaviour
         {
             Armor armor = collision.GetComponent<Armor>();
 
-            if (armor != null && !existingArmor.Contains(armor) && !penetratedArmorList.Contains(armor))
+            if (armor != null && !existingArmor.Contains(armor) && !penetratedArmorList.Contains(armor) && armor.OwnerObject != ownerObject)
             {
                 //Tools.PauseEditor();
                 Debug.Log("Hit: " + armor.gameObject.name);
@@ -316,9 +321,11 @@ public class BulletBehavior : MonoBehaviour
             return;
         }
 
-        if (collision.GetComponent<TankPart>())
+        if (collision.GetComponent<TankPart>().OwnerObject != ownerObject)
         {
-            Debug.Log(collision.name);
+
+            Debug.Log(collision.GetComponent<TankPart>().OwnerObject);
+            Debug.Log(ownerObject);
             EditorApplication.isPaused = true;
             float missChance = 0.2f;
             Collider2D hitCollider = CalculateHit(CalculateTrajectory(5), missChance);

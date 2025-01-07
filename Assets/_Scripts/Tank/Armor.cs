@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Armor : MonoBehaviour
 {
+    private GameObject ownerObject;
     Collider2D armorCollider2D;
     [SerializeField]
     int thickness; // Base armor thickness in millimeters
@@ -15,6 +16,7 @@ public class Armor : MonoBehaviour
 
     public bool IsBeingHit { get => isBeingHit; set => isBeingHit = value; }
     public TankPart TankPartAttachedTo { get => partAttachedTo; set => partAttachedTo = value; }
+    public GameObject OwnerObject { get => ownerObject; set => ownerObject = value; }
 
     private void Start()
     {

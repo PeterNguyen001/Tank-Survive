@@ -106,7 +106,7 @@ public class GunBehaviour : TankPart
     {
         if (hasAmmo)
         {
-            bullet.GetComponent<BulletBehavior>().Fire();
+            bullet.GetComponent<BulletBehavior>().Fire(ownerObject);
             currentAmmoCount--;
         }
     }
@@ -117,7 +117,7 @@ public class GunBehaviour : TankPart
         if (isDelaying)
         { yield break; }
 
-        bullet.GetComponent<BulletBehavior>().Fire();
+        bullet.GetComponent<BulletBehavior>().Fire(ownerObject);
         currentAmmoCount--;
         isDelaying = true;
         // Calculate the delay between shots based on shotPerMinute

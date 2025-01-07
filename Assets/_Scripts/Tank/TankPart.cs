@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class TankPart : MonoBehaviour
 {
+    protected GameObject ownerObject;
+
     protected TankPartData tankPart;
     protected TankPartManager tankPartManager;
     private bool isDisable;
@@ -18,6 +20,7 @@ public class TankPart : MonoBehaviour
     public float maxHP = 10; // Maximum HP to calculate color intensity
 
     public bool IsDisable { get => isDisable; set => isDisable = value; }
+    public GameObject OwnerObject { get => ownerObject; set => ownerObject = value; }
 
     // Start is called before the first frame update
     void Awake()

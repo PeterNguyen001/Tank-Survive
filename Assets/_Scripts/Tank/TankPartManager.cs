@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class TankPartManager : MonoBehaviour
 {
     // Start is called before the first frame update;
+    private GameObject ownerObject;
 
     private List<TankSubComponent> subComponentList = new List<TankSubComponent>();
     private LinkedList<TankPart> tankPartList = new LinkedList<TankPart>();
@@ -27,9 +28,12 @@ public class TankPartManager : MonoBehaviour
     public AISensor AISensor { get => aISensor; set => aISensor = value; }
     public AITankNavigation AITankNavigation { get => aITankNavigation; set => aITankNavigation = value; }
     public List<TankSubComponent> SubComponentList { get => subComponentList; set => subComponentList = value; }
+    public GameObject OwnerObject { get => ownerObject; set => ownerObject = value; }
 
     private void Awake()
     {
+        ownerObject = gameObject; 
+
         loader = GetComponent<AmmoLoader>();
         turretController = GetComponent<TurretController>();
         movementController = GetComponent<PlayerTankMovementController>();
@@ -57,8 +61,10 @@ public class TankPartManager : MonoBehaviour
 
     public void ActivateTank()
     {
+        LinkedList<Armor> armorList = new LinkedList<Armor>();
         Tools.FindComponentsRecursively(transform, collider2DList);
         Tools.FindComponentsRecursively(transform, tankPartList);
+        Tools.FindComponentsRecursively(transform, armorList);
 
         foreach (TankSubComponent subComponent in subComponentList)
         {
@@ -68,8 +74,12 @@ public class TankPartManager : MonoBehaviour
         }
         foreach (TankPart tankPart in tankPartList)
         {
-
             tankPart.SetManager(this);
+            tankPart.OwnerObject = ownerObject;
+        }
+        foreach(Armor armor in armorList)
+        {
+            armor.OwnerObject = ownerObject;
         }
 
     }
