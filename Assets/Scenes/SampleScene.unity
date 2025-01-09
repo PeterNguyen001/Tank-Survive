@@ -2105,7 +2105,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 208372027}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.3074397, w: 0.9515676}
+  m_LocalRotation: {x: 0, y: 0, z: 0.9916262, w: 0.12914181}
   m_LocalPosition: {x: 0.63, y: 3.32, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2114,7 +2114,7 @@ Transform:
   - {fileID: 1999555754}
   - {fileID: 1632578535}
   m_Father: {fileID: 2130047250}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 35.81}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 165.16}
 --- !u!61 &208372029
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -8331,7 +8331,7 @@ FixedJoint2D:
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 0.92254966, y: 2.914519}
+  m_ConnectedAnchor: {x: 0.7580604, y: 3.8033223}
   m_DampingRatio: 0
   m_Frequency: 0
 --- !u!50 &1002875073
@@ -13054,7 +13054,7 @@ FixedJoint2D:
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 0.33745033, y: 3.7254808}
+  m_ConnectedAnchor: {x: 0.5019396, y: 2.8366776}
   m_DampingRatio: 0
   m_Frequency: 0
 --- !u!50 &1689206452

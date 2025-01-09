@@ -54,7 +54,6 @@ public class Armor : MonoBehaviour
         if (bullet.PenetrationPower > effectiveThickness)
         {
             bullet.RemovePenetratedPower(Convert.ToInt16(effectiveThickness));
-            bullet.AddArmorToPenetratedList(this);
             Debug.Log("Penetrated!");
             return true;
         }

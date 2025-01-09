@@ -21,6 +21,8 @@ public class BulletBehavior : MonoBehaviour
     private LinkedList<RaycastHit2D> collisions = new LinkedList<RaycastHit2D>();
     private HashSet<Collider2D> existingColliders = new HashSet<Collider2D>();
 
+    private HashSet<TankPart> existingTankPart = new HashSet<TankPart>();
+
     private LinkedList<Armor> hitArmorList = new LinkedList<Armor>();
     private HashSet<Armor> penetratedArmorList = new HashSet<Armor>();
     private HashSet<Armor> existingArmor = new HashSet<Armor>(); // New HashSet for Armor components
@@ -80,6 +82,7 @@ public class BulletBehavior : MonoBehaviour
         hitArmorList.Clear();
         existingArmor.Clear();
         penetratedArmorList.Clear();
+        existingTankPart.Clear();
 
         hasTarget = false;
         isMissed = false;
@@ -292,7 +295,7 @@ public class BulletBehavior : MonoBehaviour
         {
             Armor armor = collision.GetComponent<Armor>();
 
-            if (armor != null && !existingArmor.Contains(armor) && !penetratedArmorList.Contains(armor) && armor.OwnerObject != ownerObject)
+            if (armor != null && !existingArmor.Contains(armor) &&  armor.OwnerObject != ownerObject)
             {
                 //Tools.PauseEditor();
                 Debug.Log("Hit: " + armor.gameObject.name);
@@ -323,20 +326,20 @@ public class BulletBehavior : MonoBehaviour
 
         if (collision.GetComponent<TankPart>().OwnerObject != ownerObject)
         {
+            TankPart hitPart = collision.GetComponent<TankPart>();
 
             Debug.Log(collision.GetComponent<TankPart>().OwnerObject);
             Debug.Log(ownerObject);
-            EditorApplication.isPaused = true;
+            //EditorApplication.isPaused = true;
             float missChance = 0.2f;
             Collider2D hitCollider = CalculateHit(CalculateTrajectory(5), missChance);
-            if (hitCollider != null && !hasHitted)
+            if (hitCollider != null && !existingTankPart.Contains(hitPart))
             {
                 TankPart part = hitCollider.GetComponent<TankPart>();
 
-                    hasHitted = true;
                     part?.TakeHit(this);
                     Debug.Log("Hit: " + hitCollider.gameObject.name);
-                
+                    existingTankPart.Add(hitPart);
             }
         }
 
