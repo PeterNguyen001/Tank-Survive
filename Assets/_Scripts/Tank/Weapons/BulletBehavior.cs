@@ -316,7 +316,7 @@ public class BulletBehavior : MonoBehaviour
                 //    }
                 //}
 
-                    armor.CheckForPenetration(this);
+                armor.CheckForPenetration(this);
                
             }
 

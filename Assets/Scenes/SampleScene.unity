@@ -2172,6 +2172,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6f093fe21a008347a5fcf134044cff8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  belongToOrIsTurret: 0
+  belongToOrIsChassis: 1
   isInternalPart: 0
   HP: 10
   maxHP: 10
@@ -2597,6 +2599,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6f093fe21a008347a5fcf134044cff8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  belongToOrIsTurret: 0
+  belongToOrIsChassis: 0
   isInternalPart: 0
   HP: 0
   maxHP: 10
@@ -3189,6 +3193,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fc29ef8e4f8f8843b33095c3448aa84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  belongToOrIsTurret: 0
+  belongToOrIsChassis: 0
   isInternalPart: 0
   HP: 10
   maxHP: 10
@@ -3549,6 +3555,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fc29ef8e4f8f8843b33095c3448aa84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  belongToOrIsTurret: 0
+  belongToOrIsChassis: 0
   isInternalPart: 0
   HP: 10
   maxHP: 10
@@ -5886,6 +5894,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6f093fe21a008347a5fcf134044cff8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  belongToOrIsTurret: 0
+  belongToOrIsChassis: 0
   isInternalPart: 0
   HP: 0
   maxHP: 10
@@ -7064,6 +7074,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d9980fd180385a42b68881beebf8836, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  belongToOrIsTurret: 0
+  belongToOrIsChassis: 0
   isInternalPart: 0
   HP: 0
   maxHP: 10
@@ -7879,6 +7891,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d9980fd180385a42b68881beebf8836, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  belongToOrIsTurret: 0
+  belongToOrIsChassis: 0
   isInternalPart: 0
   HP: 0
   maxHP: 10
@@ -8035,6 +8049,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d9980fd180385a42b68881beebf8836, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  belongToOrIsTurret: 0
+  belongToOrIsChassis: 0
   isInternalPart: 0
   HP: 0
   maxHP: 10
@@ -8053,6 +8069,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f97ee3ccd0de4994cb2d2e764ceda24d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  belongToOrIsTurret: 0
+  belongToOrIsChassis: 0
   isInternalPart: 0
   HP: 0
   maxHP: 10
@@ -8639,6 +8657,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fc29ef8e4f8f8843b33095c3448aa84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  belongToOrIsTurret: 0
+  belongToOrIsChassis: 0
   isInternalPart: 0
   HP: 10
   maxHP: 10
@@ -9816,6 +9836,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f97ee3ccd0de4994cb2d2e764ceda24d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  belongToOrIsTurret: 0
+  belongToOrIsChassis: 0
   isInternalPart: 0
   HP: 0
   maxHP: 10
@@ -10052,6 +10074,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6f093fe21a008347a5fcf134044cff8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  belongToOrIsTurret: 0
+  belongToOrIsChassis: 0
   isInternalPart: 0
   HP: 0
   maxHP: 10
@@ -11344,6 +11368,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fc29ef8e4f8f8843b33095c3448aa84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  belongToOrIsTurret: 0
+  belongToOrIsChassis: 0
   isInternalPart: 0
   HP: 10
   maxHP: 10
@@ -12827,6 +12853,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f97ee3ccd0de4994cb2d2e764ceda24d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  belongToOrIsTurret: 0
+  belongToOrIsChassis: 0
   isInternalPart: 0
   HP: 0
   maxHP: 10
@@ -13991,6 +14019,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f97ee3ccd0de4994cb2d2e764ceda24d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  belongToOrIsTurret: 0
+  belongToOrIsChassis: 0
   isInternalPart: 0
   HP: 0
   maxHP: 10
@@ -14406,6 +14436,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d9980fd180385a42b68881beebf8836, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  belongToOrIsTurret: 0
+  belongToOrIsChassis: 0
   isInternalPart: 0
   HP: 0
   maxHP: 10
@@ -14649,6 +14681,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fc29ef8e4f8f8843b33095c3448aa84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  belongToOrIsTurret: 0
+  belongToOrIsChassis: 0
   isInternalPart: 0
   HP: 10
   maxHP: 10
@@ -14861,6 +14895,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6f093fe21a008347a5fcf134044cff8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  belongToOrIsTurret: 0
+  belongToOrIsChassis: 0
   isInternalPart: 0
   HP: 0
   maxHP: 10
@@ -15279,6 +15315,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f97ee3ccd0de4994cb2d2e764ceda24d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  belongToOrIsTurret: 0
+  belongToOrIsChassis: 0
   isInternalPart: 0
   HP: 0
   maxHP: 10
@@ -15504,6 +15542,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d9980fd180385a42b68881beebf8836, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  belongToOrIsTurret: 0
+  belongToOrIsChassis: 0
   isInternalPart: 0
   HP: 0
   maxHP: 10

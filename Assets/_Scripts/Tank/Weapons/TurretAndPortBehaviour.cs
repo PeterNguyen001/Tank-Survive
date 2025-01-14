@@ -25,6 +25,7 @@ public class TurretAndPortBehaviour : TankPart
         tankPart = turretAndGunPortData;
         gunUnderTurretControl.Clear();
         Tools.FindComponentsRecursively(transform, gunUnderTurretControl);
+        SetUpChildrenBelongToTurret();
     }
 
     public LinkedList<GunBehaviour> GetGunUnderTurretControl() 
@@ -39,4 +40,15 @@ public class TurretAndPortBehaviour : TankPart
 
     public float GetTurretLocalInitialAngle()
     { return gunRotation.localInitialAngle; }
+
+    public void SetUpChildrenBelongToTurret()
+    {
+        LinkedList<TankPart> childrenPartList = new LinkedList<TankPart>();
+        Tools.FindComponentsRecursively(this.transform, childrenPartList);
+        foreach (TankPart child in childrenPartList)
+        {
+            child.belongToOrIsChassis = false;
+            child.belongToOrIsTurret = true;
+        }
+    }
 }

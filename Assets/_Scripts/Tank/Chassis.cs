@@ -12,6 +12,8 @@ public class Chassis : TankPart
     private Armor rightArmor;
     [SerializeField]
     private Armor leftArmor;
+    
+  
 
 
     // Start is called before the first frame update
@@ -31,6 +33,7 @@ public class Chassis : TankPart
         tankPart = chassisData;
         armorList = new Armor[] {frontArmor, rightArmor, leftArmor };
         SetTankPartForArmor();
+        SetUpChildrenBelongToChassis();
     }
 
     public void InitializeCollider()
@@ -39,6 +42,16 @@ public class Chassis : TankPart
         if (meshCollider == null)
         {
             meshCollider = gameObject.AddComponent<PolygonCollider2D>();
+        }
+    }
+
+    public void SetUpChildrenBelongToChassis()
+    {
+        LinkedList<TankPart> childrenPartList = new LinkedList<TankPart>();
+        Tools.FindComponentsRecursively(this.transform, childrenPartList);
+        foreach (TankPart child in childrenPartList)
+        {
+            child.belongToOrIsChassis = true;
         }
     }
 }

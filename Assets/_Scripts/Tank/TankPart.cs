@@ -11,6 +11,9 @@ public class TankPart : MonoBehaviour
     private bool isDisable;
     private SpriteRenderer spriteRenderer;
 
+    public bool belongToOrIsTurret;
+    public bool belongToOrIsChassis;
+
     public bool isInternalPart;
 
     protected Armor[] armorList;
@@ -109,4 +112,6 @@ public class TankPart : MonoBehaviour
     }
 
     public TankPartData GetTankPart() { return tankPart; }
+
+ 
 }
