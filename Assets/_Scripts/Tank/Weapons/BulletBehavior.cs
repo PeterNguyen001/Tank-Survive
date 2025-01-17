@@ -21,7 +21,8 @@ public class BulletBehavior : MonoBehaviour
     private LinkedList<RaycastHit2D> collisions = new LinkedList<RaycastHit2D>();
     private HashSet<Collider2D> existingColliders = new HashSet<Collider2D>();
 
-    private HashSet<TankPart> existingTankPart = new HashSet<TankPart>();
+    private HashSet<TankPart> existingHitTankPart = new HashSet<TankPart>();
+    private HashSet<TankPart> existingTankPartToCalculate = new HashSet<TankPart>();
 
     private LinkedList<Armor> hitArmorList = new LinkedList<Armor>();
     private HashSet<Armor> penetratedArmorList = new HashSet<Armor>();
@@ -33,9 +34,11 @@ public class BulletBehavior : MonoBehaviour
     public float rayLength = 10f;
 
 
-    private bool hasTarget;
     private bool isMissed;
-    private bool hasHitted;
+
+    private bool canHitTurret = false;
+    private bool canHitChassis = false;
+
 
     public int PenetrationPower { get => penetrationPower; set => penetrationPower = value; }
 
@@ -82,11 +85,11 @@ public class BulletBehavior : MonoBehaviour
         hitArmorList.Clear();
         existingArmor.Clear();
         penetratedArmorList.Clear();
-        existingTankPart.Clear();
+        existingHitTankPart.Clear();
 
-        hasTarget = false;
         isMissed = false;
-        hasHitted = false;
+        canHitTurret = false;
+        canHitChassis = false;
         ownerObject = null;
         timer = 0f; // Reset the timer when firing
     }
@@ -223,6 +226,56 @@ public class BulletBehavior : MonoBehaviour
         return collisions;
     }
 
+    public void SetPotentialHit(float length, float missChance)
+    {
+        Vector2 position = transform.position;
+        Vector2 direction = transform.right;
+
+        bool ableToHitTurret = false;
+        bool ableToHitChassis = false;
+
+        // Perform a raycast
+        RaycastHit2D[] hits = Physics2D.RaycastAll(position, direction, length);
+        foreach (RaycastHit2D hit in hits)
+        {
+
+                BulletBehavior bulletBehavior = hit.collider.gameObject.GetComponent<BulletBehavior>();
+                TankPart part = hit.collider.gameObject.GetComponent<TankPart>();
+                if (part is TurretAndPortBehaviour)
+                {
+                    ableToHitTurret = true;
+                }
+                else if (part is Chassis)
+                {
+                    ableToHitChassis = true;
+                }
+               
+            
+        }
+        if (Random.value < missChance)
+        {
+            // It's a miss
+            isMissed = true;
+        }
+        else if (ableToHitChassis && ableToHitTurret)
+        {
+            int randomIndex = Random.Range(0, 2);
+            if (randomIndex == 0)
+            { 
+                canHitTurret = ableToHitTurret; 
+            }
+            else 
+            { 
+                canHitChassis = ableToHitChassis; 
+            }
+        }
+        else
+        { 
+            canHitTurret = ableToHitTurret;
+            canHitChassis = ableToHitChassis;
+        }
+    }
+
     public Collider2D CalculateHit(LinkedList<RaycastHit2D> hits, float missChance)
     {
         if (hits.Count > 0)
@@ -231,7 +284,6 @@ public class BulletBehavior : MonoBehaviour
             if (Random.value < missChance)
             {
                 // It's a miss
-                hasTarget = false;
                 isMissed = true;
                 return null;
             }
@@ -246,14 +298,12 @@ public class BulletBehavior : MonoBehaviour
             }
 
             RaycastHit2D hit = node.Value;
-            hasTarget = true;
             isMissed = false;
             return hit.collider;
         }
         else
         {
             // No hits, it's a miss
-            hasTarget = false;
             isMissed = true;
             return null;
         }
@@ -294,29 +344,33 @@ public class BulletBehavior : MonoBehaviour
         if (collision.CompareTag("Armor"))
         {
             Armor armor = collision.GetComponent<Armor>();
-
+            
             if (armor != null && !existingArmor.Contains(armor) &&  armor.OwnerObject != ownerObject)
             {
-                //Tools.PauseEditor();
-                Debug.Log("Hit: " + armor.gameObject.name);
-                hitArmorList.AddLast(armor);
-                existingArmor.Add(armor);
-                armor.IsBeingHit = true;
-                
-                //Collider2D hitCollider = CalculateHit(CalculateTrajectory(5), missChance);
-                //if (hitCollider != null && !hasHitted)
-                //{
-                //    TankPart part = hitCollider.GetComponent<TankPart>();
-                //    if (part == armor.TankPartAttachedTo)
-                //    {
-                //        CastRayConeAndCalculateAverageHitAngle(armor);
-                //        //hasHitted = true;
-                //        part?.TakeHit(this);
-                //        Debug.Log("Hit: " + hitCollider.gameObject.name);
-                //    }
-                //}
+                SetPotentialHit(5, 0.2f);
+                if ((armor.belongToOrIsTurret == true && canHitTurret == true) || armor.belongToOrIsChassis == true && canHitChassis == true)
+                {
+                    //Tools.PauseEditor();
+                    Debug.Log("Hit: " + armor.gameObject.name);
+                    hitArmorList.AddLast(armor);
+                    existingArmor.Add(armor);
+                    armor.IsBeingHit = true;
 
-                armor.CheckForPenetration(this);
+                    //Collider2D hitCollider = CalculateHit(CalculateTrajectory(5), missChance);
+                    //if (hitCollider != null && !hasHitted)
+                    //{
+                    //    TankPart part = hitCollider.GetComponent<TankPart>();
+                    //    if (part == armor.TankPartAttachedTo)
+                    //    {
+                    //        CastRayConeAndCalculateAverageHitAngle(armor);
+                    //        //hasHitted = true;
+                    //        part?.TakeHit(this);
+                    //        Debug.Log("Hit: " + hitCollider.gameObject.name);
+                    //    }
+                    //}
+
+                    armor.CheckForPenetration(this);
+                }
                
             }
 
@@ -324,22 +378,34 @@ public class BulletBehavior : MonoBehaviour
             return;
         }
 
-        if (collision.GetComponent<TankPart>().OwnerObject != ownerObject)
+        if (collision.GetComponent<TankPart>())
         {
+
             TankPart hitPart = collision.GetComponent<TankPart>();
 
-            Debug.Log(collision.GetComponent<TankPart>().OwnerObject);
-            Debug.Log(ownerObject);
-            //EditorApplication.isPaused = true;
-            float missChance = 0.2f;
-            Collider2D hitCollider = CalculateHit(CalculateTrajectory(5), missChance);
-            if (hitCollider != null && !existingTankPart.Contains(hitPart))
+            if (!(hitPart is Armor) && hitPart.OwnerObject != ownerObject)
             {
-                TankPart part = hitCollider.GetComponent<TankPart>();
+                Debug.Log(collision.GetComponent<TankPart>().OwnerObject);
+                Debug.Log(ownerObject);
+                //EditorApplication.isPaused = true;
+                float missChance = 0.2f;
+                //
+                //if (hitCollider != null && !existingHitTankPart.Contains(hitPart))
+                //{
+                //    TankPart part = hitCollider.GetComponent<TankPart>();
 
-                    part?.TakeHit(this);
-                    Debug.Log("Hit: " + hitCollider.gameObject.name);
-                    existingTankPart.Add(hitPart);
+                //        part?.TakeHit(this);
+                //        Debug.Log("Hit: " + hitCollider.gameObject.name);
+                //        existingHitTankPart.Add(hitPart);
+                //}
+                if ((hitPart.belongToOrIsTurret == true && canHitTurret == true) || hitPart.belongToOrIsChassis == true && canHitChassis == true)
+                {
+
+
+                    hitPart?.TakeHit(this);
+                    Debug.Log("Hit: " + hitPart.gameObject.name);
+                    existingHitTankPart.Add(hitPart);
+                }
             }
         }
 

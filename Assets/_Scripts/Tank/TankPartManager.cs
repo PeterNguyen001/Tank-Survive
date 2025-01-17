@@ -77,10 +77,6 @@ public class TankPartManager : MonoBehaviour
             tankPart.SetManager(this);
             tankPart.OwnerObject = ownerObject;
         }
-        foreach(Armor armor in armorList)
-        {
-            armor.OwnerObject = ownerObject;
-        }
 
     }
 

@@ -2174,7 +2174,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   belongToOrIsTurret: 0
   belongToOrIsChassis: 1
-  isInternalPart: 0
   HP: 10
   maxHP: 10
   chassisData: {fileID: 11400000, guid: 5c428571e227f92429722fa7b7f95762, type: 2}
@@ -2601,7 +2600,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   belongToOrIsTurret: 0
   belongToOrIsChassis: 0
-  isInternalPart: 0
   HP: 0
   maxHP: 10
   chassisData: {fileID: 11400000, guid: 5c428571e227f92429722fa7b7f95762, type: 2}
@@ -3195,7 +3193,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   belongToOrIsTurret: 0
   belongToOrIsChassis: 0
-  isInternalPart: 0
   HP: 10
   maxHP: 10
   tankEngineData: {fileID: 11400000, guid: c679be38920632e439565ef083739754, type: 2}
@@ -3557,7 +3554,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   belongToOrIsTurret: 0
   belongToOrIsChassis: 0
-  isInternalPart: 0
   HP: 10
   maxHP: 10
   tankEngineData: {fileID: 11400000, guid: c679be38920632e439565ef083739754, type: 2}
@@ -5385,7 +5381,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4037f8cb9adb3a449a03212e16b0eaf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  belongToOrIsTurret: 0
+  belongToOrIsChassis: 0
+  HP: 0
+  maxHP: 10
   thickness: 150
+  armorData: {fileID: 11400000, guid: 8eba532c1175b1648a12f4d33a39b36c, type: 2}
   isBeingHit: 0
 --- !u!61 &708426687
 BoxCollider2D:
@@ -5896,7 +5897,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   belongToOrIsTurret: 0
   belongToOrIsChassis: 0
-  isInternalPart: 0
   HP: 0
   maxHP: 10
   chassisData: {fileID: 11400000, guid: 01b83a77553b6124b9263a273c057ac6, type: 2}
@@ -7076,7 +7076,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   belongToOrIsTurret: 0
   belongToOrIsChassis: 0
-  isInternalPart: 0
   HP: 0
   maxHP: 10
   turretAndGunPortData: {fileID: 11400000, guid: b4de8a7d9474b9f4f9904d7c5b8de5de, type: 2}
@@ -7286,7 +7285,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4037f8cb9adb3a449a03212e16b0eaf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  belongToOrIsTurret: 0
+  belongToOrIsChassis: 0
+  HP: 0
+  maxHP: 10
   thickness: 60
+  armorData: {fileID: 11400000, guid: 8eba532c1175b1648a12f4d33a39b36c, type: 2}
   isBeingHit: 0
 --- !u!61 &890279001
 BoxCollider2D:
@@ -7790,6 +7794,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1763198966}
+  - {fileID: 1314723724}
   m_Father: {fileID: 1631141147}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &907280066
@@ -7893,7 +7898,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   belongToOrIsTurret: 0
   belongToOrIsChassis: 0
-  isInternalPart: 0
   HP: 0
   maxHP: 10
   turretAndGunPortData: {fileID: 11400000, guid: ec90315cb3aad3b4fad76a87df8ef828, type: 2}
@@ -8051,7 +8055,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   belongToOrIsTurret: 0
   belongToOrIsChassis: 0
-  isInternalPart: 0
   HP: 0
   maxHP: 10
   turretAndGunPortData: {fileID: 11400000, guid: 746c3be65b3952346a13418f8b005e14, type: 2}
@@ -8071,7 +8074,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   belongToOrIsTurret: 0
   belongToOrIsChassis: 0
-  isInternalPart: 0
   HP: 0
   maxHP: 10
   gunData: {fileID: 11400000, guid: cb403b2502d81c940a64e37388f3ce2d, type: 2}
@@ -8566,7 +8568,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4037f8cb9adb3a449a03212e16b0eaf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  belongToOrIsTurret: 0
+  belongToOrIsChassis: 0
+  HP: 0
+  maxHP: 10
   thickness: 60
+  armorData: {fileID: 11400000, guid: 8eba532c1175b1648a12f4d33a39b36c, type: 2}
   isBeingHit: 0
 --- !u!61 &1049372485
 BoxCollider2D:
@@ -8659,7 +8666,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   belongToOrIsTurret: 0
   belongToOrIsChassis: 0
-  isInternalPart: 0
   HP: 10
   maxHP: 10
   tankEngineData: {fileID: 11400000, guid: c679be38920632e439565ef083739754, type: 2}
@@ -8792,7 +8798,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4037f8cb9adb3a449a03212e16b0eaf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  belongToOrIsTurret: 0
+  belongToOrIsChassis: 0
+  HP: 0
+  maxHP: 10
   thickness: 60
+  armorData: {fileID: 11400000, guid: 8eba532c1175b1648a12f4d33a39b36c, type: 2}
   isBeingHit: 0
 --- !u!61 &1100068546
 BoxCollider2D:
@@ -9050,7 +9061,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4037f8cb9adb3a449a03212e16b0eaf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  belongToOrIsTurret: 0
+  belongToOrIsChassis: 0
+  HP: 0
+  maxHP: 10
   thickness: 60
+  armorData: {fileID: 11400000, guid: 8eba532c1175b1648a12f4d33a39b36c, type: 2}
   isBeingHit: 0
 --- !u!61 &1140967883
 BoxCollider2D:
@@ -9838,7 +9854,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   belongToOrIsTurret: 0
   belongToOrIsChassis: 0
-  isInternalPart: 0
   HP: 0
   maxHP: 10
   gunData: {fileID: 11400000, guid: e7353cbd6710c234daf0c1983a9e63ac, type: 2}
@@ -10076,7 +10091,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   belongToOrIsTurret: 0
   belongToOrIsChassis: 0
-  isInternalPart: 0
   HP: 0
   maxHP: 10
   chassisData: {fileID: 11400000, guid: 01b83a77553b6124b9263a273c057ac6, type: 2}
@@ -10366,6 +10380,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1314723723
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1314723724}
+  m_Layer: 9
+  m_Name: Armor Plates
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1314723724
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1314723723}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 907280064}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1316847333
 GameObject:
   m_ObjectHideFlags: 0
@@ -11370,7 +11415,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   belongToOrIsTurret: 0
   belongToOrIsChassis: 0
-  isInternalPart: 0
   HP: 10
   maxHP: 10
   tankEngineData: {fileID: 11400000, guid: c679be38920632e439565ef083739754, type: 2}
@@ -12855,7 +12899,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   belongToOrIsTurret: 0
   belongToOrIsChassis: 0
-  isInternalPart: 0
   HP: 0
   maxHP: 10
   gunData: {fileID: 11400000, guid: c0f2f521c6d91c94aac32d0e6aae8bda, type: 2}
@@ -14021,7 +14064,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   belongToOrIsTurret: 0
   belongToOrIsChassis: 0
-  isInternalPart: 0
   HP: 0
   maxHP: 10
   gunData: {fileID: 11400000, guid: e7353cbd6710c234daf0c1983a9e63ac, type: 2}
@@ -14438,7 +14480,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   belongToOrIsTurret: 0
   belongToOrIsChassis: 0
-  isInternalPart: 0
   HP: 0
   maxHP: 10
   turretAndGunPortData: {fileID: 11400000, guid: b4de8a7d9474b9f4f9904d7c5b8de5de, type: 2}
@@ -14541,7 +14582,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4037f8cb9adb3a449a03212e16b0eaf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  belongToOrIsTurret: 0
+  belongToOrIsChassis: 0
+  HP: 0
+  maxHP: 10
   thickness: 150
+  armorData: {fileID: 11400000, guid: 8eba532c1175b1648a12f4d33a39b36c, type: 2}
   isBeingHit: 0
 --- !u!61 &1889435363
 BoxCollider2D:
@@ -14683,7 +14729,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   belongToOrIsTurret: 0
   belongToOrIsChassis: 0
-  isInternalPart: 0
   HP: 10
   maxHP: 10
   tankEngineData: {fileID: 11400000, guid: c679be38920632e439565ef083739754, type: 2}
@@ -14897,7 +14942,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   belongToOrIsTurret: 0
   belongToOrIsChassis: 0
-  isInternalPart: 0
   HP: 0
   maxHP: 10
   chassisData: {fileID: 11400000, guid: 01b83a77553b6124b9263a273c057ac6, type: 2}
@@ -15317,7 +15361,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   belongToOrIsTurret: 0
   belongToOrIsChassis: 0
-  isInternalPart: 0
   HP: 0
   maxHP: 10
   gunData: {fileID: 11400000, guid: e7353cbd6710c234daf0c1983a9e63ac, type: 2}
@@ -15544,7 +15587,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   belongToOrIsTurret: 0
   belongToOrIsChassis: 0
-  isInternalPart: 0
   HP: 0
   maxHP: 10
   turretAndGunPortData: {fileID: 11400000, guid: b4de8a7d9474b9f4f9904d7c5b8de5de, type: 2}

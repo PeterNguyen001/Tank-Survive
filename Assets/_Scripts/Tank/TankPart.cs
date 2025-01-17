@@ -14,7 +14,6 @@ public class TankPart : MonoBehaviour
     public bool belongToOrIsTurret;
     public bool belongToOrIsChassis;
 
-    public bool isInternalPart;
 
     protected Armor[] armorList;
 

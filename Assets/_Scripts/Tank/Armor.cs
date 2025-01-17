@@ -3,24 +3,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Armor : MonoBehaviour
+public class Armor : TankPart
 {
-    private GameObject ownerObject;
+
     Collider2D armorCollider2D;
     [SerializeField]
     int thickness; // Base armor thickness in millimeters
+    public ArmorData armorData;
 
     public bool isBeingHit;
     bool isPenetrated;
     private TankPart partAttachedTo;
 
+
     public bool IsBeingHit { get => isBeingHit; set => isBeingHit = value; }
     public TankPart TankPartAttachedTo { get => partAttachedTo; set => partAttachedTo = value; }
-    public GameObject OwnerObject { get => ownerObject; set => ownerObject = value; }
 
-    private void Start()
+    //private void Start()
+    //{
+    //    armorCollider2D = GetComponent<Collider2D>();
+    //}
+
+    public override void Init()
     {
         armorCollider2D = GetComponent<Collider2D>();
+        tankPart = armorData;
     }
 
     /// <summary>

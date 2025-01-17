@@ -9,6 +9,7 @@ public enum TankPartType
     Cannon,
     Machinegun,
     Track,
-    Engine
+    Engine,
+    Armor
 
 }
