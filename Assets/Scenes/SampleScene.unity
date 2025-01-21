@@ -2105,16 +2105,16 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 208372027}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.9916262, w: 0.12914181}
-  m_LocalPosition: {x: 0.63, y: 3.32, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 40256139}
   - {fileID: 1999555754}
   - {fileID: 1632578535}
-  m_Father: {fileID: 2130047250}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 165.16}
+  m_Father: {fileID: 1671621233}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &208372029
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5417,7 +5417,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.57, y: 0}
@@ -8351,7 +8351,7 @@ FixedJoint2D:
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 0.7580604, y: 3.8033223}
+  m_ConnectedAnchor: {x: -0.49183294, y: 3.819998}
   m_DampingRatio: 0
   m_Frequency: 0
 --- !u!50 &1002875073
@@ -8604,10 +8604,10 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.13, y: -0.41}
+  m_Offset: {x: -0.13, y: -0.45}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -8834,10 +8834,10 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.13, y: 0.41}
+  m_Offset: {x: -0.13, y: 0.45}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -9097,7 +9097,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.12, y: -0.41}
@@ -13016,6 +13016,51 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1010460522}
   m_SourcePrefab: {fileID: 100100000, guid: abb874bd69ce99847a5d6f65dca55e79, type: 3}
+--- !u!1 &1671621232
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1671621233}
+  - component: {fileID: 1671621234}
+  m_Layer: 0
+  m_Name: Test Target
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1671621233
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1671621232}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: -0.6403108, w: 0.76811594}
+  m_LocalPosition: {x: 0, y: 3.91, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 208372028}
+  m_Father: {fileID: 2130047250}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -79.63}
+--- !u!114 &1671621234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1671621232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a60579554b5601c439373b3290707cfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1683000612
 GameObject:
   m_ObjectHideFlags: 0
@@ -13125,7 +13170,7 @@ FixedJoint2D:
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 0.5019396, y: 2.8366776}
+  m_ConnectedAnchor: {x: 0.49183294, y: 4.000002}
   m_DampingRatio: 0
   m_Frequency: 0
 --- !u!50 &1689206452
@@ -15290,7 +15335,7 @@ GameObject:
   - component: {fileID: 1999555754}
   m_Layer: 9
   m_Name: Armor
-  m_TagString: Untagged
+  m_TagString: Armor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15675,7 +15720,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 134827958}
-  - {fileID: 208372028}
+  - {fileID: 1671621233}
   - {fileID: 854326537}
   - {fileID: 1694616025}
   - {fileID: 619394802}

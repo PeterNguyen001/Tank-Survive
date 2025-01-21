@@ -340,14 +340,14 @@ public class BulletBehavior : MonoBehaviour
         //    // Exit here to process armor hit first
         //    return;
         //}
-
-        if (collision.CompareTag("Armor"))
+        Debug.Log(collision.tag);
+        if (collision.GetComponent<Armor>())
         {
             Armor armor = collision.GetComponent<Armor>();
-            
+            SetPotentialHit(5, 0.2f);
             if (armor != null && !existingArmor.Contains(armor) &&  armor.OwnerObject != ownerObject)
             {
-                SetPotentialHit(5, 0.2f);
+                
                 if ((armor.belongToOrIsTurret == true && canHitTurret == true) || armor.belongToOrIsChassis == true && canHitChassis == true)
                 {
                     //Tools.PauseEditor();
@@ -378,7 +378,7 @@ public class BulletBehavior : MonoBehaviour
             return;
         }
 
-        if (collision.GetComponent<TankPart>())
+        else if (collision.GetComponent<TankPart>())
         {
 
             TankPart hitPart = collision.GetComponent<TankPart>();

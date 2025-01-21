@@ -61,10 +61,9 @@ public class TankPartManager : MonoBehaviour
 
     public void ActivateTank()
     {
-        LinkedList<Armor> armorList = new LinkedList<Armor>();
+
         Tools.FindComponentsRecursively(transform, collider2DList);
         Tools.FindComponentsRecursively(transform, tankPartList);
-        Tools.FindComponentsRecursively(transform, armorList);
 
         foreach (TankSubComponent subComponent in subComponentList)
         {
