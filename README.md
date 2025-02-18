@@ -9,6 +9,7 @@ A Unity-based AI system for tanks, featuring obstacle detection, movement logic,
 ✅ Custom armor penetration system with multiple armor types (ChassisFront, ChassisSide, Turret).  
 ✅ Realistic bullet physics with penetration and armor thickness calculations.  
 ✅ Debugging tools with Gizmos for visualization.  
+✅ Tank builder system using drag and drop.
 
 ---
 
