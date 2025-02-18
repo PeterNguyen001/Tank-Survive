@@ -1,4 +1,4 @@
-# 🏆 Tank AI - Unity  
+# 🏆 Tank Survive - Unity  
 A Unity-based AI system for tanks, featuring obstacle detection, movement logic, and armor penetration mechanics.
 
 ---
